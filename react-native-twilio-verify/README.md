@@ -10,12 +10,17 @@ npm install react-native-twilio-verify
 
 ## Usage
 
+### Create factor
+
 ```js
 import RNTwilioVerify from "react-native-twilio-verify";
 
-// ...
+let factor = await TwilioVerify.createFactor(new PushFactorPayload(factorName, verifyServiceSid, identity, pushToken, accessToken))
+```
 
-const result = await RNTwilioVerify.multiply(3, 7);
+### Verify factor
+```js
+await TwilioVerify.verifyFactor(new VerifyPushFactorPayload(factor.sid))
 ```
 
 ## Contributing
