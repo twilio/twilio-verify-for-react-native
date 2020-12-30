@@ -23,6 +23,16 @@ let factor = await TwilioVerify.createFactor(new PushFactorPayload(factorName, v
 await TwilioVerify.verifyFactor(new VerifyPushFactorPayload(factor.sid))
 ```
 
+### Get factors
+```js
+let factors = await TwilioVerify.getAllFactors()
+```
+
+### Delete factor
+```js
+await TwilioVerify.deleteFactor(factorSid)
+```
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
