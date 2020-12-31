@@ -36,13 +36,13 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/twilio/twilio-verify-multiplatform",
+  "repository": "https://github.com/twilio/react-native-twilio-verify",
   "author": "Twilio Inc. <open-source@twilio.com> (https://www.twilio.com/docs/verify/push)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/twilio/twilio-verify-multiplatform/issues"
+    "url": "https://github.com/twilio/react-native-twilio-verify/issues"
   },
-  "homepage": "https://github.com/twilio/twilio-verify-multiplatform#readme",
+  "homepage": "https://github.com/twilio/react-native-twilio-verify#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
