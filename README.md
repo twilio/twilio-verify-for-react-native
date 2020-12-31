@@ -1,4 +1,6 @@
-# react-native-twilio-verify
+# React native module for Twilio Verify
+
+[![License](https://img.shields.io/badge/License-Apache%202-blue.svg?logo=law)](https://github.com/twilio/react-native-twilio-verify/blob/main/LICENSE)
 
 Twilio Verify Push SDK helps you verify users by adding a low-friction, secure, cost-effective, 'push verification' factor into your own mobile application. This project provides an SDK to implement Verify Push for your react native app.
 
@@ -43,10 +45,20 @@ let factors = await TwilioVerify.getAllFactors()
 await TwilioVerify.deleteFactor(factorSid)
 ```
 
-## Contributing
+### Clear local storage
+You can clear local storage calling the `TwilioVerify.clearLocalStorage` method:
+```
+await TwilioVerify.clearLocalStorage()
+```
+Note: Calling this method will not delete factors in **Verify Push API**, so you need to delete them from your backend to prevent invalid/deleted factors when getting factors for an identity.
 
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
-
-## License
-
-MIT
+## Errors
+Types | Code | Description
+---------- | ----------- | -----------
+Network | 68001 | Exception while calling the API
+Mapping | 68002 | Exception while mapping an entity
+Storage | 68003 | Exception while storing/loading an entity
+Input | 68004 | Exception while loading input
+Key Storage | 68005 | Exception while storing/loading key pairs
+Initialization | 68006 | Exception while initializing an object
+Authentication Token | 68007 | Exception while generating token
