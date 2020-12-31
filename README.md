@@ -62,7 +62,7 @@ await TwilioVerify.deleteFactor(factorSid)
 
 ### Clear local storage
 You can clear local storage calling the `TwilioVerify.clearLocalStorage` method:
-```
+```js
 await TwilioVerify.clearLocalStorage()
 ```
 Note: Calling this method will not delete factors in **Verify Push API**, so you need to delete them from your backend to prevent invalid/deleted factors when getting factors for an identity.
