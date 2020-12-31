@@ -17,3 +17,4 @@ export {PushFactorPayload} from './models/PushFactorPayload';
 export {VerifyPushFactorPayload} from './models/VerifyPushFactorPayload';
 export {UpdatePushFactorPayload} from './models/UpdatePushFactorPayload';
 export {ChallengeListPayload} from './models/ChallengeListPayload';
+export {UpdatePushChallengePayload} from './models/UpdatePushChallengePayload';
