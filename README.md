@@ -7,7 +7,12 @@ Twilio Verify Push SDK helps you verify users by adding a low-friction, secure, 
 ## Installation
 
 ```sh
-npm install react-native-twilio-verify
+npm install https://github.com/twilio/react-native-twilio-verify
+```
+
+Install the packages
+```sh
+yarn install
 ```
 
 Go to node_modules/react-native-twilio-verify/ios and install the pods
