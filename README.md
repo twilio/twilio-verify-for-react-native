@@ -40,6 +40,16 @@ let factor = await TwilioVerify.createFactor(new PushFactorPayload(factorName, v
 await TwilioVerify.verifyFactor(new VerifyPushFactorPayload(factor.sid))
 ```
 
+### Get challenge
+```js
+let challenge = await TwilioVerify.getChallenge(challengeSid, factorSid)
+```
+
+### Update challenge
+```js
+await TwilioVerify.updateChallenge(new UpdatePushChallengePayload(factorSid, challengeSid, newStatus))
+```
+
 ### Get factors
 ```js
 let factors = await TwilioVerify.getAllFactors()
