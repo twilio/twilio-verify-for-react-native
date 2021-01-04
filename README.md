@@ -67,6 +67,38 @@ await TwilioVerify.clearLocalStorage()
 ```
 Note: Calling this method will not delete factors in **Verify Push API**, so you need to delete them from your backend to prevent invalid/deleted factors when getting factors for an identity.
 
+## Running the Sample app
+
+Install the packages
+```sh
+yarn install
+```
+
+Go to `ios` and install the pods
+```sh
+pod install
+```
+
+Go to `example` and install the packages
+```sh
+yarn install
+```
+
+Go to `example/ios` and install the pods
+```sh
+pod install
+```
+
+Run Android app
+```sh
+yarn example android
+```
+
+Run iOS app
+```sh
+yarn example ios
+```
+
 ## Errors
 Types | Code | Description
 ---------- | ----------- | -----------
