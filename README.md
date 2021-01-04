@@ -99,6 +99,13 @@ Run iOS app
 yarn example ios
 ```
 
+## Running the Sample backend
+
+* Clone this repo: https://github.com/twilio/verify-push-sample-backend
+* Configure a [Push Credential](https://www.twilio.com/docs/verify/quickstarts/push-android#create-a-push-credential) for the sample app, using the same [Firebase project](#FirebaseConfiguration) you configured
+* Configure a [Verify Service](https://www.twilio.com/docs/verify/quickstarts/push-android#create-a-verify-service-and-add-the-push-credential), using the Push Credential for the sample app
+* Run the steps in the [README file](https://github.com/twilio/verify-push-sample-backend/blob/master/README.md)
+
 ## Errors
 Types | Code | Description
 ---------- | ----------- | -----------
