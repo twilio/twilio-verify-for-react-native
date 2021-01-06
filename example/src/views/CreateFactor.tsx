@@ -14,16 +14,17 @@ import TwilioVerify, {
   VerifyPushFactorPayload,
 } from 'react-native-twilio-verify';
 import { Colors } from '../constants';
+import type { ViewProps } from '../types';
 
-export default function CreateFactor() {
-  const [factorInfo, setFactorInfo] = useState<string>('');
+export default function CreateFactor({
+  navigation,
+}: ViewProps<'CreateFactor'>) {
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [identity, setIdentity] = useState<string>('');
   const [accessTokenUrl, setAccessTokenUrl] = useState<string>('');
 
   const onCreateFactorButtonPress = async () => {
     try {
-      setFactorInfo('');
       setIsFetching(true);
       const response = await fetch(accessTokenUrl, {
         method: 'POST',
@@ -48,9 +49,11 @@ export default function CreateFactor() {
       factor = await TwilioVerify.verifyFactor(
         new VerifyPushFactorPayload(factor.sid)
       );
-      setFactorInfo(JSON.stringify(factor));
+      navigation.navigate('Factors', {
+        message: `${factor.friendlyName} was created!`,
+      });
     } catch (error) {
-      Alert.alert(error);
+      Alert.alert('Error', JSON.stringify(error));
     } finally {
       setIsFetching(false);
     }
@@ -80,7 +83,6 @@ export default function CreateFactor() {
           <ActivityIndicator size="small" />
         )}
       </TouchableOpacity>
-      <Text>{factorInfo && `Factor: ${factorInfo}`}</Text>
     </View>
   );
 }
