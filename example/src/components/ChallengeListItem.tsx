@@ -2,18 +2,18 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import type { Factor } from 'react-native-twilio-verify';
-import FactorComponent from './Factor';
+import type { Challenge } from 'react-native-twilio-verify';
+import ChallengeComponent from './Challenge';
 
-type FactorListItemProps = {
-  item: Factor;
-  onPress: (factor: Factor) => void;
+type ChallengeListItemProps = {
+  item: Challenge;
+  onPress: (challenge: Challenge) => void;
 };
 
-const FactorListItem = ({ item, onPress }: FactorListItemProps) => {
+const ChallengeListItem = ({ item, onPress }: ChallengeListItemProps) => {
   return (
     <TouchableOpacity onPress={() => onPress(item)}>
-      <FactorComponent factor={item} styles={styles} />
+      <ChallengeComponent challenge={item} styles={styles} />
     </TouchableOpacity>
   );
 };
@@ -28,4 +28,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FactorListItem;
+export default ChallengeListItem;

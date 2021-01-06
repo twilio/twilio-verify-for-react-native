@@ -38,11 +38,17 @@ const Factors = ({ route, navigation }: ViewProps<'Factors'>) => {
     navigation.navigate('CreateFactor');
   };
 
+  const onFactorItemPress = (factor: Factor) => {
+    navigation.navigate('Factor', { factor });
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
         data={factors}
-        renderItem={FactorListItem}
+        renderItem={({ item }) => (
+          <FactorListItem item={item} onPress={onFactorItemPress} />
+        )}
         keyExtractor={(item) => item.sid}
       />
       <TouchableOpacity
