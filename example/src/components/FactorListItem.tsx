@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import type { Factor } from 'react-native-twilio-verify';
+import { Colors } from '../constants';
 import FactorComponent from './Factor';
 
 type FactorListItemProps = {
@@ -12,13 +13,20 @@ type FactorListItemProps = {
 
 const FactorListItem = ({ item, onPress }: FactorListItemProps) => {
   return (
-    <TouchableOpacity onPress={() => onPress(item)}>
-      <FactorComponent factor={item} styles={styles} />
+    <TouchableOpacity onPress={() => onPress(item)} style={styles.container}>
+      <FactorComponent factor={item} styles={factorComponentStyles} />
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    borderBottomColor: Colors.black.default,
+    borderBottomWidth: 0.5,
+  },
+});
+
+const factorComponentStyles = StyleSheet.create({
   view: {
     marginVertical: 5,
     marginHorizontal: 8,
