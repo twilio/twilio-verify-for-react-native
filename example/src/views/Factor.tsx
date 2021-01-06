@@ -10,7 +10,7 @@ import type { ViewProps } from '../types';
 import FactorComponent from '../components/Factor';
 import ChallengeListItem from '../components/ChallengeListItem';
 
-const Factors = ({ route }: ViewProps<'Factor'>) => {
+const Factor = ({ route }: ViewProps<'Factor'>) => {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const { factor } = route.params;
 
@@ -75,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Factors;
+export default Factor;
