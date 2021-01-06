@@ -5,24 +5,34 @@ import {
   Text,
   StyleSheet,
   View,
+  Alert,
 } from 'react-native';
-import type { StackScreenProps } from '@react-navigation/stack';
+import { useIsFocused } from '@react-navigation/native';
 
 import TwilioVerify, { Factor } from 'react-native-twilio-verify';
 import { Colors } from '../constants';
-import type { RootStackParamList } from '../types';
+import type { ViewProps } from '../types';
 import FactorListItem from '../components/FactorListItem';
 
-type FactorsViewProps = StackScreenProps<RootStackParamList, 'Factors'>;
-
-const Factors = ({ navigation }: FactorsViewProps) => {
+const Factors = ({ route, navigation }: ViewProps<'Factors'>) => {
   const [factors, setFactors] = useState<Factor[]>([]);
+  const message = route.params?.message;
+
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    (async function getFactors() {
-      setFactors(await TwilioVerify.getAllFactors());
-    })();
-  }, []);
+    if (message) {
+      Alert.alert('message', message);
+    }
+  }, [message]);
+
+  useEffect(() => {
+    if (isFocused) {
+      (async function getFactors() {
+        setFactors(await TwilioVerify.getAllFactors());
+      })();
+    }
+  }, [isFocused]);
 
   const onCreateFactorButtonPress = () => {
     navigation.navigate('CreateFactor');
