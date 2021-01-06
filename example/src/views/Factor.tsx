@@ -33,7 +33,7 @@ const Factors = ({ route }: ViewProps<'Factor'>) => {
 
   return (
     <View style={styles.container}>
-      <FactorComponent factor={factor} styles={factorStyles}></FactorComponent>
+      <FactorComponent factor={factor} styles={factorStyles} />
       {challenges.length > 0 && (
         <Fragment>
           <Text style={styles.challengesTitle}>Challenges</Text>
