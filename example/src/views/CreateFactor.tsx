@@ -76,6 +76,7 @@ export default function CreateFactor({
       <TouchableOpacity
         style={styles.button}
         onPress={onCreateFactorButtonPress}
+        disabled={isFetching}
       >
         {!isFetching ? (
           <Text style={styles.buttonText}>CREATE FACTOR</Text>
