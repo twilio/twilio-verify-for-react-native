@@ -27,6 +27,11 @@ const ChallengeDetails = ({ challenge, textStyle }: ChallengeDetailsProps) => {
         <View>
           <Text style={textStyle}>Details:</Text>
           <View style={styles.detailsBlock}>
+            {challenge.challengeDetails.date && (
+              <Text style={textStyle}>
+                Date :{challenge.challengeDetails.date.toLocaleString()}
+              </Text>
+            )}
             {challenge.challengeDetails.fields.map((field, index) => (
               <Text style={textStyle} key={index}>
                 {field.label + ' = ' + field.value}
