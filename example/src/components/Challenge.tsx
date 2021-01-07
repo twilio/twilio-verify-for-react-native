@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ViewStyle, TextStyle } from 'react-native';
+import { View, Text, ViewStyle, TextStyle, StyleSheet } from 'react-native';
 
 import type { Challenge } from 'react-native-twilio-verify';
 
@@ -26,7 +26,7 @@ const ChallengeDetails = ({ challenge, textStyle }: ChallengeDetailsProps) => {
       {challenge.challengeDetails.fields.length > 0 && (
         <View>
           <Text style={textStyle}>Details:</Text>
-          <View style={{ marginLeft: 10 }}>
+          <View style={styles.detailsBlock}>
             {challenge.challengeDetails.fields.map((field, index) => (
               <Text style={textStyle} key={index}>
                 {field.label + ' = ' + field.value}
@@ -63,5 +63,9 @@ const ChallengeComponent = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  detailsBlock: { marginLeft: 10 },
+});
 
 export default ChallengeComponent;
