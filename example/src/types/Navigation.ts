@@ -5,6 +5,7 @@ export type RootStackParamList = {
   Factors: { message: string } | undefined;
   CreateFactor: undefined;
   Factor: { factor: Factor };
+  Challenge: { factor: Factor; challengeSid: string };
 };
 
 export type ViewProps<

@@ -12,6 +12,7 @@ import type { RootStackParamList } from './types';
 import CreateFactor from './views/CreateFactor';
 import Factors from './views/Factors';
 import Factor from './views/Factor';
+import Challenge from './views/Challenge';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const screenOptions: StackNavigationOptions = {
@@ -30,6 +31,7 @@ export default function App() {
         <Stack.Screen name="Factors" component={Factors} />
         <Stack.Screen name="CreateFactor" component={CreateFactor} />
         <Stack.Screen name="Factor" component={Factor} />
+        <Stack.Screen name="Challenge" component={Challenge} />
       </Stack.Navigator>
     </NavigationContainer>
   );

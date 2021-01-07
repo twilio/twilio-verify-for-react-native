@@ -10,7 +10,7 @@ import type { ViewProps } from '../types';
 import FactorComponent from '../components/Factor';
 import ChallengeListItem from '../components/ChallengeListItem';
 
-const Factor = ({ route }: ViewProps<'Factor'>) => {
+const Factor = ({ route, navigation }: ViewProps<'Factor'>) => {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const { factor } = route.params;
 
@@ -28,8 +28,11 @@ const Factor = ({ route }: ViewProps<'Factor'>) => {
   }, [isFocused, factor]);
 
   const onChallengeItemPress = (challenge: Challenge) => {
-    console.log(challenge);
+    navigation.navigate('Challenge', { factor, challengeSid: challenge.sid });
   };
+
+  const sortChallenges = (a: Challenge, b: Challenge) =>
+    a.createdAt < b.createdAt ? 1 : -1;
 
   return (
     <View style={styles.container}>
@@ -38,7 +41,7 @@ const Factor = ({ route }: ViewProps<'Factor'>) => {
         <Fragment>
           <Text style={styles.challengesTitle}>Challenges</Text>
           <FlatList
-            data={challenges}
+            data={challenges.sort(sortChallenges)}
             renderItem={({ item }) => (
               <ChallengeListItem item={item} onPress={onChallengeItemPress} />
             )}
