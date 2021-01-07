@@ -12,12 +12,15 @@ type ChallengeComponentProps = {
   isDetailview?: boolean;
 };
 
-type ChallengeDetailsProps = {
+type ChallengeAdditionalInfoProps = {
   challenge: Challenge;
   textStyle: TextStyle;
 };
 
-const ChallengeDetails = ({ challenge, textStyle }: ChallengeDetailsProps) => {
+const ChallengeAdditionalInfo = ({
+  challenge,
+  textStyle,
+}: ChallengeAdditionalInfoProps) => {
   return (
     <View>
       <Text style={textStyle}>
@@ -63,7 +66,10 @@ const ChallengeComponent = ({
         Expires on: {challenge.expirationDate.toLocaleString()}
       </Text>
       {isDetailview && (
-        <ChallengeDetails challenge={challenge} textStyle={styles.text} />
+        <ChallengeAdditionalInfo
+          challenge={challenge}
+          textStyle={styles.text}
+        />
       )}
     </View>
   );
