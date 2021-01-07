@@ -197,7 +197,7 @@ class RNTwilioVerifyModule(
   }
 
   private fun toReadableMap(challenge: Challenge) = Arguments.createMap().apply {
-    putString("sid", challenge.status.value)
+    putString("sid", challenge.sid)
     putMap("challengeDetails", toReadableMap(challenge.challengeDetails))
     challenge.hiddenDetails?.let { putMap("hiddenDetails", toReadableMap(it)) }
     putString("factorSid", challenge.factorSid)
