@@ -29,10 +29,15 @@ const Factors = ({ route, navigation }: ViewProps<'Factors'>) => {
   useEffect(() => {
     if (isFocused) {
       (async function getFactors() {
-        setFactors(await TwilioVerify.getAllFactors());
+        setFactors(
+          await (await TwilioVerify.getAllFactors()).sort(sortFactors)
+        );
       })();
     }
   }, [isFocused]);
+
+  const sortFactors = (a: Factor, b: Factor) =>
+    a.createdAt < b.createdAt ? 1 : -1;
 
   const onCreateFactorButtonPress = () => {
     navigation.navigate('CreateFactor');

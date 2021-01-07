@@ -22,7 +22,7 @@ const Factor = ({ route, navigation }: ViewProps<'Factor'>) => {
         const challengeList = await TwilioVerify.getAllChallenges(
           new ChallengeListPayload(factor.sid, 20)
         );
-        setChallenges(challengeList.challenges);
+        setChallenges(challengeList.challenges.sort(sortChallenges));
       })();
     }
   }, [isFocused, factor]);
@@ -41,7 +41,7 @@ const Factor = ({ route, navigation }: ViewProps<'Factor'>) => {
         <Fragment>
           <Text style={styles.challengesTitle}>Challenges</Text>
           <FlatList
-            data={challenges.sort(sortChallenges)}
+            data={challenges}
             renderItem={({ item }) => (
               <ChallengeListItem item={item} onPress={onChallengeItemPress} />
             )}
