@@ -3,7 +3,7 @@
 // This file is licensed under the Apache License 2.0.
 // License text available at https://github.com/twilio/react-native-twilio-verify/blob/main/LICENSE
 
-import type { ChallengeStatus } from "./Challenge";
+import type { ChallengeStatus } from './Challenge';
 
 export class ChallengeListPayload {
   constructor(

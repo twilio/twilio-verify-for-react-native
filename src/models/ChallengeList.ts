@@ -3,7 +3,7 @@
 // This file is licensed under the Apache License 2.0.
 // License text available at https://github.com/twilio/react-native-twilio-verify/blob/main/LICENSE
 
-import type { Challenge } from "./Challenge";
+import type { Challenge } from './Challenge';
 
 export interface Metadata {
   page: number;

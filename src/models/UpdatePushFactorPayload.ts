@@ -3,8 +3,8 @@
 // This file is licensed under the Apache License 2.0.
 // License text available at https://github.com/twilio/react-native-twilio-verify/blob/main/LICENSE
 
-import { FactorType } from "./FactorType";
-import type { UpdateFactorPayload } from "./UpdateFactorPayload";
+import { FactorType } from './FactorType';
+import type { UpdateFactorPayload } from './UpdateFactorPayload';
 
 export class UpdatePushFactorPayload implements UpdateFactorPayload {
   factorType: FactorType;
