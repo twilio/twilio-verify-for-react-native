@@ -14,7 +14,7 @@ type FactorComponentProps = {
 const FactorComponent = ({ factor, styles }: FactorComponentProps) => {
   return (
     <View style={styles.view}>
-      <Text style={styles.text}>Sid: {factor.sid}</Text>
+      <Text style={styles.text} selectable={true}>Sid: {factor.sid}</Text>
       <Text style={styles.text}>Identity: {factor.identity}</Text>
       <Text style={styles.text}>Name: {factor.friendlyName}</Text>
       <Text style={styles.text}>Status {factor.status}</Text>

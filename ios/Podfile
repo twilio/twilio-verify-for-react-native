@@ -6,6 +6,5 @@ target 'RNTwilioVerify' do
   use_frameworks!
 
   # Pods for RNTwilioVerify
-  pod 'TwilioVerify', :git => 'https://github.com/twilio/twilio-verify-ios.git', :branch => 'ymoreno/read-sdk-version'
-  #pod 'TwilioVerify', '~> 0.2.0'
+  pod 'TwilioVerify'
 end

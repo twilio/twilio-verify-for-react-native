@@ -37,9 +37,9 @@ const Factor = ({ route, navigation }: ViewProps<'Factor'>) => {
   return (
     <View style={styles.container}>
       <FactorComponent factor={factor} styles={factorStyles} />
-      {challenges.length > 0 && (
-        <Fragment>
+      <Fragment>
           <Text style={styles.challengesTitle}>Challenges</Text>
+      {challenges.length > 0 && (
           <FlatList
             data={challenges}
             renderItem={({ item }) => (
@@ -47,8 +47,8 @@ const Factor = ({ route, navigation }: ViewProps<'Factor'>) => {
             )}
             keyExtractor={(item) => item.sid}
           />
-        </Fragment>
       )}
+      </Fragment>
     </View>
   );
 };

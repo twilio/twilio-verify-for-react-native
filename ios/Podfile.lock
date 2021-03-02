@@ -1,22 +1,16 @@
 PODS:
-  - TwilioVerify (0.2.0)
+  - TwilioVerify (0.3.2)
 
 DEPENDENCIES:
-  - TwilioVerify (from `https://github.com/twilio/twilio-verify-ios.git`, branch `ymoreno/read-sdk-version`)
+  - TwilioVerify
 
-EXTERNAL SOURCES:
-  TwilioVerify:
-    :branch: ymoreno/read-sdk-version
-    :git: https://github.com/twilio/twilio-verify-ios.git
-
-CHECKOUT OPTIONS:
-  TwilioVerify:
-    :commit: 8146544dc308fd286dbda4af70156c5e6e3f12c6
-    :git: https://github.com/twilio/twilio-verify-ios.git
+SPEC REPOS:
+  trunk:
+    - TwilioVerify
 
 SPEC CHECKSUMS:
-  TwilioVerify: 90b7abb3647ace16d8f60e62d6f5e7ab78e6bfda
+  TwilioVerify: 5fb25c4ab4cb53589af782c27dff435979639e78
 
-PODFILE CHECKSUM: a6c64c0b88608d4019019fb05c2c82c587d16409
+PODFILE CHECKSUM: bcc8ab2dbe32848a2fd6c7f110ef69c9e3bfb35e
 
 COCOAPODS: 1.10.0
