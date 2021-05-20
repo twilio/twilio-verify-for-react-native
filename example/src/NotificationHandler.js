@@ -60,7 +60,6 @@ PushNotification.configure({
   permissions: {
     alert: true,
     badge: true,
-    sound: true,
   },
 
   // Should the initial notification be popped automatically

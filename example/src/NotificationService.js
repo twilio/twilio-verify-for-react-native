@@ -48,6 +48,7 @@ export default class NotificationService {
       message: payload.message, // (required)
       userInfo: payload, // (optional) default: {} (using null throws a JSON value '<null>' error)
       number: 10, // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
+      playSound: false,
     });
   }
 }
