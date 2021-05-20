@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
-  View,
+  KeyboardAvoidingView,
+  Platform,
   Text,
   TextInput,
   TouchableOpacity,
@@ -15,6 +16,7 @@ import TwilioVerify, {
 } from 'react-native-twilio-verify';
 import { Colors } from '../constants';
 import type { ViewProps } from '../types';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function CreateFactor({
   navigation,
@@ -22,6 +24,16 @@ export default function CreateFactor({
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [identity, setIdentity] = useState<string>('');
   const [accessTokenUrl, setAccessTokenUrl] = useState<string>('');
+
+  const [deviceToken, setDeviceToken] = useState<string>('000000000000000000000000000000000000');
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      setDeviceToken(global.deviceToken.token);
+    }
+  }, [isFocused]);
 
   const onCreateFactorButtonPress = async () => {
     try {
@@ -42,7 +54,7 @@ export default function CreateFactor({
           `${identity}'s factor`,
           json.serviceSid,
           json.identity,
-          '000000000000000000000000000000000000',
+          deviceToken,
           json.token
         )
       );
@@ -60,7 +72,8 @@ export default function CreateFactor({
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}>
       <TextInput
         style={styles.input}
         value={identity}
@@ -84,7 +97,7 @@ export default function CreateFactor({
           <ActivityIndicator size="small" />
         )}
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

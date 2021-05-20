@@ -6,6 +6,7 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from '@react-navigation/stack';
+import TwilioVerify from 'react-native-twilio-verify';
 
 import { Colors } from './constants';
 import type { RootStackParamList } from './types';
@@ -13,6 +14,7 @@ import CreateFactor from './views/CreateFactor';
 import Factors from './views/Factors';
 import Factor from './views/Factor';
 import Challenge from './views/Challenge';
+import NotifService from './NotifService';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const screenOptions: StackNavigationOptions = {
@@ -23,10 +25,34 @@ const screenOptions: StackNavigationOptions = {
   headerTintColor: Colors.white.default,
   headerBackTitleVisible: false,
 };
+const navigationRef = React.createRef();
+
+const showChallenge = async (payload: Record<string, any>) => {
+  const challengeSid = payload.challenge_sid;
+  const factorSid = payload.factor_sid;
+  const type = payload.type;
+  if (type === 'verify_push_challenge' && factorSid && challengeSid) {
+    const factor = await (await TwilioVerify.getAllFactors()).find(factor => factor.sid === factorSid)
+    if (factor) {
+      navigationRef.current?.navigate('Challenge', { factor, challengeSid: challengeSid });
+    }
+  }
+}
+
+const onNotification = (notification) => {
+  showChallenge(notification.data)
+}
+
+const onRegister = (token) => {
+  global.deviceToken = token
+}
+
+const notif = new NotifService(onRegister, onNotification);
 
 export default function App() {
+
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator initialRouteName="Factors" screenOptions={screenOptions}>
         <Stack.Screen name="Factors" component={Factors} />
         <Stack.Screen name="CreateFactor" component={CreateFactor} />

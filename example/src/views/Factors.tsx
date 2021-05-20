@@ -47,12 +47,19 @@ const Factors = ({ route, navigation }: ViewProps<'Factors'>) => {
     navigation.navigate('Factor', { factor });
   };
 
+  const onFactorDeletePress = async (factor: Factor) => {
+    await TwilioVerify.deleteFactor(factor.sid);
+    setFactors(
+      await (await TwilioVerify.getAllFactors()).sort(sortFactors)
+    );
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
         data={factors}
         renderItem={({ item }) => (
-          <FactorListItem item={item} onPress={onFactorItemPress} />
+          <FactorListItem item={item} onPress={onFactorItemPress} onDelete={onFactorDeletePress} />
         )}
         keyExtractor={(item) => item.sid}
       />

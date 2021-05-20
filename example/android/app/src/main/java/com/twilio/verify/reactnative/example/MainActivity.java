@@ -1,4 +1,4 @@
-package com.twilio.verify.reactnative.sample;
+package com.twilio.verify.reactnative.example;
 
 import com.facebook.react.ReactActivity;
 
