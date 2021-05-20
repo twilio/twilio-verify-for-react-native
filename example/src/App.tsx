@@ -14,7 +14,7 @@ import CreateFactor from './views/CreateFactor';
 import Factors from './views/Factors';
 import Factor from './views/Factor';
 import Challenge from './views/Challenge';
-import NotifService from './NotifService';
+import NotificationService from './NotificationService';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const screenOptions: StackNavigationOptions = {
@@ -39,15 +39,20 @@ const showChallenge = async (payload: Record<string, any>) => {
   }
 }
 
-const onNotification = (notification) => {
-  showChallenge(notification.data)
-}
-
 const onRegister = (token) => {
   global.deviceToken = token
 }
 
-const notif = new NotifService(onRegister, onNotification);
+
+const onNotification = (notification) => {
+  if (notification.foreground) {
+    showChallenge(notification.data)
+  } else {
+    notificationService.localNotification(notification.data)
+  }
+}
+
+const notificationService = new NotificationService(onRegister, onNotification);
 
 export default function App() {
 
