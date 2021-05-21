@@ -45,7 +45,7 @@ const onRegister = (token) => {
 
 
 const onNotification = (notification) => {
-  if (notification.foreground) {
+  if (notification.userInteraction || notification.foreground) {
     showChallenge(notification.data)
   } else {
     notificationService.localNotification(notification.data)
