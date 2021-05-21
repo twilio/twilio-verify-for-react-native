@@ -39,8 +39,8 @@ const showChallenge = async (payload: Record<string, any>) => {
   }
 }
 
-const onRegister = (token) => {
-  global.deviceToken = token
+const onRegister = (deviceToken) => {
+  global.deviceToken = deviceToken.token
 }
 
 
