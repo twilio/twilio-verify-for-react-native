@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native';
 import {
   createStackNavigator,
   StackNavigationOptions,
@@ -25,7 +25,7 @@ const screenOptions: StackNavigationOptions = {
   headerTintColor: Colors.white.default,
   headerBackTitleVisible: false,
 };
-const navigationRef = React.createRef();
+const navigationRef = React.createRef<NavigationContainerRef>();
 
 const showChallenge = async (payload: Record<string, any>) => {
   const challengeSid = payload.challenge_sid;

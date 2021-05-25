@@ -29,9 +29,7 @@ const Factors = ({ route, navigation }: ViewProps<'Factors'>) => {
   useEffect(() => {
     if (isFocused) {
       (async function getFactors() {
-        setFactors(
-          await (await TwilioVerify.getAllFactors()).sort(sortFactors)
-        );
+        setFactors((await TwilioVerify.getAllFactors()).sort(sortFactors));
       })();
     }
   }, [isFocused]);
@@ -49,9 +47,7 @@ const Factors = ({ route, navigation }: ViewProps<'Factors'>) => {
 
   const onFactorDeletePress = async (factor: Factor) => {
     await TwilioVerify.deleteFactor(factor.sid);
-    setFactors(
-      await (await TwilioVerify.getAllFactors()).sort(sortFactors)
-    );
+    setFactors((await TwilioVerify.getAllFactors()).sort(sortFactors));
   };
 
   return (
