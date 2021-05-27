@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import {
   StyleSheet,
-  View,
+  KeyboardAvoidingView,
+  Platform,
   Text,
   TextInput,
   TouchableOpacity,
@@ -42,7 +43,7 @@ export default function CreateFactor({
           `${identity}'s factor`,
           json.serviceSid,
           json.identity,
-          '000000000000000000000000000000000000',
+          global.deviceToken ?? '000000000000000000000000000000000000',
           json.token
         )
       );
@@ -60,7 +61,8 @@ export default function CreateFactor({
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}>
       <TextInput
         style={styles.input}
         value={identity}
@@ -84,7 +86,7 @@ export default function CreateFactor({
           <ActivityIndicator size="small" />
         )}
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

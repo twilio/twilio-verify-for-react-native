@@ -11,6 +11,7 @@ import type { ViewProps } from '../types';
 import { Colors } from '../constants';
 import FactorComponent from '../components/Factor';
 import ChallengeRequest from '../components/ChallengeRequest';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const ChallengeView = ({ route }: ViewProps<'Challenge'>) => {
   const [challenge, setChallenge] = useState<Challenge>();
@@ -50,23 +51,25 @@ const ChallengeView = ({ route }: ViewProps<'Challenge'>) => {
   };
 
   return (
-    <View style={styles.container}>
-      {isLoading ? (
-        <ActivityIndicator size="large" color={Colors.blue.default} />
-      ) : (
-        <Fragment>
-          <FactorComponent factor={factor} styles={factorStyles} />
-          {challenge && (
-            <ChallengeRequest
-              challenge={challenge}
-              componentStyles={challengeComponentStyles}
-              isSubmitting={isSubmitting}
-              onUpdate={updateChallenge}
-            />
-          )}
-        </Fragment>
-      )}
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        {isLoading ? (
+          <ActivityIndicator size="large" color={Colors.blue.default} />
+        ) : (
+          <Fragment>
+            <FactorComponent factor={factor} styles={factorStyles} />
+            {challenge && (
+              <ChallengeRequest
+                challenge={challenge}
+                componentStyles={challengeComponentStyles}
+                isSubmitting={isSubmitting}
+                onUpdate={updateChallenge}
+              />
+            )}
+          </Fragment>
+        )}
+      </View>
+    </ScrollView>
   );
 };
 
