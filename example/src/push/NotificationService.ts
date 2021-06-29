@@ -1,9 +1,10 @@
-import PushNotification, {Importance} from 'react-native-push-notification';
+import PushNotification, {Importance, ReceivedNotification} from 'react-native-push-notification';
 import NotificationHandler from './NotificationHandler';
 
 export default class NotificationService {
-  constructor(onRegister, onNotification) {
-    this.lastId = 0;
+  lastId = 0
+  
+  constructor(onRegister: (token: { os: string; token: string })=>void, onNotification: (notification: Omit<ReceivedNotification, "userInfo">) => void) {
 
     this.createDefaultChannels();
 
@@ -32,7 +33,7 @@ export default class NotificationService {
     );
   }
 
-  localNotification(payload) {
+  localNotification(payload: Record<string, any>) {
     this.lastId++;
     PushNotification.localNotification({
       /* Android Only Properties */

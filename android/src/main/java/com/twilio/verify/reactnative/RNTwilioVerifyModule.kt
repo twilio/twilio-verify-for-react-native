@@ -32,8 +32,7 @@ private val dateFormatterUTC =
 
 class RNTwilioVerifyModule(
   reactContext: ReactApplicationContext,
-  private val twilioVerify: TwilioVerify = TwilioVerify.Builder(reactContext)
-    .enableDefaultLoggingService(LogLevel.All).build()
+  private val twilioVerify: TwilioVerify = TwilioVerify.Builder(reactContext).build()
 ) : ReactContextBaseJavaModule(reactContext) {
 
   override fun getName(): String {

@@ -143,6 +143,8 @@ yarn example ios
 ### Android
 
 * Follow the steps from [Firebase configuration](https://firebase.google.com/docs/android/setup#console), follow steps 1 to 3
+  * For step 3.1, the google-services.json file should be copied to example/android/app
+  * Google services plugin is included in the sample app, so you don't need step 3.2
 * Get the Access Token generation URL from your backend [(Running the Sample backend)](#SampleBackend). You will use it for creating a factor
 * Go to `example` and install the packages
 

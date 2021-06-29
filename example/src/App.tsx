@@ -14,7 +14,8 @@ import CreateFactor from './views/CreateFactor';
 import Factors from './views/Factors';
 import Factor from './views/Factor';
 import Challenge from './views/Challenge';
-import NotificationService from './NotificationService';
+import NotificationService from './push/NotificationService';
+import type { ReceivedNotification } from 'react-native-push-notification';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const screenOptions: StackNavigationOptions = {
@@ -39,12 +40,12 @@ const showChallenge = async (payload: Record<string, any>) => {
   }
 }
 
-const onRegister = (deviceToken) => {
+const onRegister = (deviceToken: { os: string; token: string }) => {
   global.deviceToken = deviceToken.token
 }
 
 
-const onNotification = (notification) => {
+const onNotification = (notification: Omit<ReceivedNotification, "userInfo">) => {
   if (notification.userInteraction || notification.foreground) {
     showChallenge(notification.data)
   } else {

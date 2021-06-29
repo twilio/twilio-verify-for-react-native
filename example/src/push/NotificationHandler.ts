@@ -1,7 +1,10 @@
-import PushNotification from 'react-native-push-notification';
+import PushNotification, { ReceivedNotification } from 'react-native-push-notification';
 
 class NotificationHandler {
-  onNotification(notification) {
+  _onNotification: ((notification: Omit<ReceivedNotification, "userInfo">) => void) | undefined
+  _onRegister: ((token: { os: string; token: string })=>void) | undefined
+
+  onNotification(notification: Omit<ReceivedNotification, "userInfo">) {
     console.log('NotificationHandler:', notification);
 
     if (typeof this._onNotification === 'function') {
@@ -9,7 +12,7 @@ class NotificationHandler {
     }
   }
 
-  onRegister(token) {
+  onRegister(token: { os: string; token: string }) {
     console.log('NotificationHandler:', token);
 
     if (typeof this._onRegister === 'function') {
@@ -17,26 +20,26 @@ class NotificationHandler {
     }
   }
 
-  onAction(notification) {
+  onAction(notification: ReceivedNotification) {
     console.log ('Notification action received:');
     console.log(notification.action);
     console.log(notification);
 
     if(notification.action === 'Yes') {
-      PushNotification.invokeApp(notification);
+      //PushNotification.invokeApp(notification);
     }
   }
 
   // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
-  onRegistrationError(err) {
+  onRegistrationError(err: any) {
     console.log(err);
   }
   
-  attachRegister(handler) {
+  attachRegister(handler: (token: { os: string; token: string })=>void) {
     this._onRegister = handler;
   }
 
-  attachNotification(handler) {
+  attachNotification(handler: (notification: Omit<ReceivedNotification, "userInfo">) => void) {
     this._onNotification = handler;
   }
 }
