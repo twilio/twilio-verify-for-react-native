@@ -5,16 +5,12 @@ class NotificationHandler {
   _onRegister: ((token: { os: string; token: string })=>void) | undefined
 
   onNotification(notification: Omit<ReceivedNotification, "userInfo">) {
-    console.log('NotificationHandler:', notification);
-
     if (typeof this._onNotification === 'function') {
       this._onNotification(notification);
     }
   }
 
   onRegister(token: { os: string; token: string }) {
-    console.log('NotificationHandler:', token);
-
     if (typeof this._onRegister === 'function') {
       this._onRegister(token);
     }
