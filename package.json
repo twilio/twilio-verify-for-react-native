@@ -38,7 +38,7 @@
   ],
   "repository": "https://github.com/twilio/react-native-twilio-verify",
   "author": "Twilio Inc. <open-source@twilio.com> (https://www.twilio.com/docs/verify/push)",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/twilio/react-native-twilio-verify/issues"
   },
@@ -150,5 +150,6 @@
         }
       ]
     ]
-  }
+  },
+  "copyright.owner": "Twilio Inc. <open-source@twilio.com> (https://www.twilio.com/docs/verify/push)"
 }
