@@ -4,35 +4,52 @@
 
 ## About
 Twilio Verify Push SDK helps you verify users by adding a low-friction, secure, cost-effective, "push verification" factor into your own mobile application. This fully managed API service allows you to seamlessly verify users in-app via a secure channel, without the risks, hassles or costs of One-Time Passcodes (OTPs).
-This project provides an SDK to implement Verify Push for your react native app.
+This project provides a library to implement Verify Push for your react native app.
 
 ## Installation
 
+* Clone the repository to your computer:
 ```sh
-npm install https://github.com/twilio/react-native-twilio-verify
+git clone https://github.com/twilio/react-native-twilio-verify.git
 ```
 
-Install the packages
+* Move to the library folder:
+```sh
+cd react-native-twilio-verify
+```
 
+* Install the library dependencies:
 ```sh
 yarn install
 ```
 
-Go to node_modules/react-native-twilio-verify/ios and install the pods
-
+* Move to your project:
 ```sh
+cd <your_project_path>
+```
+
+* Add the library to your project:
+```sh
+yarn add file:<relative_path_to_react-native-twilio-verify>
+```
+
+* Install the pods for the library
+```sh
+cd node_modules/react-native-twilio-verify/ios
 pod install
 ```
 
-Go to your iOS project and install the pods
-
+* Install the pods for your project
 ```sh
-pod install
+cd <your_project_path>
+npx pod-install
 ```
 
 ### Register your iOS App with APNs
 
-If you want to receive challenges as push notifications, you should register Your App with APNs. More info [here](https://developer.apple.com/documentation/usernotifications/registering_your_app_with_apns)
+If you want to receive challenges as push notifications, you should register Your App with APNs. 
+
+More info [here](https://www.twilio.com/docs/verify/quickstarts/push-ios#set-up-apns-for-your-ios-app)
 
 ### Add firebase configuration for your Android App
 
@@ -40,7 +57,7 @@ If you want to receive challenges as push notifications, you should add a fireba
 * Add a project in Firebase to use cloud messaging for an application ID
 * Add the google-services.json file to your project
 
-More info [here](https://firebase.google.com/docs/android/setup#console), follow steps 1 to 3
+More info [here](https://www.twilio.com/docs/verify/quickstarts/push-android#set-up-fcm-for-your-android-app)
 
 ## Usage
 
@@ -104,7 +121,7 @@ Note: Calling this method will not delete factors in **Verify Push API**, so you
 
 ## Running the Sample app
 
-Install the packages
+Install the packages in the `react-native-twilio-verify` project
 
 ```sh
 yarn install
@@ -115,22 +132,25 @@ yarn install
 * Go to `ios` and install the pods
 
 ```sh
+cd ios
 pod install
 ```
 
 * Change the Bundle Identifier to something unique so Apple’s push notification server can direct pushes to this app
 * [Enable push notifications](https://help.apple.com/xcode/mac/current/#/devdfd3d04a1)
-* Get the Access token generation URL from your backend [(Running the Sample backend)](#SampleBackend). You will use it for creating a factor
+* Get the `Access token generation URL` from your backend [(Running the sample backend)](#SampleBackend). You will use it for creating a factor
 
 * Go to `example` and install the packages
 
 ```sh
+cd example
 yarn install
 ```
 
 * Go to `example/ios` and install the pods
 
 ```sh
+cd example/ios
 pod install
 ```
 
@@ -145,10 +165,11 @@ yarn example ios
 * Follow the steps from [Firebase configuration](https://firebase.google.com/docs/android/setup#console), follow steps 1 to 3
   * For step 3.1, the google-services.json file should be copied to example/android/app
   * Google services plugin is included in the sample app, so you don't need step 3.2
-* Get the Access Token generation URL from your backend [(Running the Sample backend)](#SampleBackend). You will use it for creating a factor
+* Get the `Access Token generation URL` from your backend [(Running the Sample backend)](#SampleBackend). You will use it for creating a factor
 * Go to `example` and install the packages
 
 ```sh
+cd example
 yarn install
 ```
 
@@ -158,19 +179,26 @@ yarn install
 yarn example android
 ```
 
+<a name='SampleBackend'></a>
+
 ## Running the Sample backend
 
-- Clone this repo: https://github.com/twilio/verify-push-sample-backend
 - Configure a Push Credential for the sample app, using the same Firebase project you configured for [Android](https://www.twilio.com/docs/verify/quickstarts/push-android#create-a-push-credential), and using the same APNs configuration for [iOS](https://www.twilio.com/docs/verify/quickstarts/push-ios#create-a-push-credential)
 - Configure a Verify Service, using the Push Credential for the sample app ([Android](https://www.twilio.com/docs/verify/quickstarts/push-android#create-a-verify-service-and-add-the-push-credential) & [iOS](https://www.twilio.com/docs/verify/quickstarts/push-ios#create-a-verify-service-and-add-the-push-credential))
-- Run the steps in the [README file](https://github.com/twilio/verify-push-sample-backend/blob/master/README.md)
+- Go to: https://www.twilio.com/code-exchange/verify-push-backend
+- Use the `Quick Deploy to Twilio` option
+  - You should log in to your Twilio account
+  - Enter the Verify Service Sid you created above, you can find it [here](https://www.twilio.com/console/verify/services)
+  - Deploy the application
+  - Press `Go to live application`
+  - You will see your app's start page, copy the url and replace `index.html` with `access-token`.(e.g. https://verify-push-backend-xxxxx.twil.io/access-token). This will be your `Access Token generation URL`
 
 ## Using the sample app
 
 ### Adding a factor
 * Press Create factor in the factor list
 * Enter the identity to use. This value should be an UUID that identifies the user to prevent PII information use
-* Enter the Access token URL (Access token generation URL, including the path, e.g. https://yourapp.ngrok.io/accessTokens)
+* Enter the Access token URL (Access token generation URL, including the path, e.g. https://verify-push-backend-xxxxx.twil.io/access-token)
 * Press Create factor
 * Copy the factor Sid
 
