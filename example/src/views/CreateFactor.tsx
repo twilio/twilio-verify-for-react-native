@@ -68,12 +68,16 @@ export default function CreateFactor({
         value={identity}
         onChangeText={(value) => setIdentity(value)}
         placeholder="Identity"
+        placeholderTextColor="#202020"
       />
       <TextInput
         style={styles.input}
         value={accessTokenUrl}
         onChangeText={(value) => setAccessTokenUrl(value)}
         placeholder="Access token URL"
+        placeholderTextColor="#202020"
+        keyboardType="url"
+        autoCorrect={false}
       />
       <TouchableOpacity
         style={styles.button}

@@ -1,5 +1,5 @@
 PODS:
-  - TwilioVerify (0.3.2)
+  - TwilioVerify (0.4.0)
 
 DEPENDENCIES:
   - TwilioVerify
@@ -9,7 +9,7 @@ SPEC REPOS:
     - TwilioVerify
 
 SPEC CHECKSUMS:
-  TwilioVerify: 5fb25c4ab4cb53589af782c27dff435979639e78
+  TwilioVerify: c836b471bbe5cde7ba6c53393af493d215264219
 
 PODFILE CHECKSUM: bcc8ab2dbe32848a2fd6c7f110ef69c9e3bfb35e
 

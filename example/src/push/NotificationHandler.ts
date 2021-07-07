@@ -1,42 +1,36 @@
-import PushNotification from 'react-native-push-notification';
+// Copyright Twilio Inc. <open-source@twilio.com> (https://www.twilio.com/docs/verify/push) 2021. All Rights Reserved.
+// Node module: react-native-twilio-verify
+// This file is licensed under the Apache License 2.0.
+// License text available at https://github.com/twilio/react-native-twilio-verify/blob/main/LICENSE
+
+import PushNotification, { ReceivedNotification } from 'react-native-push-notification';
 
 class NotificationHandler {
-  onNotification(notification) {
-    console.log('NotificationHandler:', notification);
+  _onNotification: ((notification: Omit<ReceivedNotification, "userInfo">) => void) | undefined
+  _onRegister: ((token: { os: string; token: string })=>void) | undefined
 
+  onNotification(notification: Omit<ReceivedNotification, "userInfo">) {
     if (typeof this._onNotification === 'function') {
       this._onNotification(notification);
     }
   }
 
-  onRegister(token) {
-    console.log('NotificationHandler:', token);
-
+  onRegister(token: { os: string; token: string }) {
     if (typeof this._onRegister === 'function') {
       this._onRegister(token);
     }
   }
 
-  onAction(notification) {
-    console.log ('Notification action received:');
-    console.log(notification.action);
-    console.log(notification);
-
-    if(notification.action === 'Yes') {
-      PushNotification.invokeApp(notification);
-    }
-  }
-
   // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
-  onRegistrationError(err) {
+  onRegistrationError(err: any) {
     console.log(err);
   }
   
-  attachRegister(handler) {
+  attachRegister(handler: (token: { os: string; token: string })=>void) {
     this._onRegister = handler;
   }
 
-  attachNotification(handler) {
+  attachNotification(handler: (notification: Omit<ReceivedNotification, "userInfo">) => void) {
     this._onNotification = handler;
   }
 }
@@ -49,9 +43,6 @@ PushNotification.configure({
 
   // (required) Called when a remote or local notification is opened or received
   onNotification: handler.onNotification.bind(handler),
-
-  // (optional) Called when Action is pressed (Android)
-  onAction: handler.onAction.bind(handler),
 
   // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
   onRegistrationError: handler.onRegistrationError.bind(handler),
