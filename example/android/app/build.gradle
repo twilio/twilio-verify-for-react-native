@@ -227,7 +227,7 @@ dependencies {
         implementation jscFlavor
     }
 
-    implementation project(':reactnativetwilioverify')
+    implementation project(':twilioverifyforreactnative')
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -5,7 +5,7 @@ import { useIsFocused } from '@react-navigation/native';
 import TwilioVerify, {
   Challenge,
   ChallengeListPayload,
-} from 'react-native-twilio-verify';
+} from 'twilio-verify-for-react-native';
 import type { ViewProps } from '../types';
 import FactorComponent from '../components/Factor';
 import ChallengeListItem from '../components/ChallengeListItem';

@@ -1,6 +1,6 @@
 # React native module for Twilio Verify
 
-[![License](https://img.shields.io/badge/License-Apache%202-blue.svg?logo=law)](https://github.com/twilio/react-native-twilio-verify/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/License-Apache%202-blue.svg?logo=law)](https://github.com/twilio/twilio-verify-for-react-native/blob/main/LICENSE)
 
 ## About
 Twilio Verify Push SDK helps you verify users by adding a low-friction, secure, cost-effective, "push verification" factor into your own mobile application. This fully managed API service allows you to seamlessly verify users in-app via a secure channel, without the risks, hassles or costs of One-Time Passcodes (OTPs).
@@ -10,12 +10,12 @@ This project provides a library to implement Verify Push for your react native a
 
 * Clone the repository to your computer:
 ```sh
-git clone https://github.com/twilio/react-native-twilio-verify.git
+git clone https://github.com/twilio/twilio-verify-for-react-native.git
 ```
 
 * Move to the library folder:
 ```sh
-cd react-native-twilio-verify
+cd twilio-verify-for-react-native
 ```
 
 * Install the library dependencies:
@@ -30,12 +30,12 @@ cd <your_project_path>
 
 * Add the library to your project:
 ```sh
-yarn add file:<relative_path_to_react-native-twilio-verify>
+yarn add file:<relative_path_to_twilio-verify-for-react-native>
 ```
 
 * Install the pods for the library
 ```sh
-cd node_modules/react-native-twilio-verify/ios
+cd node_modules/twilio-verify-for-react-native/ios
 pod install
 ```
 
@@ -64,7 +64,7 @@ More info [here](https://www.twilio.com/docs/verify/quickstarts/push-android#set
 ### Create factor
 
 ```js
-import TwilioVerify, { PushFactorPayload } from 'react-native-twilio-verify';
+import TwilioVerify, { PushFactorPayload } from 'twilio-verify-for-react-native';
 
 let factor = await TwilioVerify.createFactor(
   new PushFactorPayload(
@@ -121,7 +121,7 @@ Note: Calling this method will not delete factors in **Verify Push API**, so you
 
 ## Running the Sample app
 
-Install the packages in the `react-native-twilio-verify` project
+Install the packages in the `twilio-verify-for-react-native` project
 
 ```sh
 yarn install

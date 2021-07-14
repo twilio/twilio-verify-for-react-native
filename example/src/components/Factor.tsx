@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ViewStyle, TextStyle } from 'react-native';
 
-import type { Factor } from 'react-native-twilio-verify';
+import type { Factor } from 'twilio-verify-for-react-native';
 
 type FactorComponentProps = {
   factor: Factor;
