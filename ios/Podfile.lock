@@ -2,7 +2,7 @@ PODS:
   - TwilioVerify (0.4.0)
 
 DEPENDENCIES:
-  - TwilioVerify
+  - TwilioVerify (~> 0.4.0)
 
 SPEC REPOS:
   trunk:
@@ -11,6 +11,6 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   TwilioVerify: c836b471bbe5cde7ba6c53393af493d215264219
 
-PODFILE CHECKSUM: bcc8ab2dbe32848a2fd6c7f110ef69c9e3bfb35e
+PODFILE CHECKSUM: 74a148bbc35be846dd16fae50f9320a6ccee6ad4
 
 COCOAPODS: 1.10.1

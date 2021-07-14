@@ -154,7 +154,7 @@ cd example/ios
 pod install
 ```
 
-* Run iOS app
+* Run iOS app in `twilio-verify-for-react-native` folder
 
 ```sh
 yarn example ios
@@ -173,7 +173,7 @@ cd example
 yarn install
 ```
 
-* Run Android app
+* Run Android app in `twilio-verify-for-react-native` folder
 
 ```sh
 yarn example android
