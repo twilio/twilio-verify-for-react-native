@@ -13,7 +13,7 @@ import {
 import TwilioVerify, {
   PushFactorPayload,
   VerifyPushFactorPayload,
-} from 'react-native-twilio-verify';
+} from 'twilio-verify-for-react-native';
 import { Colors } from '../constants';
 import type { ViewProps } from '../types';
 

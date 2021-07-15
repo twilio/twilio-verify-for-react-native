@@ -1,5 +1,5 @@
 {
-  "name": "react-native-twilio-verify",
+  "name": "twilio-verify-for-react-native",
   "version": "0.1.0",
   "description": "Twilio Verify Push SDK helps you verify users by adding a low-friction, secure, cost-effective, 'push verification' factor into your own mobile application. This project provides an SDK to implement Verify Push for your react native app.",
   "main": "lib/commonjs/index",
@@ -13,7 +13,7 @@
     "android",
     "ios",
     "cpp",
-    "react-native-twilio-verify.podspec",
+    "twilio-verify-for-react-native.podspec",
     "!lib/typescript/example",
     "!android/build",
     "!ios/build",
@@ -36,13 +36,13 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/twilio/react-native-twilio-verify",
+  "repository": "https://github.com/twilio/twilio-verify-for-react-native",
   "author": "Twilio Inc. <open-source@twilio.com> (https://www.twilio.com/docs/verify/push)",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/twilio/react-native-twilio-verify/issues"
+    "url": "https://github.com/twilio/twilio-verify-for-react-native/issues"
   },
-  "homepage": "https://github.com/twilio/react-native-twilio-verify#readme",
+  "homepage": "https://github.com/twilio/twilio-verify-for-react-native#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

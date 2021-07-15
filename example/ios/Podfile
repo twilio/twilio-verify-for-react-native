@@ -12,7 +12,7 @@ target 'RNTwilioVerifyExample' do
     :hermes_enabled => true
   )
 
-      pod 'react-native-twilio-verify', :path => '../..'
+      pod 'twilio-verify-for-react-native', :path => '../..'
   
   # Enables Flipper.
   #
