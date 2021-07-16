@@ -9,7 +9,7 @@ assignees: ''
 
 > #### Before Creating an Issue
 >
-> - Make sure the issue is not already addressed by [existing issues](https://github.com/twilio/twilio-verify-android/issues).
+> - Make sure the issue is not already addressed by [existing issues](https://github.com/twilio/twilio-verify-for-react-native/issues).
 > - Please do not share any 
 [Personally Identifiable Information](https://www.twilio.com/docs/glossary/what-is-personally-identifiable-information-pii) or sensitive information like API keys when creating an issue.
 
