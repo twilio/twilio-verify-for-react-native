@@ -34,9 +34,10 @@ assignees: ''
 #### Versions
 
 - SDK version: [e.g. 0.1.0 (33)]
-- Android version: [e.g. 13.1]
+- Android/iOS version: [e.g. 13.1]
 - Device: [e.g. Pixel 4]
-- Android Studio version: [e.g. 4.0]
+- IDE version: [e.g. 4.0]
+- React native version
 
 #### Log
 ```
