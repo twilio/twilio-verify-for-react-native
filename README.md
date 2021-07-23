@@ -8,40 +8,13 @@ This project provides a library to implement Verify Push for your react native a
 
 ## Installation
 
-* Clone the repository to your computer:
-```sh
-git clone https://github.com/twilio/twilio-verify-for-react-native.git
-```
-
-* Move to the library folder:
-```sh
-cd twilio-verify-for-react-native
-```
-
-* Install the library dependencies:
-```sh
-yarn install
-```
-
-* Move to your project:
-```sh
-cd <your_project_path>
-```
-
 * Add the library to your project:
 ```sh
-yarn add file:<relative_path_to_twilio-verify-for-react-native>
-```
-
-* Install the pods for the library
-```sh
-cd node_modules/twilio-verify-for-react-native/ios
-pod install
+yarn add https://github.com/twilio/twilio-verify-for-react-native.git
 ```
 
 * Install the pods for your project
 ```sh
-cd <your_project_path>
 npx pod-install
 ```
 
@@ -127,34 +100,27 @@ Install the packages in the `twilio-verify-for-react-native` project
 yarn install
 ```
 
-### iOS
-
-* Go to `ios` and install the pods
-
-```sh
-cd ios
-pod install
-```
-
-* Change the Bundle Identifier to something unique so Apple’s push notification server can direct pushes to this app
-* [Enable push notifications](https://help.apple.com/xcode/mac/current/#/devdfd3d04a1)
-* Get the `Access token generation URL` from your backend [(Running the sample backend)](#SampleBackend). You will use it for creating a factor
-
-* Go to `example` and install the packages
+Install the packages in the `example` app
 
 ```sh
 cd example
 yarn install
 ```
 
-* Go to `example/ios` and install the pods
+### iOS
+
+* Go to `example` and install the pods
 
 ```sh
-cd example/ios
-pod install
+cd example
+npx pod-install
 ```
 
-* Run iOS app in `twilio-verify-for-react-native` folder
+* Change the Bundle Identifier to something unique so Apple’s push notification server can direct pushes to this app
+* [Enable push notifications](https://help.apple.com/xcode/mac/current/#/devdfd3d04a1)
+* Get the `Access token generation URL` from your backend [(Running the sample backend)](#SampleBackend). You will use it for creating a factor
+
+* Run iOS app in `twilio-verify-for-react-native` root folder
 
 ```sh
 yarn example ios
@@ -166,12 +132,6 @@ yarn example ios
   * For step 3.1, the google-services.json file should be copied to example/android/app
   * Google services plugin is included in the sample app, so you don't need step 3.2
 * Get the `Access Token generation URL` from your backend [(Running the Sample backend)](#SampleBackend). You will use it for creating a factor
-* Go to `example` and install the packages
-
-```sh
-cd example
-yarn install
-```
 
 * Run Android app in `twilio-verify-for-react-native` folder
 

@@ -17,6 +17,8 @@
 //  limitations under the License.
 //
 
+import TwilioVerify
+
 @objc(RNTwilioVerify)
 class RNTwilioVerify: NSObject {
     
