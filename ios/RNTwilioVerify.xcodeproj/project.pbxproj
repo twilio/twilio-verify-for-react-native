@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E30030F5E0ECB502CA3EA0D1 /* Pods_RNTwilioVerify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A3BF961DA120C114D72B9B4 /* Pods_RNTwilioVerify.framework */; };
 		F4FF95D7245B92E800C19C63 /* RNTwilioVerify.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF95D6245B92E800C19C63 /* RNTwilioVerify.swift */; };
 /* End PBXBuildFile section */
 
@@ -25,9 +24,6 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNTwilioVerify.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNTwilioVerify.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		9A3BF961DA120C114D72B9B4 /* Pods_RNTwilioVerify.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RNTwilioVerify.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9CF2D93D34FE65441A3BF15D /* Pods-RNTwilioVerify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNTwilioVerify.debug.xcconfig"; path = "Target Support Files/Pods-RNTwilioVerify/Pods-RNTwilioVerify.debug.xcconfig"; sourceTree = "<group>"; };
-		A895354401A3EAE86DC49208 /* Pods-RNTwilioVerify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNTwilioVerify.release.xcconfig"; path = "Target Support Files/Pods-RNTwilioVerify/Pods-RNTwilioVerify.release.xcconfig"; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* RNTwilioVerify.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNTwilioVerify.m; sourceTree = "<group>"; };
 		F4FF95D5245B92E700C19C63 /* RNTwilioVerify-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNTwilioVerify-Bridging-Header.h"; sourceTree = "<group>"; };
 		F4FF95D6245B92E800C19C63 /* RNTwilioVerify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNTwilioVerify.swift; sourceTree = "<group>"; };
@@ -38,7 +34,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E30030F5E0ECB502CA3EA0D1 /* Pods_RNTwilioVerify.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,16 +48,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		323B3B814870ABCBAD90C608 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				9CF2D93D34FE65441A3BF15D /* Pods-RNTwilioVerify.debug.xcconfig */,
-				A895354401A3EAE86DC49208 /* Pods-RNTwilioVerify.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
@@ -70,17 +55,7 @@
 				B3E7B5891CC2AC0600A0062D /* RNTwilioVerify.m */,
 				F4FF95D5245B92E700C19C63 /* RNTwilioVerify-Bridging-Header.h */,
 				134814211AA4EA7D00B7C361 /* Products */,
-				323B3B814870ABCBAD90C608 /* Pods */,
-				EBC23D7D8E37279D24F29239 /* Frameworks */,
 			);
-			sourceTree = "<group>";
-		};
-		EBC23D7D8E37279D24F29239 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				9A3BF961DA120C114D72B9B4 /* Pods_RNTwilioVerify.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -90,7 +65,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "RNTwilioVerify" */;
 			buildPhases = (
-				FF2B2864C9EEBA564A400B81 /* [CP] Check Pods Manifest.lock */,
 				58B511D71A9E6C8500147676 /* Sources */,
 				58B511D81A9E6C8500147676 /* Frameworks */,
 				58B511D91A9E6C8500147676 /* CopyFiles */,
@@ -135,31 +109,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		FF2B2864C9EEBA564A400B81 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RNTwilioVerify-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		58B511D71A9E6C8500147676 /* Sources */ = {
@@ -268,7 +217,6 @@
 		};
 		58B511F01A9E6C8500147676 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9CF2D93D34FE65441A3BF15D /* Pods-RNTwilioVerify.debug.xcconfig */;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -288,7 +236,6 @@
 		};
 		58B511F11A9E6C8500147676 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A895354401A3EAE86DC49208 /* Pods-RNTwilioVerify.release.xcconfig */;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
