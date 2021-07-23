@@ -18,6 +18,8 @@ yarn add https://github.com/twilio/twilio-verify-for-react-native.git
 npx pod-install
 ```
 
+## Enable push notifications
+
 ### Register your iOS App with APNs
 
 If you want to receive challenges as push notifications, you should register Your App with APNs. 
@@ -31,6 +33,12 @@ If you want to receive challenges as push notifications, you should add a fireba
 * Add the google-services.json file to your project
 
 More info [here](https://www.twilio.com/docs/verify/quickstarts/push-android#set-up-fcm-for-your-android-app)
+
+### Add a push notification library
+
+After setting up push notifications for Android & iOS, you should add a react native library to receive notifications from APN for iOS and FCM for Android. 
+
+The example app is using [react-native-push-notification](https://github.com/zo0r/react-native-push-notification), you can find the full example source [here](https://github.com/twilio/twilio-verify-for-react-native/tree/main/example/src/push)
 
 ## Usage
 
@@ -74,6 +82,14 @@ await TwilioVerify.updateChallenge(
 
 ```js
 let factors = await TwilioVerify.getAllFactors();
+```
+
+### Get challenges
+
+```js
+let challenges = await TwilioVerify.getAllChallenges(
+  new ChallengeListPayload(factorSid, 10, ChallengeStatus.Pending)
+);
 ```
 
 ### Delete factor
@@ -133,7 +149,7 @@ yarn example ios
   * Google services plugin is included in the sample app, so you don't need step 3.2
 * Get the `Access Token generation URL` from your backend [(Running the Sample backend)](#SampleBackend). You will use it for creating a factor
 
-* Run Android app in `twilio-verify-for-react-native` folder
+* Run Android app in `twilio-verify-for-react-native` root folder
 
 ```sh
 yarn example android
@@ -151,7 +167,7 @@ yarn example android
   - Enter the Verify Service Sid you created above, you can find it [here](https://www.twilio.com/console/verify/services)
   - Deploy the application
   - Press `Go to live application`
-  - You will see your app's start page, copy the url and replace `index.html` with `access-token`.(e.g. https://verify-push-backend-xxxxx.twil.io/access-token). This will be your `Access Token generation URL`
+  - You will see your backend's start page, copy the url and replace `index.html` with `access-token`.(e.g. https://verify-push-backend-xxxxx.twil.io/access-token). This will be your `Access Token generation URL`
 
 ## Using the sample app
 
@@ -163,8 +179,8 @@ yarn example android
 * Copy the factor Sid
 
 ### Sending a challenge
-* Go to Create Push Challenge page (/challenge path in your sample backend)
-* Enter the `identity` you used in factor creation
+* Go to `Create a push challenge` section in your sample backend (https://verify-push-backend-xxxxx.twil.io/index.html)
+* Enter the `Identity` you used in factor creation
 * Enter the `Factor Sid` you added
 * Enter a `message`. You will see the message in the push notification and in the challenge view
 * Enter details to the challenge. You will see them in the challenge view. You can add more details using the `Add more Details` button
@@ -172,7 +188,7 @@ yarn example android
 * You will receive a push notification showing the challenge message in your device. 
 * The app will show the challenge info below the factor information, in a `Challenge` section
 * Approve or deny the challenge
-* After the challenge is updated, you will see the challenge status in the backend's `Create Push Challenge` view
+* After the challenge is updated, you will see the challenge status in the backend's `Create a push challenge` section, as `Login request approved!` or `Login request denied!`, below the `Create challenge` button
 
 ## Errors
 
