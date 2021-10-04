@@ -4,7 +4,7 @@
 // License text available at https://github.com/twilio/twilio-verify-for-react-native/blob/main/LICENSE
 
 import type { StackScreenProps } from '@react-navigation/stack';
-import type { Factor } from 'twilio-verify-for-react-native';
+import type { Factor } from '@twilio/twilio-verify-for-react-native';
 
 export type RootStackParamList = {
   Factors: { message: string } | undefined;

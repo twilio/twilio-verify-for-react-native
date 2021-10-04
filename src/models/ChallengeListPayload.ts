@@ -10,6 +10,12 @@ export class ChallengeListPayload {
     public factorSid: string,
     public pageSize: number,
     public status?: ChallengeStatus,
+    public order: ChallengeListOrder = ChallengeListOrder.Asc,
     public pageToken?: string
   ) {}
+}
+
+export enum ChallengeListOrder {
+  Asc = 'asc',
+  Desc = 'desc',
 }

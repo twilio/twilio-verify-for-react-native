@@ -1,6 +1,6 @@
 {
-  "name": "twilio-verify-for-react-native",
-  "version": "0.1.0",
+  "name": "@twilio/twilio-verify-for-react-native",
+  "version": "0.2.0",
   "description": "Twilio Verify Push SDK helps you verify users by adding a low-friction, secure, cost-effective, 'push verification' factor into your own mobile application. This project provides an SDK to implement Verify Push for your react native app.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -32,6 +32,8 @@
     "bootstrap": "yarn example && yarn && yarn pods"
   },
   "keywords": [
+    "twilio",
+    "verify",
     "react-native",
     "ios",
     "android"

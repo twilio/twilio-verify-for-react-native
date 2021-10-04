@@ -6,7 +6,7 @@ import TwilioVerify, {
   Challenge,
   ChallengeStatus,
   UpdatePushChallengePayload,
-} from 'twilio-verify-for-react-native';
+} from '@twilio/twilio-verify-for-react-native';
 import type { ViewProps } from '../types';
 import { Colors } from '../constants';
 import FactorComponent from '../components/Factor';

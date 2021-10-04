@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
-import TwilioVerify, { Factor } from 'twilio-verify-for-react-native';
+import TwilioVerify, { Factor } from '@twilio/twilio-verify-for-react-native';
 import { Colors } from '../constants';
 import type { ViewProps } from '../types';
 import FactorListItem from '../components/FactorListItem';

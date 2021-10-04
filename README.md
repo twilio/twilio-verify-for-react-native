@@ -6,6 +6,10 @@
 Twilio Verify Push SDK helps you verify users by adding a low-friction, secure, cost-effective, "push verification" factor into your own mobile application. This fully managed API service allows you to seamlessly verify users in-app via a secure channel, without the risks, hassles or costs of One-Time Passcodes (OTPs).
 This project provides a library to implement Verify Push for your react native app.
 
+## Dependencies
+
+React native 0.64.1
+
 ## Installation
 
 * Add the library to your project:
@@ -45,7 +49,7 @@ The example app is using [react-native-push-notification](https://github.com/zo0
 ### Create factor
 
 ```js
-import TwilioVerify, { PushFactorPayload } from 'twilio-verify-for-react-native';
+import TwilioVerify, { PushFactorPayload } from '@twilio/twilio-verify-for-react-native';
 
 let factor = await TwilioVerify.createFactor(
   new PushFactorPayload(
@@ -88,7 +92,7 @@ let factors = await TwilioVerify.getAllFactors();
 
 ```js
 let challenges = await TwilioVerify.getAllChallenges(
-  new ChallengeListPayload(factorSid, 10, ChallengeStatus.Pending)
+  new ChallengeListPayload(factorSid, 10, ChallengeStatus.Pending, ChallengeListOrder.Desc)
 );
 ```
 

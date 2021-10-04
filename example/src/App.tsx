@@ -6,7 +6,7 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from '@react-navigation/stack';
-import TwilioVerify from 'twilio-verify-for-react-native';
+import TwilioVerify from '@twilio/twilio-verify-for-react-native';
 
 import { Colors } from './constants';
 import type { RootStackParamList } from './types';
