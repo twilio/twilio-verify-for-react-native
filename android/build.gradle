@@ -47,8 +47,8 @@ android {
   defaultConfig {
     minSdkVersion 23
     targetSdkVersion getExtOrIntegerDefault('targetSdkVersion')
-    versionCode 1
-    versionName "1.0"
+    versionCode 2
+    versionName "1.1"
 
   }
 
@@ -143,5 +143,5 @@ dependencies {
   // noinspection GradleDynamicVersion
   api 'com.facebook.react:react-native:+'
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation 'com.twilio:twilio-verify-android:0.3.0'
+  implementation 'com.twilio:twilio-verify-android:0.4.0'
 }

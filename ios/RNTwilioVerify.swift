@@ -17,7 +17,7 @@
 //  limitations under the License.
 //
 
-import TwilioVerify
+import TwilioVerifySDK
 
 @objc(RNTwilioVerify)
 class RNTwilioVerify: NSObject {
@@ -195,6 +195,7 @@ private extension RNTwilioVerify {
         ChallengeListPayload(factorSid: challengeListPayload["factorSid"] as! String,
                              pageSize: challengeListPayload["pageSize"] as! Int,
                              status: mapStatus(status: challengeListPayload["status"] as? String),
+                             order: mapOrder(order: challengeListPayload["order"] as? String) ?? .asc,
                              pageToken: challengeListPayload["pageToken"] as? String)
     }
     
@@ -207,6 +208,13 @@ private extension RNTwilioVerify {
     func mapStatus(status: String?) -> ChallengeStatus? {
         if let status = status {
             return ChallengeStatus(rawValue: status)
+        }
+        return nil
+    }
+
+    func mapOrder(order: String?) -> ChallengeListOrder? {
+        if let order = order {
+            return ChallengeListOrder(rawValue: order)
         }
         return nil
     }

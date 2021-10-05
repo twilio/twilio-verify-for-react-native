@@ -23,10 +23,11 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
 import com.twilio.verify.TwilioVerify
-import com.twilio.verify.logger.LogLevel
 import com.twilio.verify.models.Challenge
 import com.twilio.verify.models.ChallengeDetails
 import com.twilio.verify.models.ChallengeList
+import com.twilio.verify.models.ChallengeListOrder
+import com.twilio.verify.models.ChallengeListOrder.Asc
 import com.twilio.verify.models.ChallengeListPayload
 import com.twilio.verify.models.ChallengeStatus
 import com.twilio.verify.models.Detail
@@ -174,6 +175,12 @@ class RNTwilioVerifyModule(
         .find { it.factorTypeName == type }
     }
 
+  private fun mapOrder(order: String?) =
+    order?.let {
+      ChallengeListOrder.values()
+        .find { it.name.equals(order, true) }
+    }
+
   private fun toReadableMap(challengeList: ChallengeList) =
     Arguments.createMap().apply {
       putArray(
@@ -257,6 +264,7 @@ class RNTwilioVerifyModule(
     challengeListPayload.getStringValue("factorSid"),
     challengeListPayload.getInt("pageSize"),
     mapStatus(challengeListPayload.getString("status")),
+    mapOrder(challengeListPayload.getString("order")) ?: Asc,
     challengeListPayload.getString("pageToken")
   )
 }

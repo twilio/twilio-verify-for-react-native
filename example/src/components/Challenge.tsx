@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ViewStyle, TextStyle, StyleSheet } from 'react-native';
 
-import type { Challenge } from 'twilio-verify-for-react-native';
+import type { Challenge } from '@twilio/twilio-verify-for-react-native';
 
 type ChallengeComponentProps = {
   challenge: Challenge;

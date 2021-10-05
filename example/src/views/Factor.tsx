@@ -5,7 +5,8 @@ import { useIsFocused } from '@react-navigation/native';
 import TwilioVerify, {
   Challenge,
   ChallengeListPayload,
-} from 'twilio-verify-for-react-native';
+  ChallengeListOrder
+} from '@twilio/twilio-verify-for-react-native';
 import type { ViewProps } from '../types';
 import FactorComponent from '../components/Factor';
 import ChallengeListItem from '../components/ChallengeListItem';
@@ -20,9 +21,9 @@ const Factor = ({ route, navigation }: ViewProps<'Factor'>) => {
     if (isFocused) {
       (async function getChallenges() {
         const challengeList = await TwilioVerify.getAllChallenges(
-          new ChallengeListPayload(factor.sid, 20)
+          new ChallengeListPayload(factor.sid, 20, null, ChallengeListOrder.Desc)
         );
-        setChallenges(challengeList.challenges.sort(sortChallenges));
+        setChallenges(challengeList.challenges);
       })();
     }
   }, [isFocused, factor]);
@@ -30,9 +31,6 @@ const Factor = ({ route, navigation }: ViewProps<'Factor'>) => {
   const onChallengeItemPress = (challenge: Challenge) => {
     navigation.navigate('Challenge', { factor, challengeSid: challenge.sid });
   };
-
-  const sortChallenges = (a: Challenge, b: Challenge) =>
-    a.createdAt < b.createdAt ? 1 : -1;
 
   return (
     <View style={styles.container}>

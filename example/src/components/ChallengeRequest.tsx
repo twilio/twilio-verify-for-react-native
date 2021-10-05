@@ -9,7 +9,7 @@ import {
   ViewStyle,
 } from 'react-native';
 
-import { Challenge, ChallengeStatus } from 'twilio-verify-for-react-native';
+import { Challenge, ChallengeStatus } from '@twilio/twilio-verify-for-react-native';
 import { Colors } from '../constants';
 import ChallengeComponent from './Challenge';
 

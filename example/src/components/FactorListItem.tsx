@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import type { Factor } from 'twilio-verify-for-react-native';
+import type { Factor } from '@twilio/twilio-verify-for-react-native';
 import { Colors } from '../constants';
 import FactorComponent from './Factor';
 import Swipeout from 'react-native-swipeout';
