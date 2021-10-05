@@ -1,6 +1,6 @@
 {
   "name": "twilio-verify-for-react-native-example",
-  "description": "Example app for twilio-verify-for-react-native",
+  "description": "Sample app for twilio-verify-for-react-native",
   "version": "0.0.2",
   "private": true,
   "scripts": {
