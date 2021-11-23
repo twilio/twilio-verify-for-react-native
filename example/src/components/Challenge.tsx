@@ -32,12 +32,12 @@ const ChallengeAdditionalInfo = ({
           <View style={styles.detailsBlock}>
             {challenge.challengeDetails.date && (
               <Text style={textStyle}>
-                Date :{challenge.challengeDetails.date.toLocaleString()}
+                Date: {challenge.challengeDetails.date.toLocaleString()}
               </Text>
             )}
             {challenge.challengeDetails.fields.map((field, index) => (
               <Text style={textStyle} key={index}>
-                {field.label + ' = ' + field.value}
+                {field.label + ': ' + field.value}
               </Text>
             ))}
           </View>
@@ -60,7 +60,7 @@ const ChallengeComponent = ({
       </Text>
       <Text style={styles.text}>Status: {challenge.status}</Text>
       <Text style={styles.text}>
-        Created at:{challenge.createdAt.toLocaleString()}
+        Created at: {challenge.createdAt.toLocaleString()}
       </Text>
       <Text style={styles.text}>
         Expires on: {challenge.expirationDate.toLocaleString()}
