@@ -8,7 +8,7 @@ import type { UpdateFactorPayload } from './UpdateFactorPayload';
 
 export class UpdatePushFactorPayload implements UpdateFactorPayload {
   factorType: FactorType;
-  constructor(public sid: string, public pushToken: string) {
+  constructor(public sid: string, public pushToken?: string) {
     this.factorType = FactorType.Push;
   }
 }

@@ -12,8 +12,8 @@ export class PushFactorPayload implements FactorPayload {
     public friendlyName: string,
     public serviceSid: string,
     public identity: string,
-    public pushToken: string,
-    public accessToken: string
+    public accessToken: string,
+    public pushToken?: string
   ) {
     this.factorType = FactorType.Push;
   }

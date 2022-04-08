@@ -53,7 +53,7 @@ class RNTwilioVerify: NSObject {
         switch updateFactorPayload["factorType"]! {
         case FactorType.push.rawValue:
             twilioVerify?.updateFactor(withPayload: UpdatePushFactorPayload(sid: updateFactorPayload["sid"]!,
-                                                                            pushToken: updateFactorPayload["pushToken"]!),
+                                                                            pushToken: updateFactorPayload["pushToken"]),
                                        success: { resolve(self.toReadableMap(factor: $0)) },
                                        failure: { reject("\($0.code)", $0.errorDescription, $0) })
         default:
@@ -187,7 +187,7 @@ private extension RNTwilioVerify {
         PushFactorPayload(friendlyName: factorPayload["friendlyName"]!,
                           serviceSid: factorPayload["serviceSid"]!,
                           identity: factorPayload["identity"]!,
-                          pushToken: factorPayload["pushToken"]!,
+                          pushToken: factorPayload["pushToken"],
                           accessToken: factorPayload["accessToken"]!)
     }
     

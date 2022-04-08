@@ -92,7 +92,7 @@ class RNTwilioVerifyModule(
         twilioVerify.updateFactor(
           UpdatePushFactorPayload(
             updateFactorPayload.getStringValue("sid"),
-            updateFactorPayload.getStringValue("pushToken")
+            updateFactorPayload.getOptStringValue("pushToken")
           ), { promise.resolve(toReadableMap(it)) }, { promise.reject(it) })
     }
   }
@@ -251,12 +251,15 @@ class RNTwilioVerifyModule(
   private fun ReadableMap.getStringValue(name: String) =
     getString(name) ?: throw IllegalArgumentException("Invalid value for $name")
 
+  private fun ReadableMap.getOptStringValue(name: String) =
+    getString(name)
+
   private fun toPushFactorPayload(factorPayload: ReadableMap) =
     PushFactorPayload(
       factorPayload.getStringValue("friendlyName"),
       factorPayload.getStringValue("serviceSid"),
       factorPayload.getStringValue("identity"),
-      factorPayload.getStringValue("pushToken"),
+      factorPayload.getOptStringValue("pushToken"),
       factorPayload.getStringValue("accessToken")
     )
 
