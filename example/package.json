@@ -9,7 +9,7 @@
     "start": "react-native start"
   },
   "dependencies": {
-    "@react-native-community/checkbox": "^0.5.10",
+    "@react-native-community/checkbox": "^0.5.12",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/push-notification-ios": "^1.8.0",
     "@react-navigation/native": "^5.8.10",
