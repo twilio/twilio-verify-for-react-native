@@ -8,7 +8,9 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  View,
 } from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
 
 import TwilioVerify, {
   PushFactorPayload,
@@ -23,6 +25,7 @@ export default function CreateFactor({
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [identity, setIdentity] = useState<string>('');
   const [accessTokenUrl, setAccessTokenUrl] = useState<string>('');
+  const [enablePush, setEnablePush] = useState<boolean>(true);
 
   const onCreateFactorButtonPress = async () => {
     try {
@@ -43,8 +46,8 @@ export default function CreateFactor({
           `${identity}'s factor`,
           json.serviceSid,
           json.identity,
-          global.deviceToken ?? '000000000000000000000000000000000000',
-          json.token
+          json.token,
+          enablePush ? global.deviceToken || '000000000000000000000000000000000000': null
         )
       );
       factor = await TwilioVerify.verifyFactor(
@@ -79,6 +82,13 @@ export default function CreateFactor({
         keyboardType="url"
         autoCorrect={false}
       />
+      <View style={styles.check}>
+        <CheckBox
+          value={enablePush}
+          onValueChange={(newValue) => setEnablePush(newValue)}
+        />
+        <Text style={{paddingLeft:8}}>Enable push notifications</Text>
+      </View>
       <TouchableOpacity
         style={styles.button}
         onPress={onCreateFactorButtonPress}
@@ -126,5 +136,11 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: Colors.white.default,
+  },
+  check: {
+    flexDirection:'row',
+    justifyContent:"flex-start",
+    alignItems:"center", width:"100%",
+    paddingVertical:10
   },
 });

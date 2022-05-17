@@ -56,8 +56,8 @@ let factor = await TwilioVerify.createFactor(
     factorName,
     verifyServiceSid,
     identity,
-    pushToken,
-    accessToken
+    accessToken,
+    pushToken
   )
 );
 ```

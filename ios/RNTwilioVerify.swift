@@ -25,8 +25,8 @@ class RNTwilioVerify: NSObject {
     let twilioVerify: TwilioVerify? = try? TwilioVerifyBuilder().build()
     
     @objc(createFactor:withResolver:withRejecter:)
-    func createFactor(factorPayload: Dictionary<String, String>, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
-        switch factorPayload["factorType"]! {
+    func createFactor(factorPayload: Dictionary<String, Any>, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        switch factorPayload["factorType"] as! String {
         case FactorType.push.rawValue:
             twilioVerify?.createFactor(withPayload: toPushFactorPayload(factorPayload: factorPayload),
                                        success: { resolve(self.toReadableMap(factor: $0)) },
@@ -53,7 +53,7 @@ class RNTwilioVerify: NSObject {
         switch updateFactorPayload["factorType"]! {
         case FactorType.push.rawValue:
             twilioVerify?.updateFactor(withPayload: UpdatePushFactorPayload(sid: updateFactorPayload["sid"]!,
-                                                                            pushToken: updateFactorPayload["pushToken"]!),
+                                                                            pushToken: updateFactorPayload["pushToken"]),
                                        success: { resolve(self.toReadableMap(factor: $0)) },
                                        failure: { reject("\($0.code)", $0.errorDescription, $0) })
         default:
@@ -183,12 +183,12 @@ private extension RNTwilioVerify {
       return formatter.string(from: date)
     }
     
-    func toPushFactorPayload(factorPayload: Dictionary<String, String>) -> PushFactorPayload {
-        PushFactorPayload(friendlyName: factorPayload["friendlyName"]!,
-                          serviceSid: factorPayload["serviceSid"]!,
-                          identity: factorPayload["identity"]!,
-                          pushToken: factorPayload["pushToken"]!,
-                          accessToken: factorPayload["accessToken"]!)
+    func toPushFactorPayload(factorPayload: Dictionary<String, Any>) -> PushFactorPayload {
+        PushFactorPayload(friendlyName: factorPayload["friendlyName"] as! String,
+                          serviceSid: factorPayload["serviceSid"] as! String,
+                          identity: factorPayload["identity"] as! String,
+                          pushToken: factorPayload["pushToken"] as? String,
+                          accessToken: factorPayload["accessToken"] as! String)
     }
     
     func toChallengeListPayload(challengeListPayload: Dictionary<String, Any>) -> ChallengeListPayload {
