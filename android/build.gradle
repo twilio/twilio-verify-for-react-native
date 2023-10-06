@@ -47,8 +47,8 @@ android {
   defaultConfig {
     minSdkVersion 23
     targetSdkVersion getExtOrIntegerDefault('targetSdkVersion')
-    versionCode 3
-    versionName "0.3.0"
+    versionCode 4
+    versionName "0.4.0"
 
   }
 
@@ -139,5 +139,5 @@ dependencies {
   api 'com.facebook.react:react-native:+'
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   implementation(platform("org.jetbrains.kotlin:kotlin-bom:$kotlin_version"))
-  implementation 'com.twilio:twilio-verify-android:0.7.0'
+  implementation 'com.twilio:twilio-verify-android:0.8.0'
 }

@@ -371,10 +371,10 @@ PODS:
     - React-Core
   - RNScreens (2.18.1):
     - React-Core
-  - twilio-verify-for-react-native (0.3.0):
+  - twilio-verify-for-react-native (0.4.0):
     - React-Core
-    - TwilioVerify (~> 2.1.0)
-  - TwilioVerify (2.1.0)
+    - TwilioVerify (~> 2.2.2)
+  - TwilioVerify (2.2.2)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -598,8 +598,8 @@ SPEC CHECKSUMS:
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReanimated: c1b56d030d1616239861534d9adb531f8cffab68
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
-  twilio-verify-for-react-native: 8de7d3ec857d50821eeeeb30aae648290e6dc3ff
-  TwilioVerify: 31bb397fa26f7f7aea41531107c1057166b9e4a1
+  twilio-verify-for-react-native: b9a6c7edee19dea441fb15d373138cb2dc583e08
+  TwilioVerify: 21757b90775318859ac211a926456de3e039ebb4
   Yoga: b316a990bb6d115afa1b436b5626ac7c61717d17
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
