@@ -20,7 +20,7 @@ buildscript {
 
   repositories {
     google()
-    jcenter()
+    mavenCentral()
   }
 
   dependencies {
@@ -47,8 +47,8 @@ android {
   defaultConfig {
     minSdkVersion 23
     targetSdkVersion getExtOrIntegerDefault('targetSdkVersion')
-    versionCode 3
-    versionName "0.3.0"
+    versionCode 4
+    versionName "0.4.0"
 
   }
 
@@ -60,15 +60,10 @@ android {
   lintOptions {
     disable 'GradleCompatible'
   }
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
-  }
 }
 
 repositories {
   mavenCentral()
-  jcenter()
   google()
 
   def found = false
@@ -143,5 +138,6 @@ dependencies {
   // noinspection GradleDynamicVersion
   api 'com.facebook.react:react-native:+'
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation 'com.twilio:twilio-verify-android:0.7.0'
+  implementation(platform("org.jetbrains.kotlin:kotlin-bom:$kotlin_version"))
+  implementation 'com.twilio:twilio-verify-android:0.8.0'
 }

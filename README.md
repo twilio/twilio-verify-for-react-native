@@ -8,7 +8,7 @@ This project provides a library to implement Verify Push for your react native a
 
 ## Dependencies
 
-React native 0.64.1
+React native 0.66.5
 
 ## Installation
 
@@ -145,6 +145,8 @@ npx pod-install
 ```sh
 yarn example ios
 ```
+
+> **_NOTE:_**  There could be incompatibility issues with the react native version and your environment, so running the project from Xcode could share more details about the error and how to fix it
 
 ### Android
 

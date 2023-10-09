@@ -18,5 +18,5 @@ Pod::Spec.new do |s|
   
 
   s.dependency "React-Core"
-  s.dependency 'TwilioVerify', '~> 2.1.0'
+  s.dependency 'TwilioVerify', '~> 2.2.2'
 end

@@ -1,7 +1,7 @@
 {
   "name": "twilio-verify-for-react-native-example",
   "description": "Sample app for twilio-verify-for-react-native",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -14,8 +14,8 @@
     "@react-native-community/push-notification-ios": "^1.8.0",
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
-    "react": "17.0.1",
-    "react-native": "0.64.1",
+    "react": "17.0.2",
+    "react-native": "0.66.5",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-network-logger": "^1.8.1",
     "react-native-push-notification": "^7.3.1",
@@ -28,7 +28,7 @@
     "@babel/core": "^7.15.0",
     "@babel/runtime": "^7.15.3",
     "babel-plugin-module-resolver": "^4.1.0",
-    "metro-react-native-babel-preset": "^0.64.0",
+    "metro-react-native-babel-preset": "^0.66.2",
     "react-native-codegen": "^0.0.7"
   }
 }
