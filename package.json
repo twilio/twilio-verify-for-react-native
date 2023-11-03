@@ -4,7 +4,7 @@
   "description": "Twilio Verify Push SDK helps you verify users by adding a low-friction, secure, cost-effective, 'push verification' factor into your own mobile application. This project provides an SDK to implement Verify Push for your react native app.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
-  "types": "lib/typescript/src/index.d.ts",
+  "types": "lib/typescript/index.d.ts",
   "react-native": "src/index",
   "source": "src/index",
   "files": [
