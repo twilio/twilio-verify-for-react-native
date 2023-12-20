@@ -15,7 +15,7 @@
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
     "react": "17.0.2",
-    "react-native": "0.66.5",
+    "react-native": "0.69.12",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-network-logger": "^1.8.1",
     "react-native-push-notification": "^7.3.1",
