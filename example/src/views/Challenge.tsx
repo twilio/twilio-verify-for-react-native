@@ -25,8 +25,15 @@ const ChallengeView = ({ route }: ViewProps<'Challenge'>) => {
     if (isFocused) {
       setIsLoading(true);
       (async function getChallenge() {
-        setChallenge(await TwilioVerify.getChallenge(challengeSid, factor.sid));
-        setIsLoading(false);
+        try {
+          const challengeData = await TwilioVerify.getChallenge(challengeSid, factor.sid);
+          setChallenge(challengeData);
+        } catch (error) {
+          console.error('Failed to get challenge:', error);
+          Alert.alert('Error', 'Failed to load challenge details');
+        } finally {
+          setIsLoading(false);
+        }
       })();
     }
   }, [isFocused, challengeSid, factor]);
@@ -43,9 +50,15 @@ const ChallengeView = ({ route }: ViewProps<'Challenge'>) => {
 
       Alert.alert('Message', `Challenge was ${status}`);
     } catch (error) {
+      console.error('Failed to update challenge:', error);
       Alert.alert('Error', JSON.stringify(error));
     } finally {
-      setChallenge(await TwilioVerify.getChallenge(challengeSid, factor.sid));
+      try {
+        const updatedChallenge = await TwilioVerify.getChallenge(challengeSid, factor.sid);
+        setChallenge(updatedChallenge);
+      } catch (error) {
+        console.error('Failed to refresh challenge after update:', error);
+      }
       setIsSubmitting(false);
     }
   };
