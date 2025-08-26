@@ -34,7 +34,8 @@ const Factors = ({ route, navigation }: ViewProps<'Factors'>) => {
           setFactors(allFactors.sort(sortFactors));
         } catch (error) {
           console.error('Failed to get factors:', error);
-          Alert.alert('Error', 'Failed to load factors');
+          const twilioVerifyAvailable = await TwilioVerify.isAvailable();
+          Alert.alert('Error', `Failed to load factors. Twilio verify available: ${twilioVerifyAvailable}`);
         }
       })();
     }

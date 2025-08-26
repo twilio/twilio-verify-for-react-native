@@ -69,7 +69,7 @@ class RNTwilioVerifyModule(
     }
   }
 
-  private fun isTwilioVerifyInitialized(promise: Promise?): Boolean {
+  private fun isTwilioVerifyInitialized(promise: Promise? = null): Boolean {
     val initialized = this::twilioVerify.isInitialized
     if (!initialized) {
       initTwilioVerify(promise)
@@ -224,7 +224,7 @@ class RNTwilioVerifyModule(
 
   @ReactMethod
   fun isAvailable(promise: Promise) {
-    promise.resolve(isTwilioVerifyInitialized(null))
+    promise.resolve(isTwilioVerifyInitialized())
   }
 
   private fun mapStatus(status: String?) =
