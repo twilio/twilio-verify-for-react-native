@@ -54,7 +54,7 @@ You can validate if Twilio Verify is available in the device calling the `Twilio
 await TwilioVerify.isAvailable();
 ```
 
-While the Android Keystore is designed to securely manage cryptographic keys (and is used by Twilio Verify), its stability and usability can vary across devices. On some Android devices, the Android Keystore may be unstable or unusable, primarily due to inconsistencies or flaws in the implementation of the Android Keystore system by original equipment manufacturers (OEMs). The SDK implements retries to obtain a functional instance; therefore, we recommend calling the SDK’s availability method to evaluate whether the device supports the solution.
+While the Android Keystore is designed to securely manage cryptographic keys (and is used by Twilio Verify), its stability and usability can vary across devices. On some Android devices, the Android Keystore may be unstable or unusable, primarily due to inconsistencies or flaws in the implementation of the Android Keystore system by original equipment manufacturers (OEMs). The SDK implements a retry to obtain a functional instance; therefore, we recommend calling the SDK’s availability method to evaluate whether the device supports the solution.
 
 While the iOS Keychain is designed to securely manage cryptographic keys (and is used by Twilio Verify), its stability and usability can occasionally be affected by device-specific issues, system bugs, or misconfigurations. On a very small percentage of iOS devices, the Keychain may become inaccessible or unreliable, typically due to inconsistencies in device software or rare system-level errors. Therefore, we recommend calling the SDK’s availability method to evaluate whether the device supports the solution.
 
@@ -209,6 +209,10 @@ yarn example android
 * After the challenge is updated, you will see the challenge status in the backend's `Create a push challenge` section, as `Login request approved!` or `Login request denied!`, below the `Create challenge` button
 
 ## Errors
+
+Types | Code | Description
+---------- | ----------- | -----------
+Initialization | TWILIO_INIT_ERROR | Exception while initializing Twilio Verify, SDK instance will not be available to use
 
 [Android](https://github.com/twilio/twilio-verify-android#errors)
 

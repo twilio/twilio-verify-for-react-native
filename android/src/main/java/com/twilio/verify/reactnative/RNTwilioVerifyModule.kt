@@ -65,7 +65,7 @@ class RNTwilioVerifyModule(
     try {
       twilioVerify = TwilioVerify.Builder(reactContext).build()
     } catch (exception: Exception) {
-      promise?.reject(exception)
+      promise?.reject("TWILIO_INIT_ERROR", "Failed to initialize TwilioVerify", exception)
     }
   }
 
