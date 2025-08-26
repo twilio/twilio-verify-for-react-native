@@ -26,4 +26,5 @@ export type TwilioVerifyType = {
     updateChallengePayload: UpdateChallengePayload
   ): Promise<void>;
   clearLocalStorage(): Promise<void>;
+  isAvailable(): Promise<Boolean>;
 };

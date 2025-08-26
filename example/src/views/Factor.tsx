@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import TwilioVerify, {
@@ -20,10 +20,15 @@ const Factor = ({ route, navigation }: ViewProps<'Factor'>) => {
   useEffect(() => {
     if (isFocused) {
       (async function getChallenges() {
-        const challengeList = await TwilioVerify.getAllChallenges(
-          new ChallengeListPayload(factor.sid, 20, null, ChallengeListOrder.Desc)
-        );
-        setChallenges(challengeList.challenges);
+        try {
+          const challengeList = await TwilioVerify.getAllChallenges(
+            new ChallengeListPayload(factor.sid, 20, null, ChallengeListOrder.Desc)
+          );
+          setChallenges(challengeList.challenges);
+        } catch (error) {
+          console.error('Failed to get challenges:', error);
+          Alert.alert('Error', 'Failed to load challenges');
+        }
       })();
     }
   }, [isFocused, factor]);

@@ -29,7 +29,14 @@ const Factors = ({ route, navigation }: ViewProps<'Factors'>) => {
   useEffect(() => {
     if (isFocused) {
       (async function getFactors() {
-        setFactors((await TwilioVerify.getAllFactors()).sort(sortFactors));
+        try {
+          const allFactors = await TwilioVerify.getAllFactors();
+          setFactors(allFactors.sort(sortFactors));
+        } catch (error) {
+          console.error('Failed to get factors:', error);
+          const twilioVerifyAvailable = await TwilioVerify.isAvailable();
+          Alert.alert('Error', `Failed to load factors. Twilio verify available: ${twilioVerifyAvailable}`);
+        }
       })();
     }
   }, [isFocused]);
@@ -46,8 +53,19 @@ const Factors = ({ route, navigation }: ViewProps<'Factors'>) => {
   };
 
   const onFactorDeletePress = async (factor: Factor) => {
-    await TwilioVerify.deleteFactor(factor.sid);
-    setFactors((await TwilioVerify.getAllFactors()).sort(sortFactors));
+    try {
+      await TwilioVerify.deleteFactor(factor.sid);
+      try {
+        const allFactors = await TwilioVerify.getAllFactors();
+        setFactors(allFactors.sort(sortFactors));
+      } catch (error) {
+        console.error('Failed to get factors after deletion:', error);
+        Alert.alert('Error', 'Factor deleted but failed to refresh list');
+      }
+    } catch (error) {
+      console.error('Failed to delete factor:', error);
+      Alert.alert('Error', 'Failed to delete factor');
+    }
   };
 
   return (

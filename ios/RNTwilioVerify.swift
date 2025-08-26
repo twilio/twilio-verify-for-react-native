@@ -109,6 +109,11 @@ class RNTwilioVerify: NSObject {
             reject(nil, error.localizedDescription, error)
         }
     }
+
+    @objc(isAvailable:withRejecter:)
+    func isAvailable(resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        resolve(twilioVerify != nil)
+    }
 }
 
 private extension RNTwilioVerify {

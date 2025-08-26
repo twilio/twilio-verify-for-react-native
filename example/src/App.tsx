@@ -6,6 +6,7 @@ import {
   createStackNavigator,
   StackNavigationOptions,
 } from '@react-navigation/stack';
+import { Alert } from 'react-native';
 import TwilioVerify from '@twilio/twilio-verify-for-react-native';
 
 import { Colors } from './constants';
@@ -33,9 +34,15 @@ const showChallenge = async (payload: Record<string, any>) => {
   const factorSid = payload.factor_sid;
   const type = payload.type;
   if (type === 'verify_push_challenge' && factorSid && challengeSid) {
-    const factor = await (await TwilioVerify.getAllFactors()).find(factor => factor.sid === factorSid)
-    if (factor) {
-      navigationRef.current?.navigate('Challenge', { factor, challengeSid: challengeSid });
+    try {
+      const factors = await TwilioVerify.getAllFactors();
+      const factor = factors.find(factor => factor.sid === factorSid);
+      if (factor) {
+        navigationRef.current?.navigate('Challenge', { factor, challengeSid: challengeSid });
+      }
+    } catch (error) {
+      console.error('Failed to get factors:', error);
+      Alert.alert('Error', 'Failed to load factor information');
     }
   }
 }
