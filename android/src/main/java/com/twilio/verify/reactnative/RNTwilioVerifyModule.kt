@@ -219,7 +219,7 @@ class RNTwilioVerifyModule(
       return
     }
 
-    twilioVerify?.clearLocalStorage { promise.resolve(null) }
+    twilioVerify.clearLocalStorage { promise.resolve(null) }
   }
 
   @ReactMethod
