@@ -48,26 +48,33 @@ private val dateFormatterUTC =
   SimpleDateFormat(dateFormatUTC, Locale.US).apply { timeZone = TimeZone.getTimeZone("UTC") }
 
 class RNTwilioVerifyModule(
-  reactContext: ReactApplicationContext,
-  private val twilioVerify: TwilioVerify?
+  private val reactContext: ReactApplicationContext
 ) : ReactContextBaseJavaModule(reactContext) {
 
+  private lateinit var twilioVerify: TwilioVerify
+
   init {
-    try {
-      twilioVerify = TwilioVerify.Builder(reactContext).build()
-    } catch (e: Exception) {
-      // Handle initialization error
-      Log.e("RNTwilioVerifyModule", "Failed to initialize TwilioVerify: ${e.message}")
-      twilioVerify = null
-    }
+    initTwilioVerify()
   }
 
   override fun getName(): String {
     return "RNTwilioVerify"
   }
 
-  private fun isTwilioVerifyInitialized(): Boolean {
-    return twilioVerify != null
+  private fun initTwilioVerify(promise: Promise? = null) {
+    try {
+      twilioVerify = TwilioVerify.Builder(reactContext).build()
+    } catch (exception: Exception) {
+      promise?.reject(exception)
+    }
+  }
+
+  private fun isTwilioVerifyInitialized(promise: Promise?): Boolean {
+    val initialized = this::twilioVerify.isInitialized
+    if (!initialized) {
+      initTwilioVerify(promise)
+    }
+    return this::twilioVerify.isInitialized
   }
 
   @ReactMethod
@@ -75,8 +82,7 @@ class RNTwilioVerifyModule(
     factorPayload: ReadableMap,
     promise: Promise
   ) {
-    if (!isTwilioVerifyInitialized()) {
-      promise.reject("TWILIO_NOT_INITIALIZED", "TwilioVerify is not initialized")
+    if (!isTwilioVerifyInitialized(promise)) {
       return
     }
 
@@ -92,8 +98,7 @@ class RNTwilioVerifyModule(
 
   @ReactMethod
   fun verifyFactor(verifyFactorPayload: ReadableMap, promise: Promise) {
-    if (!isTwilioVerifyInitialized()) {
-      promise.reject("TWILIO_NOT_INITIALIZED", "TwilioVerify is not initialized")
+    if (!isTwilioVerifyInitialized(promise)) {
       return
     }
 
@@ -111,8 +116,7 @@ class RNTwilioVerifyModule(
     updateFactorPayload: ReadableMap,
     promise: Promise
   ) {
-    if (!isTwilioVerifyInitialized()) {
-      promise.reject("TWILIO_NOT_INITIALIZED", "TwilioVerify is not initialized")
+    if (!isTwilioVerifyInitialized(promise)) {
       return
     }
 
@@ -129,8 +133,7 @@ class RNTwilioVerifyModule(
 
   @ReactMethod
   fun getAllFactors(promise: Promise) {
-    if (!isTwilioVerifyInitialized()) {
-      promise.reject("TWILIO_NOT_INITIALIZED", "TwilioVerify is not initialized")
+    if (!isTwilioVerifyInitialized(promise)) {
       return
     }
 
@@ -141,8 +144,7 @@ class RNTwilioVerifyModule(
 
   @ReactMethod
   fun deleteFactor(sid: String, promise: Promise) {
-    if (!isTwilioVerifyInitialized()) {
-      promise.reject("TWILIO_NOT_INITIALIZED", "TwilioVerify is not initialized")
+    if (!isTwilioVerifyInitialized(promise)) {
       return
     }
 
@@ -158,8 +160,7 @@ class RNTwilioVerifyModule(
     factorSid: String,
     promise: Promise
   ) {
-    if (!isTwilioVerifyInitialized()) {
-      promise.reject("TWILIO_NOT_INITIALIZED", "TwilioVerify is not initialized")
+    if (!isTwilioVerifyInitialized(promise)) {
       return
     }
 
@@ -175,8 +176,7 @@ class RNTwilioVerifyModule(
     challengeListPayload: ReadableMap,
     promise: Promise
   ) {
-    if (!isTwilioVerifyInitialized()) {
-      promise.reject("TWILIO_NOT_INITIALIZED", "TwilioVerify is not initialized")
+    if (!isTwilioVerifyInitialized(promise)) {
       return
     }
 
@@ -188,8 +188,7 @@ class RNTwilioVerifyModule(
 
   @ReactMethod
   fun updateChallenge(updateChallengePayload: ReadableMap, promise: Promise) {
-    if (!isTwilioVerifyInitialized()) {
-      promise.reject("TWILIO_NOT_INITIALIZED", "TwilioVerify is not initialized")
+    if (!isTwilioVerifyInitialized(promise)) {
       return
     }
 
@@ -216,12 +215,16 @@ class RNTwilioVerifyModule(
 
   @ReactMethod
   fun clearLocalStorage(promise: Promise) {
-    if (!isTwilioVerifyInitialized()) {
-      promise.reject("TWILIO_NOT_INITIALIZED", "TwilioVerify is not initialized")
+    if (!isTwilioVerifyInitialized(promise)) {
       return
     }
 
-    twilioVerify.clearLocalStorage { promise.resolve(null) }
+    twilioVerify?.clearLocalStorage { promise.resolve(null) }
+  }
+
+  @ReactMethod
+  fun isAvailable(promise: Promise) {
+    promise.resolve(isTwilioVerifyInitialized(null))
   }
 
   private fun mapStatus(status: String?) =
