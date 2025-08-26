@@ -371,7 +371,7 @@ PODS:
     - React-Core
   - RNScreens (2.18.1):
     - React-Core
-  - twilio-verify-for-react-native (0.4.0):
+  - twilio-verify-for-react-native (0.4.1):
     - React-Core
     - TwilioVerify (~> 2.2.2)
   - TwilioVerify (2.2.2)
