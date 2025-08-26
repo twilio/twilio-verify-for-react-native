@@ -8,7 +8,7 @@ This project provides a library to implement Verify Push for your react native a
 
 ## Dependencies
 
-React native 0.66.5
+React native 0.67.0
 
 ## Installation
 
