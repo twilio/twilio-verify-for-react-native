@@ -65,4 +65,7 @@ RCT_EXTERN_METHOD(updateChallenge:(NSDictionary)updateChallengePayload
 RCT_EXTERN_METHOD(clearLocalStorage:(RCTPromiseResolveBlock)resolve
                                 withRejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(isAvailable:(RCTPromiseResolveBlock)resolve
+                                withRejecter:(RCTPromiseRejectBlock)reject)
+
 @end
