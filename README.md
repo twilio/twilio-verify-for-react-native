@@ -3,21 +3,25 @@
 [![License](https://img.shields.io/badge/License-Apache%202-blue.svg?logo=law)](https://github.com/twilio/twilio-verify-for-react-native/blob/main/LICENSE)
 
 ## About
+
 Twilio Verify Push SDK helps you verify users by adding a low-friction, secure, cost-effective, "push verification" factor into your own mobile application. This fully managed API service allows you to seamlessly verify users in-app via a secure channel, without the risks, hassles or costs of One-Time Passcodes (OTPs).
 This project provides a library to implement Verify Push for your react native app.
 
 ## Dependencies
 
-React native 0.67.0
+- React Native 0.78.x or higher
+- React 19.0.x or higher
 
 ## Installation
 
-* Add the library to your project:
+- Add the library to your project:
+
 ```sh
 yarn add https://github.com/twilio/twilio-verify-for-react-native.git
 ```
 
-* Install the pods for your project
+- Install the pods for your project
+
 ```sh
 npx pod-install
 ```
@@ -26,21 +30,22 @@ npx pod-install
 
 ### Register your iOS App with APNs
 
-If you want to receive challenges as push notifications, you should register Your App with APNs. 
+If you want to receive challenges as push notifications, you should register Your App with APNs.
 
 More info [here](https://www.twilio.com/docs/verify/quickstarts/push-ios#set-up-apns-for-your-ios-app)
 
 ### Add firebase configuration for your Android App
 
 If you want to receive challenges as push notifications, you should add a firebase configuration to your project
-* Add a project in Firebase to use cloud messaging for an application ID
-* Add the google-services.json file to your project
+
+- Add a project in Firebase to use cloud messaging for an application ID
+- Add the google-services.json file to your project
 
 More info [here](https://www.twilio.com/docs/verify/quickstarts/push-android#set-up-fcm-for-your-android-app)
 
 ### Add a push notification library
 
-After setting up push notifications for Android & iOS, you should add a react native library to receive notifications from APN for iOS and FCM for Android. 
+After setting up push notifications for Android & iOS, you should add a react native library to receive notifications from APN for iOS and FCM for Android.
 
 The example app is using [react-native-push-notification](https://github.com/zo0r/react-native-push-notification), you can find the full example source [here](https://github.com/twilio/twilio-verify-for-react-native/tree/main/example/src/push)
 
@@ -61,7 +66,9 @@ While the iOS Keychain is designed to securely manage cryptographic keys (and is
 ### Create factor
 
 ```js
-import TwilioVerify, { PushFactorPayload } from '@twilio/twilio-verify-for-react-native';
+import TwilioVerify, {
+  PushFactorPayload,
+} from '@twilio/twilio-verify-for-react-native';
 
 let factor = await TwilioVerify.createFactor(
   new PushFactorPayload(
@@ -104,7 +111,12 @@ let factors = await TwilioVerify.getAllFactors();
 
 ```js
 let challenges = await TwilioVerify.getAllChallenges(
-  new ChallengeListPayload(factorSid, 10, ChallengeStatus.Pending, ChallengeListOrder.Desc)
+  new ChallengeListPayload(
+    factorSid,
+    10,
+    ChallengeStatus.Pending,
+    ChallengeListOrder.Desc
+  )
 );
 ```
 
@@ -141,33 +153,33 @@ yarn install
 
 ### iOS
 
-* Go to `example` and install the pods
+- Go to `example` and install the pods
 
 ```sh
 cd example
 npx pod-install
 ```
 
-* Change the Bundle Identifier to something unique so Apple’s push notification server can direct pushes to this app
-* [Enable push notifications](https://help.apple.com/xcode/mac/current/#/devdfd3d04a1)
-* Get the `Access token generation URL` from your backend [(Running the sample backend)](#SampleBackend). You will use it for creating a factor
+- Change the Bundle Identifier to something unique so Apple’s push notification server can direct pushes to this app
+- [Enable push notifications](https://help.apple.com/xcode/mac/current/#/devdfd3d04a1)
+- Get the `Access token generation URL` from your backend [(Running the sample backend)](#SampleBackend). You will use it for creating a factor
 
-* Run iOS app in `twilio-verify-for-react-native` root folder
+- Run iOS app in `twilio-verify-for-react-native` root folder
 
 ```sh
 yarn example ios
 ```
 
-> **_NOTE:_**  There could be incompatibility issues with the react native version and your environment, so running the project from Xcode could share more details about the error and how to fix it
+> **_NOTE:_** There could be incompatibility issues with the react native version and your environment, so running the project from Xcode could share more details about the error and how to fix it
 
 ### Android
 
-* Follow the steps from [Firebase configuration](https://firebase.google.com/docs/android/setup#console), follow steps 1 to 3
-  * For step 3.1, the google-services.json file should be copied to example/android/app
-  * Google services plugin is included in the sample app, so you don't need step 3.2
-* Get the `Access Token generation URL` from your backend [(Running the Sample backend)](#SampleBackend). You will use it for creating a factor
+- Follow the steps from [Firebase configuration](https://firebase.google.com/docs/android/setup#console), follow steps 1 to 3
+  - For step 3.1, the google-services.json file should be copied to example/android/app
+  - Google services plugin is included in the sample app, so you don't need step 3.2
+- Get the `Access Token generation URL` from your backend [(Running the Sample backend)](#SampleBackend). You will use it for creating a factor
 
-* Run Android app in `twilio-verify-for-react-native` root folder
+- Run Android app in `twilio-verify-for-react-native` root folder
 
 ```sh
 yarn example android
@@ -190,29 +202,31 @@ yarn example android
 ## Using the sample app
 
 ### Adding a factor
-* Press Create factor in the factor list
-* Enter the identity to use. This value should be an UUID that identifies the user to prevent PII information use
-* Enter the Access token URL (Access token generation URL, including the path, e.g. https://verify-push-backend-xxxxx.twil.io/access-token)
-* Press Create factor
-* Copy the factor Sid
+
+- Press Create factor in the factor list
+- Enter the identity to use. This value should be an UUID that identifies the user to prevent PII information use
+- Enter the Access token URL (Access token generation URL, including the path, e.g. https://verify-push-backend-xxxxx.twil.io/access-token)
+- Press Create factor
+- Copy the factor Sid
 
 ### Sending a challenge
-* Go to `Create a push challenge` section in your sample backend (https://verify-push-backend-xxxxx.twil.io/index.html)
-* Enter the `Identity` you used in factor creation
-* Enter the `Factor Sid` you added
-* Enter a `message`. You will see the message in the push notification and in the challenge view
-* Enter details to the challenge. You will see them in the challenge view. You can add more details using the `Add more Details` button
-* Press `Create challenge` button
-* You will receive a push notification showing the challenge message in your device. 
-* The app will show the challenge info below the factor information, in a `Challenge` section
-* Approve or deny the challenge
-* After the challenge is updated, you will see the challenge status in the backend's `Create a push challenge` section, as `Login request approved!` or `Login request denied!`, below the `Create challenge` button
+
+- Go to `Create a push challenge` section in your sample backend (https://verify-push-backend-xxxxx.twil.io/index.html)
+- Enter the `Identity` you used in factor creation
+- Enter the `Factor Sid` you added
+- Enter a `message`. You will see the message in the push notification and in the challenge view
+- Enter details to the challenge. You will see them in the challenge view. You can add more details using the `Add more Details` button
+- Press `Create challenge` button
+- You will receive a push notification showing the challenge message in your device.
+- The app will show the challenge info below the factor information, in a `Challenge` section
+- Approve or deny the challenge
+- After the challenge is updated, you will see the challenge status in the backend's `Create a push challenge` section, as `Login request approved!` or `Login request denied!`, below the `Create challenge` button
 
 ## Errors
 
-Types | Code | Description
----------- | ----------- | -----------
-Initialization | TWILIO_INIT_ERROR | Exception while initializing Twilio Verify, SDK instance will not be available to use
+| Types          | Code              | Description                                                                           |
+| -------------- | ----------------- | ------------------------------------------------------------------------------------- |
+| Initialization | TWILIO_INIT_ERROR | Exception while initializing Twilio Verify, SDK instance will not be available to use |
 
 [Android](https://github.com/twilio/twilio-verify-android#errors)
 

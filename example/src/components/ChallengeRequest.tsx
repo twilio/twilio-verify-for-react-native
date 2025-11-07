@@ -1,15 +1,17 @@
-import React from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
   Text,
-  TextStyle,
+  type TextStyle,
   TouchableOpacity,
   View,
-  ViewStyle,
+  type ViewStyle,
 } from 'react-native';
 
-import { Challenge, ChallengeStatus } from '@twilio/twilio-verify-for-react-native';
+import {
+  type Challenge,
+  type ChallengeStatus,
+} from '@twilio/twilio-verify-for-react-native';
 import { Colors } from '../constants';
 import ChallengeComponent from './Challenge';
 
@@ -36,14 +38,14 @@ const ChallengeRequest = ({
         <ChallengeComponent
           challenge={challenge}
           styles={componentStyles}
-          isDetailview={true}
+          isDetailView={true}
         />
       </View>
-      {challenge.status === ChallengeStatus.Pending && (
+      {challenge.status === ('pending' as ChallengeStatus) && (
         <View style={styles.buttonsContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => onUpdate(ChallengeStatus.Approved)}
+            onPress={() => onUpdate('approved' as ChallengeStatus)}
             disabled={isSubmitting}
           >
             {isSubmitting ? (
@@ -54,7 +56,7 @@ const ChallengeRequest = ({
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => onUpdate(ChallengeStatus.Denied)}
+            onPress={() => onUpdate('denied' as ChallengeStatus)}
             disabled={isSubmitting}
           >
             {isSubmitting ? (

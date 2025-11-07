@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   StyleSheet,
   KeyboardAvoidingView,
@@ -13,8 +13,9 @@ import {
 import CheckBox from '@react-native-community/checkbox';
 
 import TwilioVerify, {
-  PushFactorPayload,
-  VerifyPushFactorPayload,
+  FactorType,
+  type PushFactorPayload,
+  type VerifyPushFactorPayload,
 } from '@twilio/twilio-verify-for-react-native';
 import { Colors } from '../constants';
 import type { ViewProps } from '../types';
@@ -41,18 +42,19 @@ export default function CreateFactor({
         }),
       });
       const json = await response.json();
-      let factor = await TwilioVerify.createFactor(
-        new PushFactorPayload(
-          `${identity}'s factor`,
-          json.serviceSid,
-          json.identity,
-          json.token,
-          enablePush ? global.deviceToken || '000000000000000000000000000000000000': null
-        )
-      );
-      factor = await TwilioVerify.verifyFactor(
-        new VerifyPushFactorPayload(factor.sid)
-      );
+      const pushFactorPayload: PushFactorPayload = {
+        friendlyName: `${identity}'s factor`,
+        serviceSid: json.serviceSid,
+        identity: json.identity,
+        accessToken: json.token,
+        factorType: FactorType.Push,
+      };
+      let factor = await TwilioVerify.createFactor(pushFactorPayload);
+      const verifyPayload: VerifyPushFactorPayload = {
+        sid: factor.sid,
+        factorType: FactorType.Push,
+      };
+      factor = await TwilioVerify.verifyFactor(verifyPayload);
       navigation.navigate('Factors', {
         message: `${factor.friendlyName} was created!`,
       });
@@ -64,8 +66,10 @@ export default function CreateFactor({
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+    >
       <TextInput
         style={styles.input}
         value={identity}
@@ -84,10 +88,11 @@ export default function CreateFactor({
       />
       <View style={styles.check}>
         <CheckBox
+          disabled={false}
           value={enablePush}
           onValueChange={(newValue) => setEnablePush(newValue)}
         />
-        <Text style={{paddingLeft:8}}>Enable push notifications</Text>
+        <Text style={styles.checkText}>Enable push notifications</Text>
       </View>
       <TouchableOpacity
         style={styles.button}
@@ -138,9 +143,13 @@ const styles = StyleSheet.create({
     color: Colors.white.default,
   },
   check: {
-    flexDirection:'row',
-    justifyContent:"flex-start",
-    alignItems:"center", width:"100%",
-    paddingVertical:10
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '100%',
+    paddingVertical: 10,
+  },
+  checkText: {
+    paddingLeft: 8,
   },
 });

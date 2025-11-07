@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.twilio.verify.reactnative
+package com.twilio.twilioverifyforreactnative
 
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Promise
@@ -58,7 +58,7 @@ class RNTwilioVerifyModule(
   }
 
   override fun getName(): String {
-    return "RNTwilioVerify"
+    return NAME
   }
 
   private fun initTwilioVerify(promise: Promise? = null) {
@@ -334,4 +334,8 @@ class RNTwilioVerifyModule(
     mapOrder(challengeListPayload.getString("order")) ?: Asc,
     challengeListPayload.getString("pageToken")
   )
+
+  companion object {
+    const val NAME = "RNTwilioVerify"
+  }
 }

@@ -1,5 +1,10 @@
-import React from 'react';
-import { View, Text, ViewStyle, TextStyle, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  type ViewStyle,
+  type TextStyle,
+  StyleSheet,
+} from 'react-native';
 
 import type { Challenge } from '@twilio/twilio-verify-for-react-native';
 
@@ -9,7 +14,7 @@ type ChallengeComponentProps = {
     view: ViewStyle;
     text: TextStyle;
   };
-  isDetailview?: boolean;
+  isDetailView?: boolean;
 };
 
 type ChallengeAdditionalInfoProps = {
@@ -35,11 +40,13 @@ const ChallengeAdditionalInfo = ({
                 Date: {challenge.challengeDetails.date.toLocaleString()}
               </Text>
             )}
-            {challenge.challengeDetails.fields.map((field, index) => (
-              <Text style={textStyle} key={index}>
-                {field.label + ': ' + field.value}
-              </Text>
-            ))}
+            {challenge.challengeDetails.fields.map(
+              (field: { label: string; value: string }, index: number) => (
+                <Text style={textStyle} key={index}>
+                  {field.label + ': ' + field.value}
+                </Text>
+              )
+            )}
           </View>
         </View>
       )}
@@ -50,7 +57,7 @@ const ChallengeAdditionalInfo = ({
 const ChallengeComponent = ({
   challenge,
   styles,
-  isDetailview = false,
+  isDetailView = false,
 }: ChallengeComponentProps) => {
   return (
     <View style={styles.view}>
@@ -65,7 +72,7 @@ const ChallengeComponent = ({
       <Text style={styles.text}>
         Expires on: {challenge.expirationDate.toLocaleString()}
       </Text>
-      {isDetailview && (
+      {isDetailView && (
         <ChallengeAdditionalInfo
           challenge={challenge}
           textStyle={styles.text}
