@@ -84,3 +84,9 @@ android/generated
 
 # React Native Nitro Modules
 nitrogen/
+
+# React Native bundles
+*.jsbundle
+*.bundle
+example/android/app/src/main/assets/
+example/ios/main.jsbundle
