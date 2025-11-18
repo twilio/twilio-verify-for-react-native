@@ -1,19 +1,24 @@
 {
   "name": "@twilio/twilio-verify-for-react-native-examples",
   "description": "Sample app for twilio-verify-for-react-native",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "android:release": "cd android && ./gradlew assembleRelease && cd .. && react-native run-android --variant release",
+    "android:clean-rebuild": "yarn clean:android && cd android && ./gradlew assembleDebug && cd .. && react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "build:android": "react-native build-android --extra-params \"--no-daemon --console=plain -PreactNativeArchitectures=arm64-v8a\"",
     "build:ios": "react-native build-ios --scheme TwilioVerifyForReactNativeExample --mode Debug --extra-params \"-sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO\"",
     "reset:cache": "react-native start --reset-cache --port 8081",
     "prepare:ios": "cd ios && bundle install && pod install && cd ..",
-    "bundle:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
-    "clean:ios": "cd ios && rm -rf Pods Podfile.lock && bundle install && pod install && cd ..",
-    "clean:android": "cd android && ./gradlew clean && cd .."
+    "prepare:android": "react-native bundle --platform android --dev true --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "prepare": "yarn prepare:ios && yarn prepare:android",
+    "clean:ios": "cd ios && rm -rf Pods Podfile.lock && cd ..",
+    "clean:android": "cd android && ./gradlew clean && cd .. && rm -rf node_modules && yarn",
+    "clean": "yarn clean:ios && yarn clean:android",
+    "doctor": "react-native doctor"
   },
   "dependencies": {
     "@futurejj/react-native-checkbox": "^1.0.5",

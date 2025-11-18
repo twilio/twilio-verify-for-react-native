@@ -1783,7 +1783,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.7.1)
-  - twilio-verify-for-react-native (0.4.1):
+  - twilio-verify-for-react-native (0.5.0):
     - React-Core
     - TwilioVerify (~> 3.0.1)
   - TwilioVerify (3.0.1)
@@ -2095,7 +2095,7 @@ SPEC CHECKSUMS:
   RNReanimated: 6a6d4cb1f5f1098303025003efb7848250f9b4d8
   RNScreens: b0691b7488fc428136a2e7abab32f751b01b2696
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  twilio-verify-for-react-native: 44b55f454e7b1c68b660d42155b389b466349d3f
+  twilio-verify-for-react-native: 962ea9ce2d7052b50369c2550d63d56beb3c065b
   TwilioVerify: 755ecb464834a0bd6ca6f8b4c56f61f679c1d500
   Yoga: e14bad835e12b6c7e2260fc320bd00e0f4b45add
 

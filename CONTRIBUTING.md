@@ -51,7 +51,7 @@ yarn test
 
 To edit the Swift files, open `example/ios/TwilioVerifyForReactNativeExample.xcworkspace` in XCode and find the source files at `Pods > Development Pods > twilio-verify-for-react-native`.
 
-To edit the Kotlin files, open `example/android` in Android studio and find the source files at `com.twilio.twilioverifyforreactnative` under `Android`.
+To edit the Kotlin files, open `example/android` in Android studio and find the source files at `com.twilio.verify.reactnative` under `Android`.
 
 ### Commit message convention
 

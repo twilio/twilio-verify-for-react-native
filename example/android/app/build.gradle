@@ -98,6 +98,9 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
     }
     signingConfigs {
         debug {
@@ -117,6 +120,13 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+    }
+    packagingOptions {
+        jniLibs {
+            // Esto fuerza el modo antiguo de empaquetado de .so, que a RN + SoLoader
+            // les sienta bien en algunas combinaciones de Gradle/AGP.
+            useLegacyPackaging = true
         }
     }
 }
