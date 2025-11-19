@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.twilio.twilioverifyforreactnative
+package com.twilio.verify.reactnative
 
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Promise

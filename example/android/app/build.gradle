@@ -91,9 +91,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "twilio.twilioverifyforreactnative.example"
+    namespace "com.twilio.verify.reactnative"
     defaultConfig {
-        applicationId "twilio.twilioverifyforreactnative.example"
+        applicationId "com.twilio.verify.reactnative"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -140,4 +140,5 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
 }
