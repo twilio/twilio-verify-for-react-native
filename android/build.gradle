@@ -51,7 +51,7 @@ def supportsNamespace() {
 
 android {
   if (supportsNamespace()) {
-    namespace "com.twilio.twilioverifyforreactnative"
+    namespace "com.twilio.verify.reactnative"
 
     sourceSets {
       main {
