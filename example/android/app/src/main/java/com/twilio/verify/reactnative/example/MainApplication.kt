@@ -49,10 +49,6 @@ class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
-    // 🔴 ANTES:
-    // SoLoader.init(this, false)
-
-    // 🟢 AHORA: inicializar con el merged mapping
     SoLoader.init(this, OpenSourceMergedSoMapping)
   }
 }

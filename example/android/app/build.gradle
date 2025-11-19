@@ -91,13 +91,13 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.twilio.verify.reactnative"
+    namespace "com.twilio.verify.reactnative.example"
     defaultConfig {
-        applicationId "com.twilio.verify.reactnative"
+        applicationId "com.twilio.verify.reactnative.example"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "0.5.0"
         ndk {
             abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
         }

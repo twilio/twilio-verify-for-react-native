@@ -1,4 +1,4 @@
-package twilio.twilioverifyforreactnative.example
+package com.twilio.verify.reactnative.example
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
