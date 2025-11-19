@@ -19,9 +19,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
-      android:name="com.twilio.verify.reactnative.example.MainApplication"
+      android:name="com.twilio.verify.reactnative.MainApplication"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round"
@@ -34,7 +35,7 @@
         android:value="true"/>
 
       <activity
-        android:name=".MainActivity"
+        android:name="com.twilio.verify.reactnative.MainApplication"
         android:label="@string/app_name"
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
         android:launchMode="singleTask"

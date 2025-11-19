@@ -25,6 +25,9 @@
     </base-config>
     
     <!-- Domain-specific configuration -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">10.0.2.2</domain>
+    </domain-config>
     <domain-config>
         <!-- Configure for all domains -->
         <domain includeSubdomains="true">.</domain>
