@@ -49,7 +49,7 @@ Remember to add tests for your change if possible. Run the unit tests by:
 yarn test
 ```
 
-To edit the Objective-C files, open `example/ios/RNTwilioVerifyExample.xcworkspace` in XCode and find the source files at `Pods > Development Pods > twilio-verify-for-react-native`.
+To edit the Swift files, open `example/ios/TwilioVerifyForReactNativeExample.xcworkspace` in XCode and find the source files at `Pods > Development Pods > twilio-verify-for-react-native`.
 
 To edit the Kotlin files, open `example/android` in Android studio and find the source files at `com.twilio.verify.reactnative` under `Android`.
 
@@ -139,7 +139,7 @@ This Code of Conduct applies within all community spaces, and also applies when 
 
 ### Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement at [INSERT CONTACT METHOD]. All complaints will be reviewed and investigated promptly and fairly.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement at open-source@twilio.com. All complaints will be reviewed and investigated promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of the reporter of any incident.
 

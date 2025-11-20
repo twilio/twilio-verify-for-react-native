@@ -1,33 +1,48 @@
-import 'react-native-gesture-handler';
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ */
 
-import * as React from 'react';
-import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native';
 import {
-  createStackNavigator,
-  StackNavigationOptions,
-} from '@react-navigation/stack';
-import { Alert } from 'react-native';
-import TwilioVerify from '@twilio/twilio-verify-for-react-native';
-
-import { Colors } from './constants';
-import type { RootStackParamList } from './types';
-import CreateFactor from './views/CreateFactor';
+  createNativeStackNavigator,
+  type NativeStackNavigationOptions,
+} from '@react-navigation/native-stack';
+import { Colors } from './constants/Colors';
+import {
+  createNavigationContainerRef,
+  NavigationContainer,
+} from '@react-navigation/native';
 import Factors from './views/Factors';
-import Factor from './views/Factor';
-import Challenge from './views/Challenge';
+import { type RootStackParamList } from './types';
 import NotificationService from './push/NotificationService';
-import type { ReceivedNotification } from 'react-native-push-notification';
+import { type ReceivedNotification } from 'react-native-push-notification';
+import { Alert } from 'react-native';
+import TwilioVerify, {
+  type Factor,
+} from '@twilio/twilio-verify-for-react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import FactorView from './views/Factor';
+import ChallengeView from './views/Challenge';
+import CreateFactor from './views/CreateFactor';
 
-const Stack = createStackNavigator<RootStackParamList>();
-const screenOptions: StackNavigationOptions = {
+declare global {
+  var deviceToken: string;
+}
+
+const screenOptions: NativeStackNavigationOptions = {
   headerTitle: 'TwilioVerify',
   headerStyle: {
     backgroundColor: Colors.blue.default,
   },
   headerTintColor: Colors.white.default,
-  headerBackTitleVisible: false,
+  headerBackButtonDisplayMode: 'minimal',
 };
-const navigationRef = React.createRef<NavigationContainerRef>();
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
 const showChallenge = async (payload: Record<string, any>) => {
   const challengeSid = payload.challenge_sid;
@@ -36,42 +51,68 @@ const showChallenge = async (payload: Record<string, any>) => {
   if (type === 'verify_push_challenge' && factorSid && challengeSid) {
     try {
       const factors = await TwilioVerify.getAllFactors();
-      const factor = factors.find(factor => factor.sid === factorSid);
+      const factor: Factor | undefined = factors.find(
+        (f: Factor) => f.sid === factorSid
+      );
       if (factor) {
-        navigationRef.current?.navigate('Challenge', { factor, challengeSid: challengeSid });
+        navigationRef.current?.navigate('Challenge', {
+          factor,
+          challengeSid: challengeSid,
+        });
       }
     } catch (error) {
       console.error('Failed to get factors:', error);
       Alert.alert('Error', 'Failed to load factor information');
     }
   }
-}
+};
 
 const onRegister = (deviceToken: { os: string; token: string }) => {
-  global.deviceToken = deviceToken.token
-}
+  globalThis.deviceToken = deviceToken.token;
+};
 
-
-const onNotification = (notification: Omit<ReceivedNotification, "userInfo">) => {
+const onNotification = (
+  notification: Omit<ReceivedNotification, 'userInfo'>
+) => {
   if (notification.userInteraction || notification.foreground) {
-    showChallenge(notification.data)
+    showChallenge(notification.data);
   } else {
-    notificationService.localNotification(notification.data)
+    notificationService.localNotification(notification.data);
   }
-}
+};
 
 const notificationService = new NotificationService(onRegister, onNotification);
 
 export default function App() {
-
   return (
-    <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator initialRouteName="Factors" screenOptions={screenOptions}>
-        <Stack.Screen name="Factors" component={Factors} />
-        <Stack.Screen name="CreateFactor" component={CreateFactor} />
-        <Stack.Screen name="Factor" component={Factor} />
-        <Stack.Screen name="Challenge" component={Challenge} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <GestureHandlerRootView>
+      <NavigationContainer ref={navigationRef}>
+        <Stack.Navigator
+          initialRouteName="Factors"
+          screenOptions={screenOptions}
+        >
+          <Stack.Screen
+            name="Factors"
+            options={{ title: 'Factors' }}
+            component={Factors}
+          />
+          <Stack.Screen
+            name="Factor"
+            options={{ title: 'Factor' }}
+            component={FactorView}
+          />
+          <Stack.Screen
+            name="Challenge"
+            options={{ title: 'Challenge' }}
+            component={ChallengeView}
+          />
+          <Stack.Screen
+            name="CreateFactor"
+            options={{ title: 'Create Factor' }}
+            component={CreateFactor}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }

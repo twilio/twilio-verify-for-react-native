@@ -58,7 +58,7 @@ class RNTwilioVerifyModule(
   }
 
   override fun getName(): String {
-    return "RNTwilioVerify"
+    return NAME
   }
 
   private fun initTwilioVerify(promise: Promise? = null) {
@@ -334,4 +334,8 @@ class RNTwilioVerifyModule(
     mapOrder(challengeListPayload.getString("order")) ?: Asc,
     challengeListPayload.getString("pageToken")
   )
+
+  companion object {
+    const val NAME = "RNTwilioVerify"
+  }
 }

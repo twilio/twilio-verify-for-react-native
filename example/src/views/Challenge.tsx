@@ -1,11 +1,11 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import TwilioVerify, {
   Challenge,
   ChallengeStatus,
-  UpdatePushChallengePayload,
+  type UpdatePushChallengePayload,
 } from '@twilio/twilio-verify-for-react-native';
 import type { ViewProps } from '../types';
 import { Colors } from '../constants';
@@ -26,7 +26,10 @@ const ChallengeView = ({ route }: ViewProps<'Challenge'>) => {
       setIsLoading(true);
       (async function getChallenge() {
         try {
-          const challengeData = await TwilioVerify.getChallenge(challengeSid, factor.sid);
+          const challengeData = await TwilioVerify.getChallenge(
+            challengeSid,
+            factor.sid
+          );
           setChallenge(challengeData);
         } catch (error) {
           console.error('Failed to get challenge:', error);
@@ -41,11 +44,12 @@ const ChallengeView = ({ route }: ViewProps<'Challenge'>) => {
   const updateChallenge = async (status: ChallengeStatus) => {
     try {
       setIsSubmitting(true);
-      const updateChallengePayload = new UpdatePushChallengePayload(
-        factor.sid,
-        challengeSid,
-        status
-      );
+      const updateChallengePayload: UpdatePushChallengePayload = {
+        factorSid: factor.sid,
+        challengeSid: challengeSid,
+        status: status,
+        factorType: factor.type,
+      };
       await TwilioVerify.updateChallenge(updateChallengePayload);
 
       Alert.alert('Message', `Challenge was ${status}`);
@@ -54,7 +58,10 @@ const ChallengeView = ({ route }: ViewProps<'Challenge'>) => {
       Alert.alert('Error', JSON.stringify(error));
     } finally {
       try {
-        const updatedChallenge = await TwilioVerify.getChallenge(challengeSid, factor.sid);
+        const updatedChallenge = await TwilioVerify.getChallenge(
+          challengeSid,
+          factor.sid
+        );
         setChallenge(updatedChallenge);
       } catch (error) {
         console.error('Failed to refresh challenge after update:', error);

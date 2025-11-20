@@ -1,11 +1,10 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Alert, FlatList, StyleSheet, Text, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import TwilioVerify, {
   Challenge,
-  ChallengeListPayload,
-  ChallengeListOrder
+  ChallengeListOrder,
 } from '@twilio/twilio-verify-for-react-native';
 import type { ViewProps } from '../types';
 import FactorComponent from '../components/Factor';
@@ -21,9 +20,12 @@ const Factor = ({ route, navigation }: ViewProps<'Factor'>) => {
     if (isFocused) {
       (async function getChallenges() {
         try {
-          const challengeList = await TwilioVerify.getAllChallenges(
-            new ChallengeListPayload(factor.sid, 20, null, ChallengeListOrder.Desc)
-          );
+          const challengeList = await TwilioVerify.getAllChallenges({
+            factorSid: factor.sid,
+            pageSize: 20,
+            pageToken: undefined,
+            order: 'desc' as ChallengeListOrder,
+          });
           setChallenges(challengeList.challenges);
         } catch (error) {
           console.error('Failed to get challenges:', error);
@@ -41,8 +43,8 @@ const Factor = ({ route, navigation }: ViewProps<'Factor'>) => {
     <View style={styles.container}>
       <FactorComponent factor={factor} styles={factorStyles} />
       <Fragment>
-          <Text style={styles.challengesTitle}>Challenges</Text>
-      {challenges.length > 0 && (
+        <Text style={styles.challengesTitle}>Challenges</Text>
+        {challenges.length > 0 && (
           <FlatList
             data={challenges}
             renderItem={({ item }) => (
@@ -50,7 +52,7 @@ const Factor = ({ route, navigation }: ViewProps<'Factor'>) => {
             )}
             keyExtractor={(item) => item.sid}
           />
-      )}
+        )}
       </Fragment>
     </View>
   );

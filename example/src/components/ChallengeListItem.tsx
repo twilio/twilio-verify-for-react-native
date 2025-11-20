@@ -1,6 +1,4 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Pressable, StyleSheet } from 'react-native';
 
 import type { Challenge } from '@twilio/twilio-verify-for-react-native';
 import { Colors } from '../constants';
@@ -13,9 +11,9 @@ type ChallengeListItemProps = {
 
 const ChallengeListItem = ({ item, onPress }: ChallengeListItemProps) => {
   return (
-    <TouchableOpacity onPress={() => onPress(item)} style={styles.container}>
+    <Pressable onPress={() => onPress(item)} style={styles.container}>
       <ChallengeComponent challenge={item} styles={challengeComponentStyles} />
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

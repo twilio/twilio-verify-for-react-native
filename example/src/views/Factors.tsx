@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   FlatList,
   TouchableOpacity,
@@ -10,9 +10,9 @@ import {
 import { useIsFocused } from '@react-navigation/native';
 
 import TwilioVerify, { Factor } from '@twilio/twilio-verify-for-react-native';
-import { Colors } from '../constants';
 import type { ViewProps } from '../types';
 import FactorListItem from '../components/FactorListItem';
+import { Colors } from '../constants';
 
 const Factors = ({ route, navigation }: ViewProps<'Factors'>) => {
   const [factors, setFactors] = useState<Factor[]>([]);
@@ -35,7 +35,10 @@ const Factors = ({ route, navigation }: ViewProps<'Factors'>) => {
         } catch (error) {
           console.error('Failed to get factors:', error);
           const twilioVerifyAvailable = await TwilioVerify.isAvailable();
-          Alert.alert('Error', `Failed to load factors. Twilio verify available: ${twilioVerifyAvailable}`);
+          Alert.alert(
+            'Error',
+            `Failed to load factors. Twilio verify available: ${twilioVerifyAvailable}`
+          );
         }
       })();
     }
@@ -73,7 +76,11 @@ const Factors = ({ route, navigation }: ViewProps<'Factors'>) => {
       <FlatList
         data={factors}
         renderItem={({ item }) => (
-          <FactorListItem item={item} onPress={onFactorItemPress} onDelete={onFactorDeletePress} />
+          <FactorListItem
+            item={item}
+            onPress={onFactorItemPress}
+            onDelete={onFactorDeletePress}
+          />
         )}
         keyExtractor={(item) => item.sid}
       />

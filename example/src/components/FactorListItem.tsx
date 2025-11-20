@@ -1,11 +1,9 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 
 import type { Factor } from '@twilio/twilio-verify-for-react-native';
 import { Colors } from '../constants';
 import FactorComponent from './Factor';
-import Swipeout from 'react-native-swipeout';
 
 type FactorListItemProps = {
   item: Factor;
@@ -14,20 +12,22 @@ type FactorListItemProps = {
 };
 
 const FactorListItem = ({ item, onPress, onDelete }: FactorListItemProps) => {
-  const swipeBtns = [{
-    text: 'Delete',
-    backgroundColor: 'red',
-    underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-    onPress: () => { onDelete(item) },
-    autoClose: true
-  }];
+  const renderRightAction = () => {
+    return (
+      <View style={styles.deleteAction}>
+        <Pressable style={styles.deleteButton} onPress={() => onDelete(item)}>
+          <Text style={styles.deleteText}>Delete</Text>
+        </Pressable>
+      </View>
+    );
+  };
+
   return (
-    <Swipeout right={swipeBtns}
-        backgroundColor= 'transparent'>
-      <TouchableOpacity onPress={() => onPress(item)} style={styles.container}>
+    <Swipeable renderRightActions={renderRightAction}>
+      <Pressable onPress={() => onPress(item)} style={styles.container}>
         <FactorComponent factor={item} styles={factorComponentStyles} />
-      </TouchableOpacity>
-    </Swipeout>
+      </Pressable>
+    </Swipeable>
   );
 };
 
@@ -35,6 +35,23 @@ const styles = StyleSheet.create({
   container: {
     borderBottomColor: Colors.black.default,
     borderBottomWidth: 0.5,
+  },
+  deleteAction: {
+    flex: 1,
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  deleteButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 80,
+    height: '100%',
+  },
+  deleteText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
