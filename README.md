@@ -68,23 +68,26 @@ While the iOS Keychain is designed to securely manage cryptographic keys (and is
 ```js
 import TwilioVerify, {
   PushFactorPayload,
+  FactorType,
 } from '@twilio/twilio-verify-for-react-native';
 
-let factor = await TwilioVerify.createFactor(
-  new PushFactorPayload(
-    factorName,
-    verifyServiceSid,
-    identity,
-    accessToken,
-    pushToken
-  )
-);
+let factor = await TwilioVerify.createFactor({
+  friendlyName: factorName,
+  serviceSid: verifyServiceSid,
+  identity: identity,
+  accessToken: accessToken,
+  pushToken: pushToken,
+  factorType: FactorType.Push,
+});
 ```
 
 ### Verify factor
 
 ```js
-await TwilioVerify.verifyFactor(new VerifyPushFactorPayload(factor.sid));
+await TwilioVerify.verifyFactor({
+  sid: factor.sid,
+  factorType: FactorType.Push,
+});
 ```
 
 ### Get challenge
@@ -96,9 +99,12 @@ let challenge = await TwilioVerify.getChallenge(challengeSid, factorSid);
 ### Update challenge
 
 ```js
-await TwilioVerify.updateChallenge(
-  new UpdatePushChallengePayload(factorSid, challengeSid, newStatus)
-);
+await TwilioVerify.updateChallenge({
+  factorSid: factorSid,
+  challengeSid: challengeSid,
+  status: newStatus,
+  factorType: FactorType.Push,
+});
 ```
 
 ### Get factors
@@ -110,14 +116,12 @@ let factors = await TwilioVerify.getAllFactors();
 ### Get challenges
 
 ```js
-let challenges = await TwilioVerify.getAllChallenges(
-  new ChallengeListPayload(
-    factorSid,
-    10,
-    ChallengeStatus.Pending,
-    ChallengeListOrder.Desc
-  )
-);
+let challenges = await TwilioVerify.getAllChallenges({
+  factorSid: factorSid,
+  pageSize: 10,
+  status: ChallengeStatus.Pending,
+  order: ChallengeListOrder.Desc,
+});
 ```
 
 ### Delete factor

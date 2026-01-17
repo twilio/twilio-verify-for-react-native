@@ -3,12 +3,6 @@
 // This file is licensed under the Apache License 2.0.
 // License text available at https://github.com/twilio/twilio-verify-for-react-native/blob/main/LICENSE
 
-import { FactorType } from './FactorType';
 import type { VerifyFactorPayload } from './VerifyFactorPayload';
 
-export class VerifyPushFactorPayload implements VerifyFactorPayload {
-  factorType: FactorType;
-  constructor(public sid: string) {
-    this.factorType = FactorType.Push;
-  }
-}
+export interface VerifyPushFactorPayload extends VerifyFactorPayload {}
