@@ -4,8 +4,17 @@
 // License text available at https://github.com/twilio/twilio-verify-for-react-native/blob/main/LICENSE
 
 import type { FactorPayload } from './FactorPayload';
+import { FactorType } from './FactorType';
 
-export interface PushFactorPayload extends FactorPayload {
-  accessToken: string;
-  pushToken?: string;
+export class PushFactorPayload implements FactorPayload {
+  factorType: FactorType;
+  constructor(
+    public friendlyName: string,
+    public serviceSid: string,
+    public identity: string,
+    public accessToken: string,
+    public pushToken?: string
+  ) {
+    this.factorType = FactorType.Push;
+  }
 }

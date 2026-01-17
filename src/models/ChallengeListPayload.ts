@@ -5,12 +5,14 @@
 
 import type { ChallengeStatus } from './Challenge';
 
-export interface ChallengeListPayload {
-  factorSid: string;
-  pageSize: number;
-  status?: ChallengeStatus;
-  order?: ChallengeListOrder;
-  pageToken?: string;
+export class ChallengeListPayload {
+  constructor(
+    public factorSid: string,
+    public pageSize: number,
+    public status?: ChallengeStatus,
+    public order: ChallengeListOrder = ChallengeListOrder.Asc,
+    public pageToken?: string
+  ) {}
 }
 
 export enum ChallengeListOrder {
