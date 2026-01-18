@@ -5,8 +5,20 @@
 
 import type { FactorType } from './FactorType';
 
+/**
+ * Base interface for challenge update payloads.
+ *
+ * This interface defines the common properties required to update any type of challenge.
+ * Specific implementations (like UpdatePushChallengePayload) extend this with additional
+ * challenge-type-specific properties such as the status.
+ */
 export interface UpdateChallengePayload {
+  /** The unique identifier (SID) of the factor associated with the challenge. Format: YFXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
   factorSid: string;
+
+  /** The unique identifier (SID) of the challenge to update. Format: YCXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
   challengeSid: string;
+
+  /** The type of factor (e.g., FactorType.Push) */
   factorType: FactorType;
 }
