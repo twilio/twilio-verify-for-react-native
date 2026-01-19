@@ -5,7 +5,18 @@
 
 import type { FactorType } from './FactorType';
 
+/**
+ * Base interface for factor verification payloads.
+ *
+ * This interface defines the common properties required to verify any type of factor.
+ * After creating a factor, it must be verified to confirm device ownership and
+ * complete the registration process. Specific implementations (like VerifyPushFactorPayload)
+ * extend this interface.
+ */
 export interface VerifyFactorPayload {
+  /** The unique identifier (SID) of the factor to verify. Format: YFXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX */
   sid: string;
+
+  /** The type of factor (e.g., FactorType.Push) */
   factorType: FactorType;
 }

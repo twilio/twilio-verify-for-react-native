@@ -18,12 +18,12 @@ export type {
   Detail,
 } from './models/Challenge';
 export type { ChallengeList, Metadata } from './models/ChallengeList';
-export type { PushFactorPayload } from './models/PushFactorPayload';
-export type { VerifyPushFactorPayload } from './models/VerifyPushFactorPayload';
-export type { UpdatePushFactorPayload } from './models/UpdatePushFactorPayload';
-export type {
+export { PushFactorPayload } from './models/PushFactorPayload';
+export { VerifyPushFactorPayload } from './models/VerifyPushFactorPayload';
+export { UpdatePushFactorPayload } from './models/UpdatePushFactorPayload';
+export {
   ChallengeListPayload,
   ChallengeListOrder,
 } from './models/ChallengeListPayload';
-export type { UpdatePushChallengePayload } from './models/UpdatePushChallengePayload';
+export { UpdatePushChallengePayload } from './models/UpdatePushChallengePayload';
 export { FactorType } from './models/FactorType';
