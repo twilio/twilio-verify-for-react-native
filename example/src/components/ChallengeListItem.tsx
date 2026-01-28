@@ -1,7 +1,18 @@
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, View, Text } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 
 import type { Challenge } from '@twilio/twilio-verify-for-react-native';
-import { Colors } from '../constants';
+import {
+  Colors,
+  Shadows,
+  Spacing,
+  BorderRadius,
+  Typography,
+} from '../constants';
 import ChallengeComponent from './Challenge';
 
 type ChallengeListItemProps = {
@@ -10,27 +21,75 @@ type ChallengeListItemProps = {
 };
 
 const ChallengeListItem = ({ item, onPress }: ChallengeListItemProps) => {
+  const pressed = useSharedValue(false);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        scale: withSpring(pressed.value ? 0.98 : 1, {
+          damping: 15,
+          stiffness: 150,
+        }),
+      },
+    ],
+  }));
+
   return (
-    <Pressable onPress={() => onPress(item)} style={styles.container}>
-      <ChallengeComponent challenge={item} styles={challengeComponentStyles} />
-    </Pressable>
+    <Animated.View style={[styles.wrapper, animatedStyle]}>
+      <Pressable
+        onPress={() => onPress(item)}
+        onPressIn={() => (pressed.value = true)}
+        onPressOut={() => (pressed.value = false)}
+        style={styles.container}
+      >
+        <View style={styles.cardContent}>
+          <ChallengeComponent
+            challenge={item}
+            styles={challengeComponentStyles}
+          />
+          <View style={styles.chevron}>
+            <Text style={styles.chevronText}>›</Text>
+          </View>
+        </View>
+      </Pressable>
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
+  wrapper: {
+    marginHorizontal: Spacing.md,
+    marginVertical: Spacing.sm,
+  },
   container: {
-    borderBottomColor: Colors.black.default,
-    borderBottomWidth: 0.5,
+    backgroundColor: Colors.background.primary,
+    borderRadius: BorderRadius.lg,
+    ...Shadows.small,
+  },
+  cardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.md,
+  },
+  chevron: {
+    marginLeft: Spacing.sm,
+  },
+  chevronText: {
+    fontSize: 32,
+    color: Colors.text.tertiary,
+    fontWeight: Typography.fontWeight.regular,
   },
 });
 
 const challengeComponentStyles = StyleSheet.create({
   view: {
-    marginVertical: 5,
-    marginHorizontal: 8,
+    flex: 1,
   },
   text: {
-    fontSize: 20,
+    fontSize: Typography.fontSize.md,
+    color: Colors.text.primary,
   },
 });
 

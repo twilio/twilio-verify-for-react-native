@@ -1,17 +1,47 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 
 import type { Factor } from '@twilio/twilio-verify-for-react-native';
-import { Colors } from '../constants';
+import {
+  Colors,
+  Shadows,
+  Spacing,
+  BorderRadius,
+  Typography,
+} from '../constants';
 import FactorComponent from './Factor';
 
 type FactorListItemProps = {
   item: Factor;
   onPress: (factor: Factor) => void;
   onDelete: (factor: Factor) => void;
+  pendingChallenges?: number;
 };
 
-const FactorListItem = ({ item, onPress, onDelete }: FactorListItemProps) => {
+const FactorListItem = ({
+  item,
+  onPress,
+  onDelete,
+  pendingChallenges = 0,
+}: FactorListItemProps) => {
+  const pressed = useSharedValue(false);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        scale: withSpring(pressed.value ? 0.98 : 1, {
+          damping: 15,
+          stiffness: 150,
+        }),
+      },
+    ],
+  }));
+
   const renderRightAction = () => {
     return (
       <View style={styles.deleteAction}>
@@ -24,44 +54,107 @@ const FactorListItem = ({ item, onPress, onDelete }: FactorListItemProps) => {
 
   return (
     <Swipeable renderRightActions={renderRightAction}>
-      <Pressable onPress={() => onPress(item)} style={styles.container}>
-        <FactorComponent factor={item} styles={factorComponentStyles} />
-      </Pressable>
+      <Animated.View style={[styles.wrapper, animatedStyle]}>
+        <Pressable
+          onPress={() => onPress(item)}
+          onPressIn={() => (pressed.value = true)}
+          onPressOut={() => (pressed.value = false)}
+          style={styles.container}
+        >
+          <View style={styles.cardContent}>
+            <FactorComponent factor={item} styles={factorComponentStyles} />
+            <View style={styles.rightSection}>
+              {pendingChallenges > 0 && (
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>{pendingChallenges}</Text>
+                </View>
+              )}
+              <View style={styles.chevron}>
+                <Text style={styles.chevronText}>›</Text>
+              </View>
+            </View>
+          </View>
+        </Pressable>
+      </Animated.View>
     </Swipeable>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    borderBottomColor: Colors.black.default,
-    borderBottomWidth: 0.5,
+  wrapper: {
+    marginHorizontal: Spacing.md,
+    marginVertical: Spacing.sm,
   },
-  deleteAction: {
-    flex: 1,
-    backgroundColor: 'red',
+  container: {
+    backgroundColor: Colors.background.primary,
+    borderRadius: BorderRadius.lg,
+    ...Shadows.small,
+  },
+  cardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.md,
+  },
+  rightSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+  },
+  badge: {
+    backgroundColor: Colors.primary.main,
+    borderRadius: BorderRadius.full,
+    minWidth: 24,
+    minHeight: 24,
+    paddingHorizontal: Spacing.xs,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  badgeText: {
+    color: Colors.text.inverse,
+    fontSize: Typography.fontSize.xs,
+    fontWeight: Typography.fontWeight.bold,
+  },
+  chevron: {
+    marginLeft: Spacing.sm,
+  },
+  chevronText: {
+    fontSize: 32,
+    color: Colors.text.tertiary,
+    fontWeight: Typography.fontWeight.regular,
+  },
+  deleteAction: {
+    backgroundColor: Colors.error.main,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderTopRightRadius: BorderRadius.lg,
+    borderBottomRightRadius: BorderRadius.lg,
+    marginVertical: Spacing.sm,
+    marginRight: Spacing.md,
   },
   deleteButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 80,
+    width: 88,
     height: '100%',
+    paddingHorizontal: Spacing.md,
   },
   deleteText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: Colors.text.inverse,
+    fontSize: Typography.fontSize.md,
+    fontWeight: Typography.fontWeight.semibold,
   },
 });
 
 const factorComponentStyles = StyleSheet.create({
   view: {
-    marginVertical: 5,
-    marginHorizontal: 8,
+    flex: 1,
   },
   text: {
-    fontSize: 20,
+    fontSize: Typography.fontSize.md,
+    color: Colors.text.primary,
+    marginBottom: Spacing.xs,
   },
 });
 
