@@ -1,6 +1,22 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * Twilio Verify React Native - Example App
+ *
+ * This app demonstrates how to implement push-based two-factor authentication
+ * using the Twilio Verify SDK for React Native.
+ *
+ * Navigation Structure:
+ * - Factors: List of all verification factors on this device
+ * - Factor: Details of a single factor + its challenges
+ * - Challenge: Approve/Deny a specific authentication challenge
+ * - CreateFactor: Form to create a new verification factor
+ *
+ * Push Notification Flow:
+ * 1. User creates a factor (registers device)
+ * 2. Backend sends authentication challenge via Twilio API
+ * 3. Device receives push notification
+ * 4. User opens notification → navigates to Challenge screen
+ * 5. User approves/denies → response sent back to Twilio
+ * 6. Backend receives webhook with result
  *
  * @format
  */
@@ -32,18 +48,34 @@ declare global {
 }
 
 const screenOptions: NativeStackNavigationOptions = {
-  headerTitle: 'TwilioVerify',
+  headerTitle: 'Twilio Verify',
   headerStyle: {
-    backgroundColor: Colors.blue.default,
+    backgroundColor: Colors.primary.main,
   },
-  headerTintColor: Colors.white.default,
+  headerTintColor: Colors.text.inverse,
   headerBackButtonDisplayMode: 'minimal',
+  headerTitleStyle: {
+    fontWeight: '600',
+  },
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
+/**
+ * Handles incoming push notification with a challenge
+ *
+ * When Twilio sends a push challenge, the notification payload contains:
+ * - challenge_sid: The challenge's unique identifier
+ * - factor_sid: The factor's unique identifier
+ * - type: 'verify_push_challenge'
+ *
+ * This function:
+ * 1. Extracts the challenge and factor SIDs from the notification
+ * 2. Finds the matching factor in local storage
+ * 3. Navigates to the Challenge screen to show the approval UI
+ */
 const showChallenge = async (payload: Record<string, any>) => {
   const challengeSid = payload.challenge_sid;
   const factorSid = payload.factor_sid;

@@ -1,6 +1,8 @@
 import { Fragment, useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, StyleSheet, View, Text } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import TwilioVerify, {
   Challenge,
@@ -8,12 +10,17 @@ import TwilioVerify, {
   type UpdatePushChallengePayload,
 } from '@twilio/twilio-verify-for-react-native';
 import type { ViewProps } from '../types';
-import { Colors } from '../constants';
+import {
+  Colors,
+  Shadows,
+  Spacing,
+  BorderRadius,
+  Typography,
+} from '../constants';
 import FactorComponent from '../components/Factor';
 import ChallengeRequest from '../components/ChallengeRequest';
-import { ScrollView } from 'react-native-gesture-handler';
 
-const ChallengeView = ({ route }: ViewProps<'Challenge'>) => {
+const ChallengeView = ({ route, navigation }: ViewProps<'Challenge'>) => {
   const [challenge, setChallenge] = useState<Challenge>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -41,6 +48,26 @@ const ChallengeView = ({ route }: ViewProps<'Challenge'>) => {
     }
   }, [isFocused, challengeSid, factor]);
 
+  /**
+   * Updates a challenge status (Approve or Deny)
+   *
+   * TwilioVerify.updateChallenge() sends the user's response to Twilio Verify.
+   *
+   * Process:
+   * 1. User taps Approve or Deny button
+   * 2. SDK sends the response to Twilio
+   * 3. Twilio validates the response and updates the challenge
+   * 4. Your backend receives a webhook notification with the result
+   *
+   * Parameters:
+   * - factorSid: The factor's unique identifier
+   * - challengeSid: The challenge's unique identifier
+   * - status: 'approved' or 'denied'
+   * - factorType: Type of factor (Push)
+   *
+   * Important: After updating, always fetch the latest challenge state
+   * to reflect any changes (e.g., status, updatedAt timestamp)
+   */
   const updateChallenge = async (status: ChallengeStatus) => {
     try {
       setIsSubmitting(true);
@@ -52,12 +79,18 @@ const ChallengeView = ({ route }: ViewProps<'Challenge'>) => {
       };
       await TwilioVerify.updateChallenge(updateChallengePayload);
 
-      Alert.alert('Message', `Challenge was ${status}`);
+      Alert.alert('Success', `Challenge has been ${status}`, [
+        {
+          text: 'OK',
+          onPress: () => navigation.goBack(),
+        },
+      ]);
     } catch (error) {
       console.error('Failed to update challenge:', error);
       Alert.alert('Error', JSON.stringify(error));
     } finally {
       try {
+        // Refresh challenge to get updated status
         const updatedChallenge = await TwilioVerify.getChallenge(
           challengeSid,
           factor.sid
@@ -71,60 +104,93 @@ const ChallengeView = ({ route }: ViewProps<'Challenge'>) => {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         {isLoading ? (
-          <ActivityIndicator size="large" color={Colors.blue.default} />
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={Colors.primary.main} />
+            <Text style={styles.loadingText}>Loading challenge...</Text>
+          </View>
         ) : (
           <Fragment>
-            <FactorComponent factor={factor} styles={factorStyles} />
+            <Animated.View
+              entering={FadeInDown.duration(400)}
+              style={styles.factorCard}
+            >
+              <Text style={styles.sectionTitle}>Factor Information</Text>
+              <FactorComponent factor={factor} styles={factorStyles} />
+            </Animated.View>
             {challenge && (
-              <ChallengeRequest
-                challenge={challenge}
-                componentStyles={challengeComponentStyles}
-                isSubmitting={isSubmitting}
-                onUpdate={updateChallenge}
-              />
+              <Animated.View entering={FadeInDown.delay(200).duration(400)}>
+                <ChallengeRequest
+                  challenge={challenge}
+                  componentStyles={challengeComponentStyles}
+                  isSubmitting={isSubmitting}
+                  onUpdate={updateChallenge}
+                />
+              </Animated.View>
             )}
           </Fragment>
         )}
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
 const factorStyles = StyleSheet.create({
   view: {
-    marginVertical: 5,
-    marginHorizontal: 8,
+    paddingVertical: Spacing.sm,
   },
   text: {
-    fontSize: 20,
+    fontSize: Typography.fontSize.md,
   },
 });
 
 const challengeComponentStyles = StyleSheet.create({
   view: {
-    marginVertical: 5,
-    marginHorizontal: 8,
+    paddingVertical: Spacing.sm,
   },
   text: {
-    fontSize: 20,
+    fontSize: Typography.fontSize.md,
   },
 });
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 10,
-    paddingHorizontal: 10,
-    paddingBottom: 30,
+    backgroundColor: Colors.background.secondary,
   },
-  challengesTitle: {
-    alignSelf: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
+  scrollContent: {
+    flexGrow: 1,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.lg,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: Spacing.xxl,
+  },
+  loadingText: {
+    marginTop: Spacing.md,
+    fontSize: Typography.fontSize.md,
+    color: Colors.text.secondary,
+  },
+  factorCard: {
+    backgroundColor: Colors.background.primary,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.lg,
+    marginBottom: Spacing.lg,
+    ...Shadows.small,
+  },
+  sectionTitle: {
+    fontSize: Typography.fontSize.lg,
+    fontWeight: Typography.fontWeight.semibold,
+    color: Colors.text.primary,
+    marginBottom: Spacing.md,
   },
 });
 
