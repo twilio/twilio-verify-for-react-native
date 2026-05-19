@@ -12,7 +12,13 @@ import type { UpdateChallengePayload } from './models/UpdateChallengePayload';
 import type { ChallengeListPayload } from './models/ChallengeListPayload';
 import type { ChallengeList } from './models/ChallengeList';
 
+export enum KeychainQueryMode {
+  Strict = 'strict',
+  Legacy = 'legacy',
+}
+
 export type TwilioVerifyType = {
+  configure(options: { keychainQueryMode?: KeychainQueryMode }): Promise<void>;
   createFactor(factorPayload: FactorPayload): Promise<Factor>;
   verifyFactor(verifyFactorPayload: VerifyFactorPayload): Promise<Factor>;
   updateFactor(updateFactorPayload: UpdateFactorPayload): Promise<Factor>;

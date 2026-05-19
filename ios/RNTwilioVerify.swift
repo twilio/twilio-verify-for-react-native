@@ -21,14 +21,44 @@ import TwilioVerifySDK
 
 @objc(RNTwilioVerify)
 class RNTwilioVerify: NSObject {
-    
-    let twilioVerify: TwilioVerify? = try? TwilioVerifyBuilder().build()
+
+    private var twilioVerify: TwilioVerify?
+    private var queryMode: String? = nil
+
+    private func getOrBuildTwilioVerify() -> TwilioVerify? {
+        if let instance = twilioVerify {
+            return instance
+        }
+        var builder = TwilioVerifyBuilder()
+        if let mode = queryMode {
+            switch mode {
+            case "strict":
+                builder = builder.setQueryMode(.strict)
+            case "legacy":
+                builder = builder.setQueryMode(.legacy)
+            default:
+                break
+            }
+        }
+        twilioVerify = try? builder.build()
+        return twilioVerify
+    }
+
+    @objc(configure:withResolver:withRejecter:)
+    func configure(options: Dictionary<String, Any>, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        if twilioVerify != nil {
+            reject("ALREADY_INITIALIZED", "TwilioVerify SDK has already been initialized. configure() must be called before any other SDK method.", nil)
+            return
+        }
+        queryMode = options["keychainQueryMode"] as? String
+        resolve(nil)
+    }
     
     @objc(createFactor:withResolver:withRejecter:)
     func createFactor(factorPayload: Dictionary<String, Any>, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         switch factorPayload["factorType"] as! String {
         case FactorType.push.rawValue:
-            twilioVerify?.createFactor(withPayload: toPushFactorPayload(factorPayload: factorPayload),
+            getOrBuildTwilioVerify()?.createFactor(withPayload: toPushFactorPayload(factorPayload: factorPayload),
                                        success: { resolve(self.toReadableMap(factor: $0)) },
                                        failure: { reject("\($0.code)", $0.errorDescription, $0) })
         default:
@@ -40,7 +70,7 @@ class RNTwilioVerify: NSObject {
     func verifyFactor(verifyFactorPayload: Dictionary<String, String>, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         switch verifyFactorPayload["factorType"]! {
         case FactorType.push.rawValue:
-            twilioVerify?.verifyFactor(withPayload: VerifyPushFactorPayload(sid: verifyFactorPayload["sid"]!),
+            getOrBuildTwilioVerify()?.verifyFactor(withPayload: VerifyPushFactorPayload(sid: verifyFactorPayload["sid"]!),
                                        success: { resolve(self.toReadableMap(factor: $0)) },
                                        failure: { reject("\($0.code)", $0.errorDescription, $0) })
         default:
@@ -52,7 +82,7 @@ class RNTwilioVerify: NSObject {
     func updateFactor(updateFactorPayload: Dictionary<String, String>, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         switch updateFactorPayload["factorType"]! {
         case FactorType.push.rawValue:
-            twilioVerify?.updateFactor(withPayload: UpdatePushFactorPayload(sid: updateFactorPayload["sid"]!,
+            getOrBuildTwilioVerify()?.updateFactor(withPayload: UpdatePushFactorPayload(sid: updateFactorPayload["sid"]!,
                                                                             pushToken: updateFactorPayload["pushToken"]),
                                        success: { resolve(self.toReadableMap(factor: $0)) },
                                        failure: { reject("\($0.code)", $0.errorDescription, $0) })
@@ -63,27 +93,27 @@ class RNTwilioVerify: NSObject {
     
     @objc(getAllFactors:withRejecter:)
     func getAllFactors(resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
-        twilioVerify?.getAllFactors(success: { resolve(self.toReadableFactorArray(factors: $0)) },
+        getOrBuildTwilioVerify()?.getAllFactors(success: { resolve(self.toReadableFactorArray(factors: $0)) },
                                     failure: { reject("\($0.code)", $0.errorDescription, $0) })
     }
     
     @objc(deleteFactor:withResolver:withRejecter:)
     func deleteFactor(sid: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
-        twilioVerify?.deleteFactor(withSid: sid,
+        getOrBuildTwilioVerify()?.deleteFactor(withSid: sid,
                                    success: { resolve(nil) },
                                    failure: { reject("\($0.code)", $0.errorDescription, $0) })
     }
     
     @objc(getChallenge:withFactorSid:withResolver:withRejecter:)
     func getChallenge(challengeSid: String, factorSid: String, resolve: @escaping RCTPromiseResolveBlock,reject: @escaping RCTPromiseRejectBlock) -> Void {
-        twilioVerify?.getChallenge(challengeSid: challengeSid, factorSid: factorSid,
+        getOrBuildTwilioVerify()?.getChallenge(challengeSid: challengeSid, factorSid: factorSid,
                                    success: { resolve(self.toReadableMap(challenge: $0)) },
                                    failure: { reject("\($0.code)", $0.errorDescription, $0) })
     }
     
     @objc(getAllChallenges:withResolver:withRejecter:)
     func getAllChallenges(challengeListPayload: Dictionary<String, Any>, resolve: @escaping RCTPromiseResolveBlock,reject: @escaping RCTPromiseRejectBlock) -> Void {
-        twilioVerify?.getAllChallenges(withPayload: toChallengeListPayload(challengeListPayload: challengeListPayload),
+        getOrBuildTwilioVerify()?.getAllChallenges(withPayload: toChallengeListPayload(challengeListPayload: challengeListPayload),
                                        success: { resolve(self.toReadableMap(challengeList: $0)) },
                                        failure: { reject("\($0.code)", $0.errorDescription, $0) })
     }
@@ -92,7 +122,7 @@ class RNTwilioVerify: NSObject {
     func updateChallenge(updateChallengePayload: Dictionary<String, String>, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         switch updateChallengePayload["factorType"]! {
         case FactorType.push.rawValue:
-            twilioVerify?.updateChallenge(withPayload: toUpdatePushChallengePayload(updateChallengePayload: updateChallengePayload),
+            getOrBuildTwilioVerify()?.updateChallenge(withPayload: toUpdatePushChallengePayload(updateChallengePayload: updateChallengePayload),
                                           success: { resolve(nil) },
                                           failure: { reject("\($0.code)", $0.errorDescription, $0) })
         default:
@@ -103,7 +133,7 @@ class RNTwilioVerify: NSObject {
     @objc(clearLocalStorage:withRejecter:)
     func clearLocalStorage(resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         do {
-            try twilioVerify?.clearLocalStorage()
+            try getOrBuildTwilioVerify()?.clearLocalStorage()
             resolve(nil)
         } catch {
             reject(nil, error.localizedDescription, error)
@@ -112,7 +142,7 @@ class RNTwilioVerify: NSObject {
 
     @objc(isAvailable:withRejecter:)
     func isAvailable(resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
-        resolve(twilioVerify != nil)
+        resolve(getOrBuildTwilioVerify() != nil)
     }
 }
 
