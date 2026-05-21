@@ -252,9 +252,11 @@ yarn example android
 
 ## Errors
 
-| Types          | Code              | Description                                                                           |
-| -------------- | ----------------- | ------------------------------------------------------------------------------------- |
-| Initialization | TWILIO_INIT_ERROR | Exception while initializing Twilio Verify, SDK instance will not be available to use |
+| Types          | Code                | Description                                                                                                                                         |
+| -------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Initialization | TWILIO_INIT_ERROR   | (Android) Exception while initializing Twilio Verify, SDK instance will not be available to use                                                     |
+| Initialization | INIT_ERROR          | (iOS) Failed to build the TwilioVerify SDK instance, typically due to Keychain access issues. The error message includes details from the native SDK |
+| Configuration  | ALREADY_INITIALIZED | `configure()` was called after the SDK was already initialized. It must be called before any other SDK method                                       |
 
 [Android](https://github.com/twilio/twilio-verify-android#errors)
 

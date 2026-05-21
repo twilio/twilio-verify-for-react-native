@@ -25,7 +25,7 @@ class RNTwilioVerify: NSObject {
     private var twilioVerify: TwilioVerify?
     private var queryMode: String? = nil
 
-    private func getOrBuildTwilioVerify() -> TwilioVerify? {
+    private func getOrBuildTwilioVerify() throws -> TwilioVerify {
         if let instance = twilioVerify {
             return instance
         }
@@ -40,8 +40,9 @@ class RNTwilioVerify: NSObject {
                 break
             }
         }
-        twilioVerify = try? builder.build()
-        return twilioVerify
+        let instance = try builder.build()
+        twilioVerify = instance
+        return instance
     }
 
     @objc(configure:withResolver:withRejecter:)
@@ -56,93 +57,139 @@ class RNTwilioVerify: NSObject {
     
     @objc(createFactor:withResolver:withRejecter:)
     func createFactor(factorPayload: Dictionary<String, Any>, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
-        switch factorPayload["factorType"] as! String {
-        case FactorType.push.rawValue:
-            getOrBuildTwilioVerify()?.createFactor(withPayload: toPushFactorPayload(factorPayload: factorPayload),
-                                       success: { resolve(self.toReadableMap(factor: $0)) },
-                                       failure: { reject("\($0.code)", $0.errorDescription, $0) })
-        default:
-            reject(nil, "Invalid factor payload", nil)
+        do {
+            let verify = try getOrBuildTwilioVerify()
+            switch factorPayload["factorType"] as! String {
+            case FactorType.push.rawValue:
+                verify.createFactor(withPayload: toPushFactorPayload(factorPayload: factorPayload),
+                                    success: { resolve(self.toReadableMap(factor: $0)) },
+                                    failure: { reject("\($0.code)", $0.errorDescription, $0) })
+            default:
+                reject(nil, "Invalid factor payload", nil)
+            }
+        } catch {
+            reject("INIT_ERROR", "Failed to initialize TwilioVerify: \(error.localizedDescription)", error)
         }
     }
     
     @objc(verifyFactor:withResolver:withRejecter:)
     func verifyFactor(verifyFactorPayload: Dictionary<String, String>, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
-        switch verifyFactorPayload["factorType"]! {
-        case FactorType.push.rawValue:
-            getOrBuildTwilioVerify()?.verifyFactor(withPayload: VerifyPushFactorPayload(sid: verifyFactorPayload["sid"]!),
-                                       success: { resolve(self.toReadableMap(factor: $0)) },
-                                       failure: { reject("\($0.code)", $0.errorDescription, $0) })
-        default:
-            reject(nil, "Invalid verify factor payload", nil)
+        do {
+            let verify = try getOrBuildTwilioVerify()
+            switch verifyFactorPayload["factorType"]! {
+            case FactorType.push.rawValue:
+                verify.verifyFactor(withPayload: VerifyPushFactorPayload(sid: verifyFactorPayload["sid"]!),
+                                    success: { resolve(self.toReadableMap(factor: $0)) },
+                                    failure: { reject("\($0.code)", $0.errorDescription, $0) })
+            default:
+                reject(nil, "Invalid verify factor payload", nil)
+            }
+        } catch {
+            reject("INIT_ERROR", "Failed to initialize TwilioVerify: \(error.localizedDescription)", error)
         }
     }
     
     @objc(updateFactor:withResolver:withRejecter:)
     func updateFactor(updateFactorPayload: Dictionary<String, String>, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
-        switch updateFactorPayload["factorType"]! {
-        case FactorType.push.rawValue:
-            getOrBuildTwilioVerify()?.updateFactor(withPayload: UpdatePushFactorPayload(sid: updateFactorPayload["sid"]!,
-                                                                            pushToken: updateFactorPayload["pushToken"]),
-                                       success: { resolve(self.toReadableMap(factor: $0)) },
-                                       failure: { reject("\($0.code)", $0.errorDescription, $0) })
-        default:
-            reject(nil, "Invalid verify factor payload", nil)
+        do {
+            let verify = try getOrBuildTwilioVerify()
+            switch updateFactorPayload["factorType"]! {
+            case FactorType.push.rawValue:
+                verify.updateFactor(withPayload: UpdatePushFactorPayload(sid: updateFactorPayload["sid"]!,
+                                                                         pushToken: updateFactorPayload["pushToken"]),
+                                    success: { resolve(self.toReadableMap(factor: $0)) },
+                                    failure: { reject("\($0.code)", $0.errorDescription, $0) })
+            default:
+                reject(nil, "Invalid verify factor payload", nil)
+            }
+        } catch {
+            reject("INIT_ERROR", "Failed to initialize TwilioVerify: \(error.localizedDescription)", error)
         }
     }
     
     @objc(getAllFactors:withRejecter:)
     func getAllFactors(resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
-        getOrBuildTwilioVerify()?.getAllFactors(success: { resolve(self.toReadableFactorArray(factors: $0)) },
-                                    failure: { reject("\($0.code)", $0.errorDescription, $0) })
+        do {
+            let verify = try getOrBuildTwilioVerify()
+            verify.getAllFactors(success: { resolve(self.toReadableFactorArray(factors: $0)) },
+                                failure: { reject("\($0.code)", $0.errorDescription, $0) })
+        } catch {
+            reject("INIT_ERROR", "Failed to initialize TwilioVerify: \(error.localizedDescription)", error)
+        }
     }
     
     @objc(deleteFactor:withResolver:withRejecter:)
     func deleteFactor(sid: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
-        getOrBuildTwilioVerify()?.deleteFactor(withSid: sid,
-                                   success: { resolve(nil) },
-                                   failure: { reject("\($0.code)", $0.errorDescription, $0) })
+        do {
+            let verify = try getOrBuildTwilioVerify()
+            verify.deleteFactor(withSid: sid,
+                                success: { resolve(nil) },
+                                failure: { reject("\($0.code)", $0.errorDescription, $0) })
+        } catch {
+            reject("INIT_ERROR", "Failed to initialize TwilioVerify: \(error.localizedDescription)", error)
+        }
     }
     
     @objc(getChallenge:withFactorSid:withResolver:withRejecter:)
     func getChallenge(challengeSid: String, factorSid: String, resolve: @escaping RCTPromiseResolveBlock,reject: @escaping RCTPromiseRejectBlock) -> Void {
-        getOrBuildTwilioVerify()?.getChallenge(challengeSid: challengeSid, factorSid: factorSid,
-                                   success: { resolve(self.toReadableMap(challenge: $0)) },
-                                   failure: { reject("\($0.code)", $0.errorDescription, $0) })
+        do {
+            let verify = try getOrBuildTwilioVerify()
+            verify.getChallenge(challengeSid: challengeSid, factorSid: factorSid,
+                                success: { resolve(self.toReadableMap(challenge: $0)) },
+                                failure: { reject("\($0.code)", $0.errorDescription, $0) })
+        } catch {
+            reject("INIT_ERROR", "Failed to initialize TwilioVerify: \(error.localizedDescription)", error)
+        }
     }
     
     @objc(getAllChallenges:withResolver:withRejecter:)
     func getAllChallenges(challengeListPayload: Dictionary<String, Any>, resolve: @escaping RCTPromiseResolveBlock,reject: @escaping RCTPromiseRejectBlock) -> Void {
-        getOrBuildTwilioVerify()?.getAllChallenges(withPayload: toChallengeListPayload(challengeListPayload: challengeListPayload),
-                                       success: { resolve(self.toReadableMap(challengeList: $0)) },
-                                       failure: { reject("\($0.code)", $0.errorDescription, $0) })
+        do {
+            let verify = try getOrBuildTwilioVerify()
+            verify.getAllChallenges(withPayload: toChallengeListPayload(challengeListPayload: challengeListPayload),
+                                   success: { resolve(self.toReadableMap(challengeList: $0)) },
+                                   failure: { reject("\($0.code)", $0.errorDescription, $0) })
+        } catch {
+            reject("INIT_ERROR", "Failed to initialize TwilioVerify: \(error.localizedDescription)", error)
+        }
     }
     
     @objc(updateChallenge:withResolver:withRejecter:)
     func updateChallenge(updateChallengePayload: Dictionary<String, String>, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
-        switch updateChallengePayload["factorType"]! {
-        case FactorType.push.rawValue:
-            getOrBuildTwilioVerify()?.updateChallenge(withPayload: toUpdatePushChallengePayload(updateChallengePayload: updateChallengePayload),
-                                          success: { resolve(nil) },
-                                          failure: { reject("\($0.code)", $0.errorDescription, $0) })
-        default:
-            reject(nil, "Invalid verify factor payload", nil)
+        do {
+            let verify = try getOrBuildTwilioVerify()
+            switch updateChallengePayload["factorType"]! {
+            case FactorType.push.rawValue:
+                verify.updateChallenge(withPayload: toUpdatePushChallengePayload(updateChallengePayload: updateChallengePayload),
+                                       success: { resolve(nil) },
+                                       failure: { reject("\($0.code)", $0.errorDescription, $0) })
+            default:
+                reject(nil, "Invalid verify factor payload", nil)
+            }
+        } catch {
+            reject("INIT_ERROR", "Failed to initialize TwilioVerify: \(error.localizedDescription)", error)
         }
     }
     
     @objc(clearLocalStorage:withRejecter:)
     func clearLocalStorage(resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         do {
-            try getOrBuildTwilioVerify()?.clearLocalStorage()
+            let verify = try getOrBuildTwilioVerify()
+            try verify.clearLocalStorage()
             resolve(nil)
         } catch {
-            reject(nil, error.localizedDescription, error)
+            reject("INIT_ERROR", "Failed to initialize TwilioVerify: \(error.localizedDescription)", error)
         }
     }
 
     @objc(isAvailable:withRejecter:)
     func isAvailable(resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
-        resolve(getOrBuildTwilioVerify() != nil)
+        do {
+            _ = try getOrBuildTwilioVerify()
+            resolve(true)
+        } catch {
+            resolve(false)
+        }
     }
 }
 
