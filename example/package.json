@@ -15,7 +15,8 @@
     "clean:ios": "cd ios && rm -rf Pods Podfile.lock && cd ..",
     "clean:android": "cd android && ./gradlew clean && cd .. && rm -rf node_modules && yarn",
     "clean": "yarn clean:ios && yarn clean:android",
-    "doctor": "react-native doctor"
+    "doctor": "react-native doctor",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@futurejj/react-native-checkbox": "^1.0.5",
@@ -30,7 +31,7 @@
     "react-native-push-notification": "^8.1.1",
     "react-native-reanimated": "3.19.3",
     "react-native-safe-area-context": "5.7.0",
-    "react-native-screens": "~4.24.0"
+    "react-native-screens": "4.25.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -44,6 +45,7 @@
     "@react-native/typescript-config": "0.78.2",
     "@types/react": "^19.0.0",
     "@types/react-native-push-notification": "^8.1.4",
+    "patch-package": "^8.0.1",
     "react-native-builder-bob": "^0.40.14"
   },
   "engines": {

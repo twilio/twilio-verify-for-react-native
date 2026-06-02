@@ -23,6 +23,9 @@ target 'TwilioVerifyForReactNativeExample' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  # Required for RNScreens (Swift pod) to import React-RCTImage as a module
+  pod 'React-RCTImage', :path => "#{config[:reactNativePath]}/Libraries/Image", :modular_headers => true
+
   post_install do |installer|
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
