@@ -78,6 +78,12 @@ class RNTwilioVerifyModule(
   }
 
   @ReactMethod
+  fun configure(options: ReadableMap, promise: Promise) {
+    // keychainQueryMode is iOS-only; no-op on Android
+    promise.resolve(null)
+  }
+
+  @ReactMethod
   fun createFactor(
     factorPayload: ReadableMap,
     promise: Promise

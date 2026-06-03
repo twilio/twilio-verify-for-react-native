@@ -63,6 +63,34 @@ While the Android Keystore is designed to securely manage cryptographic keys (an
 
 While the iOS Keychain is designed to securely manage cryptographic keys (and is used by Twilio Verify), its stability and usability can occasionally be affected by device-specific issues, system bugs, or misconfigurations. On a very small percentage of iOS devices, the Keychain may become inaccessible or unreliable, typically due to inconsistencies in device software or rare system-level errors. Therefore, we recommend calling the SDK’s availability method to evaluate whether the device supports the solution.
 
+### Keychain Query Mode (iOS only)
+
+You can configure the Keychain query mode to control how the SDK accesses stored factors and keys on iOS. On Android, this setting is a no-op.
+
+#### Available Modes
+
+- **strict**: Recommended for new integrations. Filters Keychain items by the specific Service name (`TwilioVerify`). This isolates the SDK data and prevents collisions with keychain items from other libraries.
+- **legacy**: Queries the Keychain without a Service filter. **Warning:** May cause collisions if other keychain items exist with similar attributes.
+
+#### Usage
+
+Call `configure()` once before any other SDK method:
+
+```js
+import TwilioVerify, {
+  KeychainQueryMode,
+} from '@twilio/twilio-verify-for-react-native';
+
+// For new integrations, use strict mode
+await TwilioVerify.configure({ keychainQueryMode: KeychainQueryMode.Strict });
+```
+
+#### Important Notes
+
+- The default value is `Legacy` for backward compatibility with existing integrations.
+- If you're starting a new integration, it's recommended to use `Strict` mode to avoid potential Keychain collisions.
+- `configure()` must be called before any other SDK method. Calling it after the SDK has been initialized will result in a rejected promise.
+
 ### Create factor
 
 ```js
@@ -224,9 +252,11 @@ yarn example android
 
 ## Errors
 
-| Types          | Code              | Description                                                                           |
-| -------------- | ----------------- | ------------------------------------------------------------------------------------- |
-| Initialization | TWILIO_INIT_ERROR | Exception while initializing Twilio Verify, SDK instance will not be available to use |
+| Types          | Code                | Description                                                                                                                                         |
+| -------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Initialization | TWILIO_INIT_ERROR   | (Android) Exception while initializing Twilio Verify, SDK instance will not be available to use                                                     |
+| Initialization | INIT_ERROR          | (iOS) Failed to build the TwilioVerify SDK instance, typically due to Keychain access issues. The error message includes details from the native SDK |
+| Configuration  | ALREADY_INITIALIZED | `configure()` was called after the SDK was already initialized. It must be called before any other SDK method                                       |
 
 [Android](https://github.com/twilio/twilio-verify-android#errors)
 

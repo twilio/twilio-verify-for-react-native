@@ -27,3 +27,4 @@ export {
 } from './models/ChallengeListPayload';
 export { UpdatePushChallengePayload } from './models/UpdatePushChallengePayload';
 export { FactorType } from './models/FactorType';
+export { KeychainQueryMode } from './TwilioVerifyType';

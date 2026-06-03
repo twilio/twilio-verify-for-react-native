@@ -169,6 +169,7 @@ export default function CreateFactor({
         identity: json.identity, // User's unique identifier
         accessToken: accessToken, // JWT token from your server
         factorType: FactorType.Push, // Type of factor (Push, SMS, etc.)
+        pushToken: enablePush ? globalThis.deviceToken : undefined,
       };
       let factor = await TwilioVerify.createFactor(pushFactorPayload);
       console.log('Factor created successfully:', factor);

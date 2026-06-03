@@ -31,6 +31,10 @@
     return YES;
 }
 
+RCT_EXTERN_METHOD(configure:(NSDictionary)options
+                                withResolver:(RCTPromiseResolveBlock)resolve
+                                withRejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(createFactor:(NSDictionary)factorPayload
                                 withResolver:(RCTPromiseResolveBlock)resolve
                                 withRejecter:(RCTPromiseRejectBlock)reject)
