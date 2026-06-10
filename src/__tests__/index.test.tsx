@@ -32,7 +32,19 @@ const {
   updateChallenge: mockUpdateChallenge,
   clearLocalStorage: mockClearLocalStorage,
   isAvailable: mockIsAvailable,
-} = NativeModules.RNTwilioVerify as Record<string, jest.Mock>;
+} = NativeModules.RNTwilioVerify as {
+  configure: jest.Mock;
+  createFactor: jest.Mock;
+  verifyFactor: jest.Mock;
+  updateFactor: jest.Mock;
+  getAllFactors: jest.Mock;
+  deleteFactor: jest.Mock;
+  getChallenge: jest.Mock;
+  getAllChallenges: jest.Mock;
+  updateChallenge: jest.Mock;
+  clearLocalStorage: jest.Mock;
+  isAvailable: jest.Mock;
+};
 import { PushFactorPayload } from '../models/PushFactorPayload';
 import { VerifyPushFactorPayload } from '../models/VerifyPushFactorPayload';
 import { UpdatePushFactorPayload } from '../models/UpdatePushFactorPayload';
