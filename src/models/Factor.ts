@@ -33,7 +33,7 @@ export interface Factor {
   /** The type of factor (currently only push factors are supported) */
   type: FactorType;
 
-  /** The date and time when the factor was created */
+  /** The date and time when the factor was created. Delivered by the native layer as an ISO-8601 UTC string (e.g. `2026-01-01T00:00:00Z`); wrap it with `new Date()` before comparing. */
   createdAt: Date;
 }
 

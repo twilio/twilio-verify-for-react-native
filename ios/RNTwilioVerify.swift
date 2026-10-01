@@ -24,6 +24,7 @@ class RNTwilioVerify: NSObject {
 
     private var twilioVerify: TwilioVerify?
     private var queryMode: String? = nil
+    private var clearStorageOnReinstall: Bool? = nil
 
     private func getOrBuildTwilioVerify() throws -> TwilioVerify {
         if let instance = twilioVerify {
@@ -40,6 +41,10 @@ class RNTwilioVerify: NSObject {
                 break
             }
         }
+        if let clearStorageOnReinstall = clearStorageOnReinstall {
+            builder = builder.setClearStorageOnReinstall(clearStorageOnReinstall)
+        }
+
         let instance = try builder.build()
         twilioVerify = instance
         return instance
@@ -51,7 +56,10 @@ class RNTwilioVerify: NSObject {
             reject("ALREADY_INITIALIZED", "TwilioVerify SDK has already been initialized. configure() must be called before any other SDK method.", nil)
             return
         }
-        queryMode = options["keychainQueryMode"] as? String
+        let iosOptions = options["ios"] as? Dictionary<String, Any>
+        // Top-level keychainQueryMode is deprecated but still honored (shipped in 0.5.4)
+        queryMode = (iosOptions?["keychainQueryMode"] as? String) ?? (options["keychainQueryMode"] as? String)
+        clearStorageOnReinstall = iosOptions?["clearStorageOnReinstall"] as? Bool
         resolve(nil)
     }
     
@@ -63,7 +71,7 @@ class RNTwilioVerify: NSObject {
             case FactorType.push.rawValue:
                 verify.createFactor(withPayload: toPushFactorPayload(factorPayload: factorPayload),
                                     success: { resolve(self.toReadableMap(factor: $0)) },
-                                    failure: { reject("\($0.code)", $0.errorDescription, $0) })
+                                    failure: { self.reject(reject, with: $0) })
             default:
                 reject(nil, "Invalid factor payload", nil)
             }
@@ -80,7 +88,7 @@ class RNTwilioVerify: NSObject {
             case FactorType.push.rawValue:
                 verify.verifyFactor(withPayload: VerifyPushFactorPayload(sid: verifyFactorPayload["sid"]!),
                                     success: { resolve(self.toReadableMap(factor: $0)) },
-                                    failure: { reject("\($0.code)", $0.errorDescription, $0) })
+                                    failure: { self.reject(reject, with: $0) })
             default:
                 reject(nil, "Invalid verify factor payload", nil)
             }
@@ -98,7 +106,7 @@ class RNTwilioVerify: NSObject {
                 verify.updateFactor(withPayload: UpdatePushFactorPayload(sid: updateFactorPayload["sid"]!,
                                                                          pushToken: updateFactorPayload["pushToken"]),
                                     success: { resolve(self.toReadableMap(factor: $0)) },
-                                    failure: { reject("\($0.code)", $0.errorDescription, $0) })
+                                    failure: { self.reject(reject, with: $0) })
             default:
                 reject(nil, "Invalid verify factor payload", nil)
             }
@@ -112,19 +120,49 @@ class RNTwilioVerify: NSObject {
         do {
             let verify = try getOrBuildTwilioVerify()
             verify.getAllFactors(success: { resolve(self.toReadableFactorArray(factors: $0)) },
-                                failure: { reject("\($0.code)", $0.errorDescription, $0) })
+                                failure: { self.reject(reject, with: $0) })
         } catch {
             reject("INIT_ERROR", "Failed to initialize TwilioVerify: \(error.localizedDescription)", error)
         }
     }
     
+    @objc(getFactor:withResolver:withRejecter:)
+    func getFactor(sid: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        do {
+            let verify = try getOrBuildTwilioVerify()
+          verify.getAllFactors(
+            success: { factors in
+              guard let factor = factors.first(where: { $0.sid == sid }) else {
+                reject("FACTOR_NOT_FOUND", "Factor \(sid) not found on this device", nil)
+                return
+              }
+              resolve(self.toReadableMap(factor: factor))
+            },
+            failure: { self.reject(reject, with: $0) }
+          )
+        } catch {
+            reject("INIT_ERROR", "Failed to initialize TwilioVerify: \(error.localizedDescription)", error)
+        }
+    }
+
+    @objc(getFactors:withResolver:withRejecter:)
+    func getFactors(factorListPayload: Dictionary<String, Any>, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        do {
+            let verify = try getOrBuildTwilioVerify()
+            verify.getAllFactors(success: { resolve(self.toReadableFactorArray(factors: self.filter(factors: $0, with: factorListPayload))) },
+                                failure: { self.reject(reject, with: $0) })
+        } catch {
+            reject("INIT_ERROR", "Failed to initialize TwilioVerify: \(error.localizedDescription)", error)
+        }
+    }
+
     @objc(deleteFactor:withResolver:withRejecter:)
     func deleteFactor(sid: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
         do {
             let verify = try getOrBuildTwilioVerify()
             verify.deleteFactor(withSid: sid,
                                 success: { resolve(nil) },
-                                failure: { reject("\($0.code)", $0.errorDescription, $0) })
+                                failure: { self.reject(reject, with: $0) })
         } catch {
             reject("INIT_ERROR", "Failed to initialize TwilioVerify: \(error.localizedDescription)", error)
         }
@@ -136,7 +174,7 @@ class RNTwilioVerify: NSObject {
             let verify = try getOrBuildTwilioVerify()
             verify.getChallenge(challengeSid: challengeSid, factorSid: factorSid,
                                 success: { resolve(self.toReadableMap(challenge: $0)) },
-                                failure: { reject("\($0.code)", $0.errorDescription, $0) })
+                                failure: { self.reject(reject, with: $0) })
         } catch {
             reject("INIT_ERROR", "Failed to initialize TwilioVerify: \(error.localizedDescription)", error)
         }
@@ -148,7 +186,7 @@ class RNTwilioVerify: NSObject {
             let verify = try getOrBuildTwilioVerify()
             verify.getAllChallenges(withPayload: toChallengeListPayload(challengeListPayload: challengeListPayload),
                                    success: { resolve(self.toReadableMap(challengeList: $0)) },
-                                   failure: { reject("\($0.code)", $0.errorDescription, $0) })
+                                   failure: { self.reject(reject, with: $0) })
         } catch {
             reject("INIT_ERROR", "Failed to initialize TwilioVerify: \(error.localizedDescription)", error)
         }
@@ -162,7 +200,7 @@ class RNTwilioVerify: NSObject {
             case FactorType.push.rawValue:
                 verify.updateChallenge(withPayload: toUpdatePushChallengePayload(updateChallengePayload: updateChallengePayload),
                                        success: { resolve(nil) },
-                                       failure: { reject("\($0.code)", $0.errorDescription, $0) })
+                                       failure: { self.reject(reject, with: $0) })
             default:
                 reject(nil, "Invalid verify factor payload", nil)
             }
@@ -198,6 +236,16 @@ private extension RNTwilioVerify {
         factors.map { toReadableMap(factor: $0) } as Array
     }
     
+    func filter(factors: [Factor], with factorListPayload: Dictionary<String, Any>) -> [Factor] {
+        let identity = factorListPayload["identity"] as? String
+        let status = factorListPayload["status"] as? String
+        let ascending = (factorListPayload["order"] as? String) == "asc"
+        return factors
+            .filter { identity == nil || $0.identity == identity }
+            .filter { status == nil || $0.status.rawValue == status }
+            .sorted { ascending ? $0.createdAt < $1.createdAt : $0.createdAt > $1.createdAt }
+    }
+
     func toReadableMap(factor: Factor) -> Dictionary<String, Any> {
         ["status": factor.status.rawValue,
          "sid": factor.sid,
@@ -261,14 +309,35 @@ private extension RNTwilioVerify {
     func toRFC3339(date: Date) -> String {
       let formatter = DateFormatter()
       formatter.locale = Locale(identifier: "en_US_POSIX")
+      formatter.calendar = Calendar(identifier: .gregorian)
+      formatter.timeZone = TimeZone(identifier: "UTC")
       formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
       return formatter.string(from: date)
+    }
+
+    func reject(_ reject: RCTPromiseRejectBlock, with error: TwilioVerifyError) {
+        var userInfo: [String: Any] = [NSLocalizedDescriptionKey: error.errorDescription ?? "",
+                                       "originalError": error.originalError.localizedDescription]
+        if let networkError = error.originalError as? NetworkError,
+           case .failureStatusCode(var failureResponse) = networkError {
+            userInfo["statusCode"] = failureResponse.statusCode
+            if let apiError = failureResponse.apiError {
+                userInfo["apiErrorCode"] = apiError.code
+                userInfo["apiErrorMessage"] = apiError.message
+                if let moreInfo = apiError.moreInfo {
+                    userInfo["apiErrorMoreInfo"] = moreInfo
+                }
+            }
+        }
+        let nsError = NSError(domain: "TwilioVerify", code: error.code, userInfo: userInfo)
+        reject("\(error.code)", error.errorDescription, nsError)
     }
     
     func toPushFactorPayload(factorPayload: Dictionary<String, Any>) -> PushFactorPayload {
         PushFactorPayload(friendlyName: factorPayload["friendlyName"] as! String,
                           serviceSid: factorPayload["serviceSid"] as! String,
                           identity: factorPayload["identity"] as! String,
+                          allowIphoneMigration: factorPayload["allowIphoneMigration"] as? Bool ?? false,
                           pushToken: factorPayload["pushToken"] as? String,
                           accessToken: factorPayload["accessToken"] as! String)
     }

@@ -35,13 +35,19 @@ export class PushFactorPayload implements FactorPayload {
    * @param accessToken - A valid JWT access token obtained from your backend service.
    * @param pushToken - Optional. The device push notification token (FCM for Android, APNs for iOS).
    *                    Can be omitted if push notifications are not required or will be added later.
+   * @param allowIphoneMigration - Optional, iOS only (ignored on Android). When `true`, the factor and its key pair
+   *                    are stored with `kSecAttrAccessibleAfterFirstUnlock` instead of the Secure Enclave, so the
+   *                    factor survives an iPhone-to-iPhone migration or a backup restore. Defaults to `false`.
+   *                    Only factors created with this flag can migrate. Consider the security implications
+   *                    before enabling it.
    */
   constructor(
     public friendlyName: string,
     public serviceSid: string,
     public identity: string,
     public accessToken: string,
-    public pushToken?: string
+    public pushToken?: string,
+    public allowIphoneMigration?: boolean
   ) {
     this.factorType = FactorType.Push;
   }

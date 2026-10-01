@@ -6,6 +6,8 @@ jest.mock('react-native', () => ({
       verifyFactor: jest.fn(),
       updateFactor: jest.fn(),
       getAllFactors: jest.fn(),
+      getFactor: jest.fn(),
+      getFactors: jest.fn(),
       deleteFactor: jest.fn(),
       getChallenge: jest.fn(),
       getAllChallenges: jest.fn(),
@@ -26,6 +28,8 @@ const {
   verifyFactor: mockVerifyFactor,
   updateFactor: mockUpdateFactor,
   getAllFactors: mockGetAllFactors,
+  getFactor: mockGetFactor,
+  getFactors: mockGetFactors,
   deleteFactor: mockDeleteFactor,
   getChallenge: mockGetChallenge,
   getAllChallenges: mockGetAllChallenges,
@@ -38,6 +42,8 @@ const {
   verifyFactor: jest.Mock;
   updateFactor: jest.Mock;
   getAllFactors: jest.Mock;
+  getFactor: jest.Mock;
+  getFactors: jest.Mock;
   deleteFactor: jest.Mock;
   getChallenge: jest.Mock;
   getAllChallenges: jest.Mock;
@@ -54,6 +60,11 @@ import {
 } from '../models/ChallengeListPayload';
 import { UpdatePushChallengePayload } from '../models/UpdatePushChallengePayload';
 import { ChallengeStatus } from '../models/Challenge';
+import { FactorStatus } from '../models/Factor';
+import {
+  FactorListPayload,
+  FactorListOrder,
+} from '../models/FactorListPayload';
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -67,7 +78,46 @@ describe('KeychainQueryMode', () => {
 });
 
 describe('TwilioVerify.configure', () => {
-  it('should call native configure with keychainQueryMode strict', async () => {
+  it('should call native configure with ios.keychainQueryMode strict', async () => {
+    mockConfigure.mockResolvedValue(undefined);
+
+    await TwilioVerify.configure({
+      ios: { keychainQueryMode: KeychainQueryMode.Strict },
+    });
+
+    expect(mockConfigure).toHaveBeenCalledWith({
+      ios: { keychainQueryMode: 'strict' },
+    });
+  });
+
+  it('should call native configure with ios.keychainQueryMode legacy', async () => {
+    mockConfigure.mockResolvedValue(undefined);
+
+    await TwilioVerify.configure({
+      ios: { keychainQueryMode: KeychainQueryMode.Legacy },
+    });
+
+    expect(mockConfigure).toHaveBeenCalledWith({
+      ios: { keychainQueryMode: 'legacy' },
+    });
+  });
+
+  it('should call native configure with ios.clearStorageOnReinstall', async () => {
+    mockConfigure.mockResolvedValue(undefined);
+
+    await TwilioVerify.configure({
+      ios: {
+        keychainQueryMode: KeychainQueryMode.Strict,
+        clearStorageOnReinstall: false,
+      },
+    });
+
+    expect(mockConfigure).toHaveBeenCalledWith({
+      ios: { keychainQueryMode: 'strict', clearStorageOnReinstall: false },
+    });
+  });
+
+  it('should still pass the deprecated top-level keychainQueryMode', async () => {
     mockConfigure.mockResolvedValue(undefined);
 
     await TwilioVerify.configure({
@@ -76,18 +126,6 @@ describe('TwilioVerify.configure', () => {
 
     expect(mockConfigure).toHaveBeenCalledWith({
       keychainQueryMode: 'strict',
-    });
-  });
-
-  it('should call native configure with keychainQueryMode legacy', async () => {
-    mockConfigure.mockResolvedValue(undefined);
-
-    await TwilioVerify.configure({
-      keychainQueryMode: KeychainQueryMode.Legacy,
-    });
-
-    expect(mockConfigure).toHaveBeenCalledWith({
-      keychainQueryMode: 'legacy',
     });
   });
 
@@ -138,6 +176,45 @@ describe('TwilioVerify.createFactor', () => {
 
     expect(mockCreateFactor).toHaveBeenCalledWith(payload);
     expect(result.sid).toBe('YF1234567890');
+  });
+
+  it('should leave allowIphoneMigration undefined by default', () => {
+    expect(payload.allowIphoneMigration).toBeUndefined();
+  });
+
+  it('should pass allowIphoneMigration to native createFactor', async () => {
+    const migratablePayload = new PushFactorPayload(
+      'Test Device',
+      'VA1234567890',
+      'user-identity',
+      'access-token',
+      'push-token',
+      true
+    );
+    mockCreateFactor.mockResolvedValue({ sid: 'YF1234567890' });
+
+    await TwilioVerify.createFactor(migratablePayload);
+
+    expect(mockCreateFactor).toHaveBeenCalledWith(
+      expect.objectContaining({
+        factorType: 'push',
+        pushToken: 'push-token',
+        allowIphoneMigration: true,
+      })
+    );
+  });
+
+  it('should expose native error details in userInfo', async () => {
+    mockCreateFactor.mockRejectedValue({
+      code: '60401',
+      message: 'Error while calling the API',
+      userInfo: { statusCode: 401, apiErrorCode: 20003 },
+    });
+
+    await expect(TwilioVerify.createFactor(payload)).rejects.toMatchObject({
+      code: '60401',
+      userInfo: { statusCode: 401, apiErrorCode: 20003 },
+    });
   });
 
   it('should reject with INIT_ERROR when SDK fails to initialize', async () => {
@@ -216,6 +293,78 @@ describe('TwilioVerify.updateFactor', () => {
 
     await expect(TwilioVerify.updateFactor(payload)).rejects.toMatchObject({
       code: 'INIT_ERROR',
+    });
+  });
+});
+
+describe('FactorListPayload', () => {
+  it('should default to no filters and newest first', () => {
+    const payload = new FactorListPayload();
+
+    expect(payload.identity).toBeUndefined();
+    expect(payload.status).toBeUndefined();
+    expect(payload.order).toBe(FactorListOrder.Desc);
+  });
+
+  it('should have correct order enum values', () => {
+    expect(FactorListOrder.Asc).toBe('asc');
+    expect(FactorListOrder.Desc).toBe('desc');
+  });
+});
+
+describe('TwilioVerify.getFactor', () => {
+  it('should call native getFactor with sid and return factor', async () => {
+    mockGetFactor.mockResolvedValue({
+      sid: 'YF1234567890',
+      status: 'verified',
+    });
+
+    const result = await TwilioVerify.getFactor('YF1234567890');
+
+    expect(mockGetFactor).toHaveBeenCalledWith('YF1234567890');
+    expect(result.sid).toBe('YF1234567890');
+  });
+
+  it('should reject with FACTOR_NOT_FOUND when the device does not have it', async () => {
+    mockGetFactor.mockRejectedValue({
+      code: 'FACTOR_NOT_FOUND',
+      message: 'Factor YF0000000000 not found on this device',
+    });
+
+    await expect(TwilioVerify.getFactor('YF0000000000')).rejects.toMatchObject({
+      code: 'FACTOR_NOT_FOUND',
+    });
+  });
+});
+
+describe('TwilioVerify.getFactors', () => {
+  it('should pass identity, status and order to native getFactors', async () => {
+    const mockFactors = [{ sid: 'YF2', identity: 'user-identity' }];
+    mockGetFactors.mockResolvedValue(mockFactors);
+
+    const result = await TwilioVerify.getFactors(
+      new FactorListPayload('user-identity', FactorStatus.Verified)
+    );
+
+    expect(mockGetFactors).toHaveBeenCalledWith({
+      identity: 'user-identity',
+      status: 'verified',
+      order: 'desc',
+    });
+    expect(result).toEqual(mockFactors);
+  });
+
+  it('should pass ascending order without filters', async () => {
+    mockGetFactors.mockResolvedValue([]);
+
+    await TwilioVerify.getFactors(
+      new FactorListPayload(undefined, undefined, FactorListOrder.Asc)
+    );
+
+    expect(mockGetFactors).toHaveBeenCalledWith({
+      identity: undefined,
+      status: undefined,
+      order: 'asc',
     });
   });
 });

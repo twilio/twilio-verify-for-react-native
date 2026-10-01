@@ -82,14 +82,54 @@ import TwilioVerify, {
 } from '@twilio/twilio-verify-for-react-native';
 
 // For new integrations, use strict mode
-await TwilioVerify.configure({ keychainQueryMode: KeychainQueryMode.Strict });
+await TwilioVerify.configure({
+  ios: { keychainQueryMode: KeychainQueryMode.Strict },
+});
 ```
 
 #### Important Notes
 
 - The default value is `Legacy` for backward compatibility with existing integrations.
+- Platform-specific settings live under `ios`. The top-level `keychainQueryMode` from 0.5.4 still works but is deprecated; `ios.keychainQueryMode` takes precedence.
 - If you're starting a new integration, it's recommended to use `Strict` mode to avoid potential Keychain collisions.
 - `configure()` must be called before any other SDK method. Calling it after the SDK has been initialized will result in a rejected promise.
+
+### Reinstall and persist factors (iOS only)
+
+By default, factors and key pairs are removed from the device when the app is uninstalled and reinstalled. To keep them in the Keychain across a reinstall, pass `ios.clearStorageOnReinstall: false` to `configure()`:
+
+```js
+await TwilioVerify.configure({
+  ios: {
+    keychainQueryMode: KeychainQueryMode.Strict,
+    clearStorageOnReinstall: false,
+  },
+});
+```
+
+- The push token changes after a reinstall. Call `updateFactor` with the new token so the factor keeps receiving challenges.
+- Keeping Keychain items after uninstall is iOS behavior that may change in future versions. Always provide a way to enroll the factor again.
+- A factor removed from the device is still verified in your Verify service. When you enroll a new factor, delete the old one and send challenges to the new `factorSid`.
+- On Android, this option is a no-op.
+
+### Allow iPhone migration (iOS only)
+
+By default, factors are stored in the Secure Enclave with `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`. They don't move to a new iPhone or survive a restore from a backup of another device. To let a factor migrate, pass `allowIphoneMigration: true` as the last argument of `PushFactorPayload`:
+
+```js
+new PushFactorPayload(
+  factorName,
+  verifyServiceSid,
+  identity,
+  accessToken,
+  pushToken,
+  true // allowIphoneMigration
+);
+```
+
+- Only factors created with this flag can migrate. Existing factors are not affected.
+- Binding a factor to a single device is more secure. Consider the security implications before enabling migration.
+- On Android, this option is ignored.
 
 ### Create factor
 
@@ -133,6 +173,37 @@ await TwilioVerify.updateChallenge(
 
 ```js
 let factors = await TwilioVerify.getAllFactors();
+```
+
+### Get factor
+
+Returns the factor stored on the device with the given SID. Rejects with `FACTOR_NOT_FOUND` if this device doesn't have it. Use it to find the factor a challenge targets:
+
+```js
+try {
+  const factor = await TwilioVerify.getFactor(challenge.factorSid);
+  // approve or deny the challenge with factor.sid
+} catch (error) {
+  if (error.code === 'FACTOR_NOT_FOUND') {
+    // This device no longer has the factor the challenge was sent to: enroll a new one
+  }
+}
+```
+
+### Get factors with filters
+
+Returns the factors stored on the device, filtered by identity and status and ordered by creation date (newest first by default):
+
+```js
+import {
+  FactorListPayload,
+  FactorListOrder,
+  FactorStatus,
+} from '@twilio/twilio-verify-for-react-native';
+
+const [latestVerified] = await TwilioVerify.getFactors(
+  new FactorListPayload(identity, FactorStatus.Verified, FactorListOrder.Desc)
+);
 ```
 
 ### Get challenges
@@ -256,6 +327,7 @@ yarn example android
 | -------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Initialization | TWILIO_INIT_ERROR   | (Android) Exception while initializing Twilio Verify, SDK instance will not be available to use                                                     |
 | Initialization | INIT_ERROR          | (iOS) Failed to build the TwilioVerify SDK instance, typically due to Keychain access issues. The error message includes details from the native SDK |
+| Factor         | FACTOR_NOT_FOUND    | `getFactor()` couldn't find a factor with the given SID on this device                                                                              |
 | Configuration  | ALREADY_INITIALIZED | `configure()` was called after the SDK was already initialized. It must be called before any other SDK method                                       |
 
 [Android](https://github.com/twilio/twilio-verify-android#errors)

@@ -30,7 +30,7 @@ export interface Challenge {
   /** Current status of the challenge (pending, approved, denied, or expired) */
   status: ChallengeStatus;
 
-  /** The date and time when the challenge was created */
+  /** The date and time when the challenge was created. Delivered by the native layer as an ISO-8601 UTC string (e.g. `2026-01-01T00:00:00Z`); wrap it with `new Date()` before comparing. */
   createdAt: Date;
 
   /** The date and time when the challenge was last updated */

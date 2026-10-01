@@ -79,7 +79,7 @@ class RNTwilioVerifyModule(
 
   @ReactMethod
   fun configure(options: ReadableMap, promise: Promise) {
-    // keychainQueryMode is iOS-only; no-op on Android
+    // All current options live under "ios" (keychainQueryMode, clearStorageOnReinstall); no-op on Android
     promise.resolve(null)
   }
 
@@ -145,6 +145,31 @@ class RNTwilioVerifyModule(
 
     twilioVerify.getAllFactors(
       { promise.resolve(toReadableFactorArray(it)) },
+      { promise.reject(it) })
+  }
+
+  @ReactMethod
+  fun getFactor(sid: String, promise: Promise) {
+    if (!isTwilioVerifyInitialized(promise)) {
+      return
+    }
+
+    twilioVerify.getAllFactors(
+      { factors ->
+        factors.find { it.sid == sid }?.let { promise.resolve(toReadableMap(it)) }
+          ?: promise.reject("FACTOR_NOT_FOUND", "Factor $sid not found on this device")
+      },
+      { promise.reject(it) })
+  }
+
+  @ReactMethod
+  fun getFactors(factorListPayload: ReadableMap, promise: Promise) {
+    if (!isTwilioVerifyInitialized(promise)) {
+      return
+    }
+
+    twilioVerify.getAllFactors(
+      { promise.resolve(toReadableFactorArray(filter(it, factorListPayload))) },
       { promise.reject(it) })
   }
 
@@ -267,6 +292,17 @@ class RNTwilioVerifyModule(
     putString("nextPageToken", metadata.nextPageToken)
   }
 
+  private fun filter(factors: List<Factor>, factorListPayload: ReadableMap): List<Factor> {
+    val identity = factorListPayload.getOptionalString("identity")
+    val status = factorListPayload.getOptionalString("status")
+    val ascending = factorListPayload.getOptionalString("order").equals("asc", true)
+    val filtered = factors
+      .filter { identity == null || it.identity == identity }
+      .filter { status == null || it.status.value == status }
+      .sortedBy { it.createdAt }
+    return if (ascending) filtered else filtered.reversed()
+  }
+
   private fun toReadableFactorArray(factors: List<Factor>) =
     Arguments.createArray().apply {
       factors.forEach { pushMap(toReadableMap(it)) }
@@ -323,6 +359,9 @@ class RNTwilioVerifyModule(
 
   private fun ReadableMap.getOptStringValue(name: String) =
     getString(name)
+
+  private fun ReadableMap.getOptionalString(name: String) =
+    if (hasKey(name) && !isNull(name)) getString(name) else null
 
   private fun toPushFactorPayload(factorPayload: ReadableMap) =
     PushFactorPayload(
