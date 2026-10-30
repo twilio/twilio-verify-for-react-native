@@ -1785,7 +1785,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.7.1)
-  - twilio-verify-for-react-native (0.5.3):
+  - twilio-verify-for-react-native (0.5.4):
     - React-Core
     - TwilioVerify (~> 3.0.2)
   - TwilioVerify (3.0.2)

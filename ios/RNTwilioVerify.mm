@@ -50,6 +50,14 @@ RCT_EXTERN_METHOD(updateFactor:(NSDictionary)updateFactorPayload
 RCT_EXTERN_METHOD(getAllFactors:(RCTPromiseResolveBlock)resolve
                                 withRejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getFactor:(NSString)sid
+                                withResolver:(RCTPromiseResolveBlock)resolve
+                                withRejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(getFactors:(NSDictionary)factorListPayload
+                                withResolver:(RCTPromiseResolveBlock)resolve
+                                withRejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(deleteFactor:(NSString)sid
                                 withResolver:(RCTPromiseResolveBlock)resolve
                                 withRejecter:(RCTPromiseRejectBlock)reject)

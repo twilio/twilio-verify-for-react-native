@@ -41,6 +41,8 @@ export default function CreateFactor({
   const [identity, setIdentity] = useState<string>('');
   const [accessTokenUrl, setAccessTokenUrl] = useState<string>('');
   const [enablePush, setEnablePush] = useState<boolean>(true);
+  const [allowIphoneMigration, setAllowIphoneMigration] =
+    useState<boolean>(false);
   const [factorSid, setFactorSid] = useState<string>('');
   const buttonPressed = useSharedValue(false);
 
@@ -170,6 +172,7 @@ export default function CreateFactor({
         accessToken: accessToken, // JWT token from your server
         factorType: FactorType.Push, // Type of factor (Push, SMS, etc.)
         pushToken: enablePush ? globalThis.deviceToken : undefined,
+        allowIphoneMigration, // iOS only: lets the factor survive device migration/backup restore
       };
       let factor = await TwilioVerify.createFactor(pushFactorPayload);
       console.log('Factor created successfully:', factor);
@@ -283,6 +286,21 @@ export default function CreateFactor({
             />
             <Text style={styles.checkboxText}>Enable push notifications</Text>
           </View>
+
+          {Platform.OS === 'ios' && (
+            <View style={styles.checkboxContainer}>
+              <CheckBox
+                disabled={isFetching}
+                value={allowIphoneMigration}
+                onValueChange={(newValue) => setAllowIphoneMigration(newValue)}
+                tintColors={{
+                  true: Colors.primary.main,
+                  false: Colors.border.dark,
+                }}
+              />
+              <Text style={styles.checkboxText}>Allow iPhone migration</Text>
+            </View>
+          )}
         </Animated.View>
 
         <Animated.View
